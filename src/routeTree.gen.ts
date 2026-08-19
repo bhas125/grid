@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ApiAlertsRouteImport } from './routes/api/alerts'
+import { Route as ApiCrimeNamesRouteImport } from './routes/api/crime-names'
 import { Route as ApiMarketsRouteImport } from './routes/api/markets'
 import { Route as ApiNewsRouteImport } from './routes/api/news'
 import { Route as ApiWxRouteImport } from './routes/api/wx'
@@ -30,6 +31,11 @@ const LoginRoute = LoginRouteImport.update({
 const ApiAlertsRoute = ApiAlertsRouteImport.update({
   id: '/api/alerts',
   path: '/api/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCrimeNamesRoute = ApiCrimeNamesRouteImport.update({
+  id: '/api/crime-names',
+  path: '/api/crime-names',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiMarketsRoute = ApiMarketsRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/api/alerts': typeof ApiAlertsRoute
+  '/api/crime-names': typeof ApiCrimeNamesRoute
   '/api/markets': typeof ApiMarketsRoute
   '/api/news': typeof ApiNewsRoute
   '/api/wx': typeof ApiWxRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/api/alerts': typeof ApiAlertsRoute
+  '/api/crime-names': typeof ApiCrimeNamesRoute
   '/api/markets': typeof ApiMarketsRoute
   '/api/news': typeof ApiNewsRoute
   '/api/wx': typeof ApiWxRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/api/alerts': typeof ApiAlertsRoute
+  '/api/crime-names': typeof ApiCrimeNamesRoute
   '/api/markets': typeof ApiMarketsRoute
   '/api/news': typeof ApiNewsRoute
   '/api/wx': typeof ApiWxRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/api/alerts'
+    | '/api/crime-names'
     | '/api/markets'
     | '/api/news'
     | '/api/wx'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/api/alerts'
+    | '/api/crime-names'
     | '/api/markets'
     | '/api/news'
     | '/api/wx'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/api/alerts'
+    | '/api/crime-names'
     | '/api/markets'
     | '/api/news'
     | '/api/wx'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   ApiAlertsRoute: typeof ApiAlertsRoute
+  ApiCrimeNamesRoute: typeof ApiCrimeNamesRoute
   ApiMarketsRoute: typeof ApiMarketsRoute
   ApiNewsRoute: typeof ApiNewsRoute
   ApiWxRoute: typeof ApiWxRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/api/alerts'
       fullPath: '/api/alerts'
       preLoaderRoute: typeof ApiAlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/crime-names': {
+      id: '/api/crime-names'
+      path: '/api/crime-names'
+      fullPath: '/api/crime-names'
+      preLoaderRoute: typeof ApiCrimeNamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/markets': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   ApiAlertsRoute: ApiAlertsRoute,
+  ApiCrimeNamesRoute: ApiCrimeNamesRoute,
   ApiMarketsRoute: ApiMarketsRoute,
   ApiNewsRoute: ApiNewsRoute,
   ApiWxRoute: ApiWxRoute,

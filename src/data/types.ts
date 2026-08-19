@@ -143,6 +143,21 @@ export type Road = {
   pts: [number, number][];
 };
 
+export type CrimePerson = {
+  name: string;
+  age?: number;
+  note?: string;
+};
+
+export type CrimeNames = {
+  id: string;
+  victims: CrimePerson[];
+  charged: CrimePerson[];
+  note?: string;
+  source?: string;
+  href?: string;
+};
+
 export type CrimeIncident = {
   id: string;
   date: string | null;

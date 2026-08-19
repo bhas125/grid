@@ -1,0 +1,279 @@
+[
+  {
+    "id": "GVA-3496343",
+    "victims": [
+      { "name": "Rosa Alvarado", "age": 43 },
+      { "name": "Leslie Bejarano", "age": 26 },
+      { "name": "Jose Bejarano", "age": 53, "note": "died of injuries" }
+    ],
+    "charged": [],
+    "note": "15th Judicial District DA Jason Lawson: no charges anticipated. Authorities described the killing of a mother and daughter and a suicide.",
+    "source": "The Tennessean / TBI",
+    "href": "https://www.tennessean.com/story/news/crime/2026/07/06/three-dead-identified-tbi-after-june-25-macon-county-shooting/90825607007/"
+  },
+  {
+    "id": "GVA-3387870",
+    "victims": [
+      { "name": "Heather Thompson", "age": 32 },
+      { "name": "Isiah Thompson", "age": 13 },
+      { "name": "Arius Thompson", "age": 4 },
+      { "name": "Evelyn Johnson", "age": 88 }
+    ],
+    "charged": [],
+    "note": "Humphreys County Sheriff Chris Davis said preliminary evidence suggested Heather Thompson may have been responsible for the deaths before dying herself.",
+    "source": "FOX 17",
+    "href": "https://fox17.com/news/local/humphreys-county-quadruple-homicide-investigation-preliminary-information-waverly-east-little-richland-road"
+  },
+  {
+    "id": "GVA-3403979",
+    "victims": [
+      { "name": "Matthew Jones", "age": 43 },
+      { "name": "Robert Brogden", "age": 52 }
+    ],
+    "charged": [
+      { "name": "Gary Haley Jr.", "age": 45, "note": "TBI: fired at others and at officers; killed by police. Not charged — died at the scene." }
+    ],
+    "note": "TBI identified both victims and the man who fired. Officer-involved shooting at Cedar Creek Marina.",
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/01/31/tbi-special-agents-investigating-mount-juliet-officer-involved-shooting/"
+  },
+  {
+    "id": "GVA-3427172",
+    "victims": [
+      { "name": "Randi Jean Shelton" },
+      { "name": "Thea Shelton", "age": 8 },
+      { "name": "Joseph Nicholas Shelton Jr." }
+    ],
+    "charged": [],
+    "note": "Warren County Sheriff’s Office: investigators believe Joseph Nicholas Shelton Jr. shot and killed Randi Jean Shelton and their 8-year-old daughter before turning the gun on himself. No threat to the public.",
+    "source": "WSMV / WKRN / Warren County Sheriff",
+    "href": "https://www.wsmv.com/2026/03/09/woman-young-girl-among-3-dead-apparent-murder-suicide-tn-sheriffs-office-says/"
+  },
+  {
+    "id": "GVA-3454316",
+    "victims": [
+      { "name": "Manda Perkins", "age": 46 },
+      { "name": "Clarence Hudson", "age": 54 }
+    ],
+    "charged": [],
+    "note": "McMinnville Police: preliminary investigation indicated Hudson shot Perkins before dying from a self-inflicted gunshot wound. No charges.",
+    "source": "WKRN / McMinnville Police",
+    "href": "https://www.wkrn.com/news/local-news/2-found-dead-in-mcminnville-home/"
+  },
+  {
+    "id": "GVA-3388923",
+    "victims": [
+      { "name": "Marsalous Vestal", "age": 19 },
+      { "name": "Jayden Andrew Bullard", "age": 16 }
+    ],
+    "charged": [
+      { "name": "Adam Perez Jr.", "age": 18, "note": "second-degree murder charges, per Hamblen County Sheriff" },
+      { "name": "Talan Trevathan", "age": 19, "note": "charges in connection with the shooting, per WBIR / Hamblen County Sheriff" }
+    ],
+    "source": "WATE / WBIR",
+    "href": "https://www.wate.com/news/hamblen-county-news/two-teens-dead-after-shooting-in-hamblen-county/"
+  },
+  {
+    "id": "GVA-3493419",
+    "victims": [
+      { "name": "Beverly Hunt", "age": 49 },
+      { "name": "James Hunt", "age": 51 }
+    ],
+    "charged": [],
+    "note": "WATE: apparent murder-suicide. Both deceased named; no charges reported.",
+    "source": "WATE",
+    "href": "https://www.wate.com/news/hamblen-county-news/apparent-murder-suicide-hamblen-county/"
+  },
+  {
+    "id": "GVA-3488235",
+    "victims": [
+      { "name": "Landrie Harris", "age": 1 },
+      { "name": "McKenna Young", "age": 11 }
+    ],
+    "charged": [
+      { "name": "Jessica Quarles", "age": 32, "note": "children’s mother; Obion County grand jury: two counts each of first-degree premeditated murder and first-degree felony murder, plus aggravated child abuse" }
+    ],
+    "note": "TBI identified the children. June 29, 2026 indictment of Jessica Quarles.",
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/06/29/tbi-investigation-yields-indictment-charges-in-kenton-double-homicide/"
+  },
+  {
+    "id": "GVA-3403943",
+    "victims": [
+      { "name": "Deputy Derrick Bonham", "age": 37, "note": "Weakley County Sheriff’s Office, killed in the line of duty" }
+    ],
+    "charged": [
+      { "name": "Khristi Dawn Cunningham", "age": 44, "note": "charged with first-degree murder; held without bond" }
+    ],
+    "source": "TBI / WSMV",
+    "href": "https://tbinewsroom.com/2026/01/30/ohio-woman-arrested-charged-in-shooting-death-of-west-tennessee-deputy/"
+  },
+  {
+    "id": "GVA-3453587",
+    "victims": [{ "name": "Gage King", "age": 16 }],
+    "charged": [
+      { "name": "Cole Felthoff", "age": 19, "note": "Scott County grand jury: reckless homicide and related assault counts" }
+    ],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/06/11/scott-county-man-indicted-charged-with-reckless-homicide/"
+  },
+  {
+    "id": "GVA-3435823",
+    "victims": [{ "name": "Xavier Burum", "age": 24 }],
+    "charged": [],
+    "note": "TBI identified the man killed on Stanley Creek Road in Oneida. No arrest reported in public coverage.",
+    "source": "WATE / WVLT / TBI",
+    "href": "https://www.wate.com/news/scott-county-news/tbi-agents-investigate-fatal-shooting-in-scott-county/"
+  },
+  {
+    "id": "GVA-3464771",
+    "victims": [{ "name": "Saturah Hayes", "age": 17, "note": "Haywood High student, killed at a pre-prom gathering" }],
+    "charged": [
+      { "name": "Dequarius Lax", "age": 18, "note": "Haywood County grand jury: first-degree murder and additional counts" }
+    ],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/05/27/teen-indicted-arrested-in-connection-to-brownsville-homicide/"
+  },
+  {
+    "id": "GVA-3443535",
+    "victims": [{ "name": "Jeffery Kendall Barton", "age": 58 }],
+    "charged": [
+      { "name": "Tyler Steven Meadows", "age": 32, "note": "charged with second-degree murder" }
+    ],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/04/05/decatur-man-arrested-charged-in-meigs-county-homicide/"
+  },
+  {
+    "id": "GVA-3446352",
+    "victims": [{ "name": "Samuel Jennings" }],
+    "charged": [
+      { "name": "Jolena Upchurch", "note": "charged with criminal homicide; taken into custody after a search, per WATE / Fentress County Sheriff" }
+    ],
+    "source": "WATE / Fentress County Sheriff",
+    "href": "https://www.wate.com/news/fentress-county-news/officers-searching-for-armed-and-dangerous-woman-south-of-jamestown/"
+  },
+  {
+    "id": "GVA-3437867",
+    "victims": [{ "name": "Samantha Goolsby" }],
+    "charged": [
+      { "name": "Lora Ann Morgan", "age": 57, "note": "first-degree murder, abuse of a corpse, tampering with evidence, per Putnam County Sheriff / WSMV" }
+    ],
+    "source": "WSMV / Putnam County Sheriff",
+    "href": "https://www.wsmv.com/2026/03/26/woman-accused-shooting-killing-another-woman-then-hiding-body-putnam-county-woods-sheriff-says/"
+  },
+  {
+    "id": "GVA-3406907",
+    "victims": [],
+    "charged": [
+      { "name": "Tobias Gilstrap", "age": 23, "note": "charged with criminal homicide, Montgomery County Sheriff" }
+    ],
+    "note": "Victim’s name was not released in public coverage of the Dover Road apartments shooting.",
+    "source": "Clarksville Now / Montgomery County Sheriff",
+    "href": "https://clarksvillenow.com/local/1-killed-in-shooting-at-dover-road-apartments-in-montgomery-county/"
+  },
+  {
+    "id": "GVA-3495165",
+    "victims": [
+      { "name": "LeRoy Brooks", "age": 40, "note": "killed in officer-involved shooting while deputies served a Knox County warrant; TBI investigating" }
+    ],
+    "charged": [],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/06/24/tbi-special-agents-investigating-sevier-county-officer-involved-shooting/"
+  },
+  {
+    "id": "GVA-3496478",
+    "victims": [
+      { "name": "Andrew Seth Henderlight", "age": 39, "note": "killed in officer-involved shooting after a pursuit that ended on Kodak Road; TBI investigating" }
+    ],
+    "charged": [],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/06/27/tbi-special-agents-investigating-officer-involved-shooting-in-knox-county-2/"
+  },
+  {
+    "id": "GVA-3449548",
+    "victims": [
+      { "name": "Shane L. Bryant", "age": 33, "note": "killed in officer-involved shooting on Clinton Highway; TBI investigating" }
+    ],
+    "charged": [],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/04/14/tbi-special-agents-investigating-officer-involved-shooting-in-knox-county/"
+  },
+  {
+    "id": "GVA-3451339",
+    "victims": [
+      { "name": "Julie Ann Jenkins", "age": 49, "note": "killed in officer-involved shooting in White Pine; TBI investigating" }
+    ],
+    "charged": [],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/04/17/tbi-agents-investigating-officer-involved-shooting-in-jefferson-county/"
+  },
+  {
+    "id": "GVA-3471351",
+    "victims": [
+      { "name": "James Heggie", "age": 36, "note": "front-seat passenger; killed in officer-involved shooting on Old Beaver Creek Road; TBI investigating" }
+    ],
+    "charged": [],
+    "source": "TBI / FOX 17",
+    "href": "https://fox17.com/news/local/passenger-killed-in-hickman-county-officer-involved-shooting-tbi-says"
+  },
+  {
+    "id": "GVA-3423488",
+    "victims": [
+      { "name": "Brandon Hall", "age": 45, "note": "killed in officer-involved shooting in Soddy Daisy; TBI investigating" }
+    ],
+    "charged": [],
+    "source": "TBI Newsroom",
+    "href": "https://tbinewsroom.com/2026/03/03/tbi-agents-investigating-deadly-soddy-daisy-officer-involved-shooting/"
+  },
+  {
+    "id": "GVA-3477125",
+    "victims": [{ "name": "Christopher B. Yates", "age": 40 }],
+    "charged": [
+      { "name": "Jesse Wayne Phillips", "age": 38, "note": "TBI Most Wanted; charged with second-degree murder; not in custody as of June 2026" }
+    ],
+    "source": "TBI / WJHL / WKRN",
+    "href": "https://www.wsmv.com/2026/05/28/man-wanted-fatal-pickett-county-shooting-added-tn-most-wanted-list-tbi-says/"
+  },
+  {
+    "id": "GVA-3492382",
+    "victims": [{ "name": "Billy Nicely", "age": 60 }],
+    "charged": [],
+    "note": "Grainger County Sheriff James Harville identified Nicely. A suspect was identified but not in custody in public coverage.",
+    "source": "WVLT / Grainger County Sheriff",
+    "href": "https://www.wvlt.tv/2026/06/22/search-suspect-ongoing-after-deadly-shooting-grainger-county-sheriff-says/"
+  },
+  {
+    "id": "GVA-3492657",
+    "victims": [],
+    "charged": [
+      { "name": "Jerry Matthews", "age": 57, "note": "charged with criminal homicide at the scene, Lebanon Police" }
+    ],
+    "note": "Lebanon Police: a woman was found fatally shot at Hartmann Plantation Apartments. Her name was not released in public coverage.",
+    "source": "WSMV / Lebanon Police",
+    "href": "https://www.wsmv.com/2026/06/21/man-charged-after-woman-found-dead-lebanon-apartment-complex-police-say/"
+  },
+  {
+    "id": "GVA-3490894",
+    "victims": [{ "name": "Devin D. Dowlen", "age": 37 }],
+    "charged": [],
+    "note": "WSMV, quoting Springfield coverage, identified Dowlen. Charged-person names in circulation conflicted across outlets, so none are listed.",
+    "source": "WSMV",
+    "href": "https://www.wsmv.com/2026/06/18/one-arrested-after-man-found-shot-dead-springfield-street/"
+  },
+  {
+    "id": "GVA-3470312",
+    "victims": [{ "name": "Alijzhia L. Hatcher", "age": 19, "note": "identified by Metro Nashville Police; a second person killed in the same Bell Road shooting was not named in that release" }],
+    "charged": [],
+    "source": "Metro Nashville Police",
+    "href": "https://www.nashville.gov/departments/police/news/two-men-fatally-shot-sunday-night-exchange-gunfire-bell-road-gas-station-parking-lot"
+  },
+  {
+    "id": "GVA-3460235",
+    "victims": [],
+    "charged": [
+      { "name": "Craig Berry", "note": "Stewart County Sheriff: wanted for shooting his wife; manhunt underway. Victim’s name was not clearly released." }
+    ],
+    "source": "WKRN / Stewart County Sheriff",
+    "href": "https://www.wkrn.com/news/local-news/armed-and-dangerous-man-wanted-after-shooting-wife-in-stewart-county/"
+  }
+]

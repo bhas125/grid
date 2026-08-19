@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import countiesJson from "@/data/counties.json";
 import roadsJson from "@/data/roads.json";
 import sitesJson from "@/data/sites.json";
@@ -11,6 +11,8 @@ import type {
   CrimeIncident,
   CrimeKind,
   CrimeLayers,
+  CrimeNames,
+  CrimePerson,
   GeoFeature,
   Layers,
   Precinct,
@@ -19,6 +21,7 @@ import type {
   Site,
 } from "@/data/types";
 import { prefetchNews } from "@/lib/news-cache";
+import { fetchCrimeNames, readCrimeNames } from "@/lib/crime-names";
 import {
   FULL_VIEW,
   MAP_H,
@@ -50,7 +53,7 @@ type ViewBox = { x: number; y: number; w: number; h: number };
 type XY = { x: number; y: number };
 type CrimePt = CrimeIncident & XY;
 type AlprPt = AlprPoint & XY;
-type Hit = { title: string; lines: string[]; x: number; y: number; r: number };
+type Hit = { title: string; lines: string[]; x: number; y: number; r: number; crime?: CrimeIncident };
 
 type Tip = {
   title: string;
@@ -126,6 +129,11 @@ function crimeZip(c: CrimeIncident) {
   if (c.zip) return c.zip;
   const m = (c.address || "").match(/\b(3[7-8]\d{3})\b/);
   return m?.[1] ?? "";
+}
+
+function personLine(p: CrimePerson) {
+  const age = p.age != null ? `, ${p.age}` : "";
+  return `${p.name}${age}`;
 }
 
 function crimeTipLines(c: CrimeIncident) {
@@ -224,6 +232,11 @@ export function TnMap({
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const sizeRef = useRef({ w: 1, h: 1 });
   const [tip, setTip] = useState<Tip | null>(null);
+  const [picked, setPicked] = useState<{
+    crime: CrimeIncident;
+    names: CrimeNames | null | undefined;
+  } | null>(null);
+  const pan = useRef<{ x: number; y: number; vx: number; vy: number; moved: boolean } | null>(null);
   const [alpr, setAlpr] = useState<AlprPoint[]>([]);
   const [precincts, setPrecincts] = useState<Precinct[]>([]);
   const [races, setRaces] = useState<Record<string, Race[]>>({});
@@ -234,7 +247,6 @@ export function TnMap({
   const raf = useRef<number | null>(null);
   const drawRaf = useRef<number | null>(null);
   const commitTimer = useRef<number | null>(null);
-  const pan = useRef<{ x: number; y: number; vx: number; vy: number } | null>(null);
   const hits = useRef<Hit[]>([]);
   const busy = useRef(false);
 
@@ -473,7 +485,7 @@ export function TnMap({
           ctx.moveTo(sx + r, sy);
           ctx.arc(sx, sy, r, 0, Math.PI * 2);
           if (record) {
-            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 5 });
+            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 5, crime: c });
           }
           if (++n >= cap) break;
         }
@@ -497,7 +509,7 @@ export function TnMap({
           ctx.moveTo(sx + r, sy);
           ctx.arc(sx, sy, r, 0, Math.PI * 2);
           if (record) {
-            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 6 });
+            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 6, crime: c });
           }
         }
         ctx.fill();
@@ -507,6 +519,10 @@ export function TnMap({
     }
     ctx.globalAlpha = 1;
   }
+
+  useEffect(() => {
+    if (!showCrime || !selected) setPicked(null);
+  }, [showCrime, selected]);
 
   useEffect(() => {
     drawDots();
@@ -633,7 +649,32 @@ export function TnMap({
 
   function interactiveTarget(el: EventTarget | null) {
     if (!(el instanceof Element)) return false;
-    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-precinct]"));
+    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-precinct]") || el.closest("[data-crime-card]"));
+  }
+
+  function pickCrimeAt(clientX: number, clientY: number) {
+    const box = root.current?.getBoundingClientRect();
+    if (!box || !selected) return;
+    const mx = clientX - box.left;
+    const my = clientY - box.top;
+    let best: { h: Hit; d: number } | null = null;
+    for (const h of hits.current) {
+      if (!h.crime) continue;
+      const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
+      if (d <= h.r * h.r && (!best || d < best.d)) best = { h, d };
+    }
+    if (!best?.h.crime) {
+      setPicked(null);
+      return;
+    }
+    const c = best.h.crime;
+    setTip(null);
+    const cached = readCrimeNames(c.id);
+    setPicked({ crime: c, names: cached });
+    if (cached !== undefined) return;
+    void fetchCrimeNames(c).then((names) => {
+      setPicked((cur) => (cur?.crime.id === c.id ? { crime: c, names } : cur));
+    });
   }
 
   function setBusy(on: boolean) {
@@ -649,27 +690,35 @@ export function TnMap({
       onPointerDown={(e) => {
         if (!selected || interactiveTarget(e.target)) return;
         if (e.button !== 0) return;
-        pan.current = { x: e.clientX, y: e.clientY, vx: viewRef.current.x, vy: viewRef.current.y };
-        setBusy(true);
+        pan.current = { x: e.clientX, y: e.clientY, vx: viewRef.current.x, vy: viewRef.current.y, moved: false };
         e.currentTarget.setPointerCapture(e.pointerId);
       }}
       onPointerMove={(e) => {
         if (!pan.current) return;
+        const dx = e.clientX - pan.current.x;
+        const dy = e.clientY - pan.current.y;
+        if (!pan.current.moved && dx * dx + dy * dy < 36) return;
+        if (!pan.current.moved) {
+          pan.current.moved = true;
+          setBusy(true);
+        }
         const box = sizeRef.current;
         const { s } = viewScale(box, viewRef.current);
         applyView(
           {
             ...viewRef.current,
-            x: pan.current.vx - (e.clientX - pan.current.x) / s,
-            y: pan.current.vy - (e.clientY - pan.current.y) / s,
+            x: pan.current.vx - dx / s,
+            y: pan.current.vy - dy / s,
           },
           false,
         );
       }}
-      onPointerUp={() => {
+      onPointerUp={(e) => {
+        const start = pan.current;
         pan.current = null;
         setBusy(false);
         paintView(viewRef.current, true);
+        if (!start?.moved && showCrime) pickCrimeAt(e.clientX, e.clientY);
       }}
       onPointerCancel={() => {
         pan.current = null;
@@ -944,7 +993,7 @@ export function TnMap({
           })}
         </div>
       ) : null}
-      {tip ? (
+      {tip && !picked ? (
         <div
           className="pointer-events-none absolute z-10 w-56 border border-line bg-elevated/95 px-3 py-2 shadow-glow"
           style={tipStyle(tip)}
@@ -955,6 +1004,87 @@ export function TnMap({
               {line}
             </div>
           ))}
+        </div>
+      ) : null}
+      {picked ? (
+        <div
+          data-crime-card
+          className="absolute bottom-2 left-14 z-20 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+        >
+          <div className="flex items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <div className="font-mono text-[10px] tracking-widest text-hot uppercase">{picked.crime.type}</div>
+              <div className="mt-0.5 text-sm font-medium leading-snug">
+                {picked.crime.address || `${picked.crime.city}, ${picked.crime.county} County`}
+              </div>
+              <div className="mt-0.5 font-mono text-[10px] tracking-widest text-faint uppercase">
+                {fmtCrimeDate(picked.crime.date)}
+                {picked.crime.city ? ` · ${picked.crime.city}` : ""}
+                {picked.crime.zip ? ` · ${picked.crime.zip}` : ""}
+              </div>
+            </div>
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={() => setPicked(null)}
+              className="grid size-8 shrink-0 place-items-center text-faint hover:text-fg"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+          {picked.names === undefined ? (
+            <p className="mt-2 font-mono text-[10px] tracking-widest text-faint uppercase">Checking public names</p>
+          ) : picked.names && (picked.names.victims.length || picked.names.charged.length) ? (
+            <div className="mt-2 space-y-1.5 border-t border-line pt-2">
+              {picked.names.victims.length ? (
+                <div>
+                  <div className="font-mono text-[10px] tracking-widest text-muted uppercase">Killed</div>
+                  <ul className="mt-0.5">
+                    {picked.names.victims.map((p) => (
+                      <li key={p.name} className="text-sm leading-snug">
+                        {personLine(p)}
+                        {p.note ? <span className="block font-mono text-[10px] tracking-wide text-faint">{p.note}</span> : null}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              {picked.names.charged.length ? (
+                <div>
+                  <div className="font-mono text-[10px] tracking-widest text-muted uppercase">Charged</div>
+                  <ul className="mt-0.5">
+                    {picked.names.charged.map((p) => (
+                      <li key={p.name} className="text-sm leading-snug">
+                        {personLine(p)}
+                        {p.note ? <span className="block font-mono text-[10px] tracking-wide text-faint">{p.note}</span> : null}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              {picked.names.note ? (
+                <p className="font-mono text-[10px] leading-relaxed tracking-wide text-muted">{picked.names.note}</p>
+              ) : null}
+              {picked.names.source ? (
+                picked.names.href ? (
+                  <a
+                    href={picked.names.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block font-mono text-[10px] tracking-widest text-grid uppercase hover:underline"
+                  >
+                    {picked.names.source}
+                  </a>
+                ) : (
+                  <div className="font-mono text-[10px] tracking-widest text-faint uppercase">{picked.names.source}</div>
+                )
+              ) : null}
+            </div>
+          ) : (
+            <p className="mt-2 font-mono text-[10px] tracking-widest text-faint uppercase">
+              No public names released
+            </p>
+          )}
         </div>
       ) : null}
     </div>
