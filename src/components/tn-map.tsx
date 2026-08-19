@@ -24,6 +24,7 @@ import type {
 import { prefetchNews } from "@/lib/news-cache";
 import { fetchCrimeNames, readCrimeNames } from "@/lib/crime-names";
 import { CamPlayer } from "./cam-player";
+import { WxSky, wxHint } from "./wx-sky";
 import {
   FULL_VIEW,
   MAP_H,
@@ -920,16 +921,20 @@ export function TnMap({
                     if (!county) return;
                     if (!zoomed) {
                       prefetchNews(county.name, county.seat, county.market);
+                      const sky = wxHint(county.name);
                       showTip(e, county.name, [
                         `${county.pop.toLocaleString()} people · ${county.seat}`,
+                        ...(sky ? [sky] : []),
                         ...hitsAlert.map((a) => `${a.event} · ${a.severity}`),
                       ]);
                     }
                   }}
                   onMouseMove={(e) => {
                     if (zoomed || !county) return;
+                    const sky = wxHint(county.name);
                     showTip(e, county.name, [
                       `${county.pop.toLocaleString()} people · ${county.seat}`,
+                      ...(sky ? [sky] : []),
                       ...hitsAlert.map((a) => `${a.event} · ${a.severity}`),
                     ]);
                   }}
@@ -1056,6 +1061,9 @@ export function TnMap({
                 ))
               : null}
           </svg>
+          {layers.weather && project ? (
+            <WxSky project={project} viewRef={viewRef} sizeRef={sizeRef} />
+          ) : null}
           <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden />
         </>
       )}

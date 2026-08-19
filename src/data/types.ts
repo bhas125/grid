@@ -104,6 +104,14 @@ export type WxNow = {
   live: boolean;
 };
 
+export type WxKind = "clear" | "few" | "partly" | "cloudy" | "fog" | "rain" | "storm";
+
+export type WxCell = {
+  name: string;
+  kind: WxKind;
+  label: string;
+};
+
 export type LayerId =
   | "interstates"
   | "weather"
