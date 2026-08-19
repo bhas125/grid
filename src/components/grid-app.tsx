@@ -26,6 +26,7 @@ const DEFAULT_LAYERS: Layers = {
   weather: false,
   sites: false,
   flock: false,
+  cameras: false,
   p24: false,
   p26: false,
 };
@@ -276,7 +277,7 @@ export function GridApp() {
         <div
           className={
             selected
-              ? "absolute top-2 right-2 z-10 max-w-[11rem]"
+              ? "absolute top-2 right-2 z-10 max-w-[12.5rem]"
               : "absolute right-2 bottom-2 left-2 z-10 sm:right-3 sm:left-auto"
           }
         >

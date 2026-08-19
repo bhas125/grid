@@ -2,10 +2,11 @@ import { cn } from "@/lib/utils";
 import type { LayerId, Layers } from "@/data/types";
 
 const ITEMS: { id: LayerId; label: string; countyOnly?: boolean }[] = [
-  { id: "interstates", label: "Int" },
-  { id: "weather", label: "Wx" },
-  { id: "sites", label: "Sites" },
+  { id: "interstates", label: "Roads" },
+  { id: "weather", label: "Weather" },
+  { id: "sites", label: "Data Cent." },
   { id: "flock", label: "Flock" },
+  { id: "cameras", label: "Traffic Cam" },
   { id: "p24", label: "’24", countyOnly: true },
   { id: "p26", label: "’26", countyOnly: true },
 ];

@@ -19,6 +19,7 @@ import type {
   Race,
   Road,
   Site,
+  TrafficCam,
 } from "@/data/types";
 import { prefetchNews } from "@/lib/news-cache";
 import { fetchCrimeNames, readCrimeNames } from "@/lib/crime-names";
@@ -48,12 +49,22 @@ const ZOOM_OUT = 1.55;
 const MAX_ZOOM = 10;
 const CRIME_CAP = 720;
 const ALPR_CAP = 420;
+const CAM_CAP = 560;
 
 type ViewBox = { x: number; y: number; w: number; h: number };
 type XY = { x: number; y: number };
 type CrimePt = CrimeIncident & XY;
 type AlprPt = AlprPoint & XY;
-type Hit = { title: string; lines: string[]; x: number; y: number; r: number; crime?: CrimeIncident };
+type CamPt = TrafficCam & XY;
+type Hit = {
+  title: string;
+  lines: string[];
+  x: number;
+  y: number;
+  r: number;
+  crime?: CrimeIncident;
+  cam?: TrafficCam;
+};
 
 type Tip = {
   title: string;
@@ -146,6 +157,28 @@ function crimeTipLines(c: CrimeIncident) {
   return lines;
 }
 
+function camHref(id: number) {
+  return `https://smartway.tn.gov/allcams/camera/${id}`;
+}
+
+function camTipLines(c: TrafficCam) {
+  const lines: string[] = ["TDOT SmartWay"];
+  const loc = camMeta(c);
+  if (loc) lines.push(loc);
+  lines.push(`${c.lat.toFixed(4)}, ${c.lon.toFixed(4)}`);
+  return lines;
+}
+
+function camMeta(c: TrafficCam) {
+  const bits: string[] = [];
+  const title = c.title.toLowerCase();
+  if (c.route && !title.includes(c.route.toLowerCase())) bits.push(c.route);
+  const mile = Number(c.mile);
+  if (c.mile && mile > 0 && mile < 500 && !/\bmm\s*\d/i.test(c.title)) bits.push(`MM ${c.mile}`);
+  if (c.city) bits.push(c.city);
+  return bits.join(" · ");
+}
+
 function roadsInView(view: BBox | null) {
   if (!view) return ROADS;
   return ROADS.filter((r) => r.pts.some(([lon, lat]) => lonLatIn(view, lon, lat)));
@@ -236,8 +269,11 @@ export function TnMap({
     crime: CrimeIncident;
     names: CrimeNames | null | undefined;
   } | null>(null);
+  const [pickedCam, setPickedCam] = useState<TrafficCam | null>(null);
+  const skipSelect = useRef(false);
   const pan = useRef<{ x: number; y: number; vx: number; vy: number; moved: boolean } | null>(null);
   const [alpr, setAlpr] = useState<AlprPoint[]>([]);
+  const [cams, setCams] = useState<TrafficCam[]>([]);
   const [precincts, setPrecincts] = useState<Precinct[]>([]);
   const [races, setRaces] = useState<Record<string, Race[]>>({});
   const [view, setView] = useState(FULL_VIEW);
@@ -265,6 +301,20 @@ export function TnMap({
       live = false;
     };
   }, [layers.flock, alpr.length]);
+
+  useEffect(() => {
+    if (!layers.cameras || cams.length) return;
+    let live = true;
+    fetch("/tdot-cameras.json")
+      .then((r) => r.json())
+      .then((d: TrafficCam[]) => {
+        if (live) setCams(Array.isArray(d) ? d : []);
+      })
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+  }, [layers.cameras, cams.length]);
 
   useEffect(() => {
     if (!selected || !layers.p24) {
@@ -364,12 +414,27 @@ export function TnMap({
   }, [project, alpr, selected, paths, layers.flock]);
   const alprPtsRef = useRef(alprPts);
   alprPtsRef.current = alprPts;
+
+  const camPts = useMemo(() => {
+    if (!project || !layers.cameras || !cams.length) return [] as CamPt[];
+    let pts = cams;
+    if (selected) {
+      const feat = paths.find((p) => p.fips === selected.fips);
+      const box = feat ? ringBBox(feat.feature.geometry) : null;
+      if (box) pts = cams.filter((p) => p.lon >= box.minX && p.lon <= box.maxX && p.lat >= box.minY && p.lat <= box.maxY);
+    }
+    return pts.map((p) => ({ ...p, ...project(p.lon, p.lat) }));
+  }, [project, cams, selected, paths, layers.cameras]);
+  const camPtsRef = useRef(camPts);
+  camPtsRef.current = camPts;
   const crimeKindRef = useRef(crimeLayers);
   crimeKindRef.current = crimeLayers;
   const showCrimeRef = useRef(showCrime);
   showCrimeRef.current = showCrime;
   const flockRef = useRef(layers.flock);
   flockRef.current = layers.flock;
+  const camsOnRef = useRef(layers.cameras);
+  camsOnRef.current = layers.cameras;
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
 
@@ -414,9 +479,11 @@ export function TnMap({
     ctx.clearRect(0, 0, w, h);
     const crimeOn = showCrimeRef.current;
     const flockOn = flockRef.current;
+    const camsOn = camsOnRef.current;
     const pts = crimePtsRef.current;
     const cameras = alprPtsRef.current;
-    if ((!crimeOn || !pts.length) && (!flockOn || !cameras.length)) return;
+    const tdots = camPtsRef.current;
+    if ((!crimeOn || !pts.length) && (!flockOn || !cameras.length) && (!camsOn || !tdots.length)) return;
     const cur = viewRef.current;
     const { s, ox, oy } = viewScale(size, cur);
     const zoomedNow = !!selectedRef.current;
@@ -459,6 +526,37 @@ export function TnMap({
         if (++n >= ALPR_CAP) break;
       }
       ctx.fill();
+    }
+
+    if (camsOn && tdots.length) {
+      const r = zoomedNow ? 3.8 : 3.1;
+      ctx.fillStyle = "#3de0ff";
+      ctx.strokeStyle = "#9aefff";
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.88;
+      ctx.beginPath();
+      let n = 0;
+      for (const p of tdots) {
+        const sx = (p.x - cur.x) * s + ox;
+        const sy = (p.y - cur.y) * s + oy;
+        if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+        if (!stamp(sx, sy, zoomedNow)) continue;
+        ctx.rect(sx - r, sy - r, r * 2, r * 2);
+        if (record) {
+          hits.current.push({
+            title: p.title,
+            lines: camTipLines(p),
+            x: sx,
+            y: sy,
+            r: r + 6,
+            cam: p,
+          });
+        }
+        if (++n >= CAM_CAP) break;
+      }
+      ctx.fill();
+      ctx.globalAlpha = 0.95;
+      ctx.stroke();
     }
 
     if (crimeOn && pts.length) {
@@ -525,8 +623,12 @@ export function TnMap({
   }, [showCrime, selected]);
 
   useEffect(() => {
+    if (!layers.cameras) setPickedCam(null);
+  }, [layers.cameras]);
+
+  useEffect(() => {
     drawDots();
-  }, [crimePts, alprPts, showCrime, selected, layers.flock, crimeLayers]);
+  }, [crimePts, alprPts, camPts, showCrime, selected, layers.flock, layers.cameras, crimeLayers]);
 
   useEffect(() => {
     const el = root.current;
@@ -649,26 +751,37 @@ export function TnMap({
 
   function interactiveTarget(el: EventTarget | null) {
     if (!(el instanceof Element)) return false;
-    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-precinct]") || el.closest("[data-crime-card]"));
+    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-precinct]") || el.closest("[data-map-card]"));
   }
 
-  function pickCrimeAt(clientX: number, clientY: number) {
+  function pickDotAt(clientX: number, clientY: number) {
     const box = root.current?.getBoundingClientRect();
-    if (!box || !selected) return;
+    if (!box) return;
     const mx = clientX - box.left;
     const my = clientY - box.top;
     let best: { h: Hit; d: number } | null = null;
     for (const h of hits.current) {
-      if (!h.crime) continue;
+      if (!h.crime && !h.cam) continue;
       const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
       if (d <= h.r * h.r && (!best || d < best.d)) best = { h, d };
     }
-    if (!best?.h.crime) {
+    if (best?.h.cam) {
+      setTip(null);
+      setPicked(null);
+      setPickedCam(best.h.cam);
+      skipSelect.current = true;
+      return;
+    }
+    if (!best) {
+      setPickedCam(null);
+      if (!selected) return;
       setPicked(null);
       return;
     }
     const c = best.h.crime;
+    if (!c) return;
     setTip(null);
+    setPickedCam(null);
     const cached = readCrimeNames(c.id);
     setPicked({ crime: c, names: cached });
     if (cached !== undefined) return;
@@ -718,7 +831,7 @@ export function TnMap({
         pan.current = null;
         setBusy(false);
         paintView(viewRef.current, true);
-        if (!start?.moved && showCrime) pickCrimeAt(e.clientX, e.clientY);
+        if (!start?.moved && (showCrime || camsOnRef.current)) pickDotAt(e.clientX, e.clientY);
       }}
       onPointerCancel={() => {
         pan.current = null;
@@ -728,7 +841,6 @@ export function TnMap({
       onMouseMove={(e) => {
         if (pan.current) return;
         if (interactiveTarget(e.target)) return;
-        if (!selected) return;
         if (!hits.current.length) return;
         const box = root.current?.getBoundingClientRect();
         if (!box) return;
@@ -817,6 +929,10 @@ export function TnMap({
                   }}
                   onMouseLeave={() => setTip(null)}
                   onClick={() => {
+                    if (skipSelect.current) {
+                      skipSelect.current = false;
+                      return;
+                    }
                     if (!zoomed && county) onSelect(county);
                   }}
                 />
@@ -993,7 +1109,7 @@ export function TnMap({
           })}
         </div>
       ) : null}
-      {tip && !picked ? (
+      {tip && !picked && !pickedCam ? (
         <div
           className="pointer-events-none absolute z-10 w-56 border border-line bg-elevated/95 px-3 py-2 shadow-glow"
           style={tipStyle(tip)}
@@ -1008,7 +1124,7 @@ export function TnMap({
       ) : null}
       {picked ? (
         <div
-          data-crime-card
+          data-map-card
           className="absolute bottom-2 left-14 z-20 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
         >
           <div className="flex items-start gap-2">
@@ -1085,6 +1201,45 @@ export function TnMap({
               No public names released
             </p>
           )}
+        </div>
+      ) : null}
+      {pickedCam ? (
+        <div
+          data-map-card
+          className={
+            selected
+              ? "absolute bottom-2 left-14 z-20 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+              : "absolute top-2 left-2 z-20 w-[min(22rem,calc(100%-1rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+          }
+        >
+          <div className="flex items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <div className="font-mono text-[10px] tracking-widest text-grid uppercase">Traffic cam</div>
+              <div className="mt-0.5 text-sm font-medium leading-snug">{pickedCam.title}</div>
+              <div className="mt-0.5 font-mono text-[10px] tracking-widest text-faint uppercase">
+                {camMeta(pickedCam) || "TDOT SmartWay"}
+              </div>
+              <div className="mt-0.5 font-mono text-[10px] tracking-widest text-muted">
+                {pickedCam.lat.toFixed(5)}, {pickedCam.lon.toFixed(5)}
+              </div>
+            </div>
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={() => setPickedCam(null)}
+              className="grid size-8 shrink-0 place-items-center text-faint hover:text-fg"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+          <a
+            href={camHref(pickedCam.id)}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-flex h-8 items-center border border-grid/40 bg-grid/10 px-2 font-mono text-[10px] tracking-widest text-grid uppercase hover:bg-grid/20"
+          >
+            Watch live
+          </a>
         </div>
       ) : null}
     </div>

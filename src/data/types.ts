@@ -109,6 +109,7 @@ export type LayerId =
   | "weather"
   | "sites"
   | "flock"
+  | "cameras"
   | "p24"
   | "p26";
 
@@ -127,6 +128,17 @@ export type AlprPoint = {
   lon: number;
   op: string;
   dir: string;
+};
+
+export type TrafficCam = {
+  id: number;
+  title: string;
+  route: string;
+  mile: string;
+  city: string;
+  lat: number;
+  lon: number;
+  stream?: string;
 };
 
 export type Site = {
