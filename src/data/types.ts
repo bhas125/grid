@@ -114,7 +114,7 @@ export type LayerId =
 
 export type Layers = Record<LayerId, boolean>;
 
-export type CrimeKind = "hom" | "sht" | "rob";
+export type CrimeKind = "hom" | "sht";
 export type CrimeLayers = Record<CrimeKind, boolean>;
 
 export type TabId = "news" | "sit" | "vote" | "gov" | "crime";

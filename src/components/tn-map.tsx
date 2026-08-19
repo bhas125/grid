@@ -91,10 +91,6 @@ function isHomicide(type: string) {
   return type === "Homicide";
 }
 
-function isRobbery(type: string) {
-  return type === "Armed robbery";
-}
-
 function isShooting(type: string) {
   const t = type.toLowerCase();
   return t.includes("shooting") || t.includes("aggravated");
@@ -102,7 +98,6 @@ function isShooting(type: string) {
 
 function kindOf(type: string): CrimeKind | null {
   if (isHomicide(type)) return "hom";
-  if (isRobbery(type)) return "rob";
   if (isShooting(type)) return "sht";
   return null;
 }
@@ -111,7 +106,7 @@ function thinShootings(rows: CrimeIncident[]) {
   const keep: CrimeIncident[] = [];
   const sht: CrimeIncident[] = [];
   for (const c of rows) {
-    if (isHomicide(c.type) || isRobbery(c.type)) keep.push(c);
+    if (isHomicide(c.type)) keep.push(c);
     else sht.push(c);
   }
   sht.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
@@ -311,7 +306,7 @@ export function TnMap({
 
   const crimePts = useMemo(() => {
     if (!project || !showCrime) return [] as CrimePt[];
-    if (!crimeLayers.hom && !crimeLayers.sht && !crimeLayers.rob) return [] as CrimePt[];
+    if (!crimeLayers.hom && !crimeLayers.sht) return [] as CrimePt[];
     let rows = selected ? crime.filter((c) => c.county === selected.name) : crime;
     rows = rows.filter((c) => {
       const k = kindOf(c.type);
@@ -457,12 +452,10 @@ export function TnMap({
     if (crimeOn && pts.length) {
       const kinds = crimeKindRef.current;
       const sht: CrimePt[] = [];
-      const rob: CrimePt[] = [];
       const hom: CrimePt[] = [];
       for (const c of pts) {
         const k = kindOf(c.type);
         if (k === "hom") hom.push(c);
-        else if (k === "rob") rob.push(c);
         else if (k === "sht") sht.push(c);
       }
 
@@ -488,7 +481,6 @@ export function TnMap({
       };
 
       if (kinds.sht) drawBatch(sht, "#ffb347", zoomedNow ? 4.2 : 2.6, 0.72, CRIME_CAP, true);
-      if (kinds.rob) drawBatch(rob, "#8ec8e0", zoomedNow ? 4.4 : 2.8, 0.78, 400, true);
 
       if (kinds.hom && hom.length) {
         const r = zoomedNow ? 8 : 5.4;
@@ -930,7 +922,6 @@ export function TnMap({
             [
               { id: "hom" as const, label: "Homicide", swatch: "bg-hot" },
               { id: "sht" as const, label: "Shooting", swatch: "bg-watch" },
-              { id: "rob" as const, label: "Armed rob", swatch: "bg-steel" },
             ] as const
           ).map((item, i) => {
             const on = crimeLayers[item.id];

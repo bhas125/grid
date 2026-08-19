@@ -38,10 +38,6 @@ function isHomicide(type: string) {
   return type === "Homicide";
 }
 
-function isRobbery(type: string) {
-  return type === "Armed robbery";
-}
-
 function isShooting(type: string) {
   const t = type.toLowerCase();
   return t.includes("shooting") || t.includes("aggravated");
@@ -49,7 +45,6 @@ function isShooting(type: string) {
 
 function kindOf(type: string): CrimeKind | null {
   if (isHomicide(type)) return "hom";
-  if (isRobbery(type)) return "rob";
   if (isShooting(type)) return "sht";
   return null;
 }
@@ -203,13 +198,11 @@ function CrimeFeed({
   const stats = useMemo(() => {
     let hom = 0;
     let sht = 0;
-    let rob = 0;
     for (const i of scoped) {
       if (isHomicide(i.type)) hom += 1;
-      else if (isRobbery(i.type)) rob += 1;
       else if (isShooting(i.type)) sht += 1;
     }
-    return { hom, sht, rob, n: scoped.length };
+    return { hom, sht, n: hom + sht };
   }, [scoped]);
 
   useEffect(() => {
@@ -234,7 +227,6 @@ function CrimeFeed({
         <Stat k="2026" v={`${fmtNum(stats.n)} pts`} />
         <Stat k="Hom" v={fmtNum(stats.hom)} />
         <Stat k="Sht" v={fmtNum(stats.sht)} />
-        <Stat k="Rob" v={fmtNum(stats.rob)} />
       </div>
       <p className="px-4 pb-2 font-mono text-xs leading-relaxed tracking-wide text-muted">
         {county
@@ -330,6 +322,76 @@ function VotePrecinct({
   );
 }
 
+export function CrimeShare({
+  county,
+  incidents,
+  layers,
+}: {
+  county: County;
+  incidents: CrimeIncident[];
+  layers: CrimeLayers;
+}) {
+  const share = useMemo(() => {
+    let stateHom = 0;
+    let stateSht = 0;
+    let ctyHom = 0;
+    let ctySht = 0;
+    for (const i of incidents) {
+      if (isHomicide(i.type)) {
+        stateHom += 1;
+        if (i.county === county.name) ctyHom += 1;
+      } else if (isShooting(i.type)) {
+        stateSht += 1;
+        if (i.county === county.name) ctySht += 1;
+      }
+    }
+    const useHom = layers.hom;
+    const useSht = layers.sht;
+    const num = (useHom ? ctyHom : 0) + (useSht ? ctySht : 0);
+    const den = (useHom ? stateHom : 0) + (useSht ? stateSht : 0);
+    const label =
+      useHom && useSht ? "homicides + shootings" : useHom ? "homicides" : "shootings";
+    return {
+      num,
+      den,
+      pct: den ? (num / den) * 100 : 0,
+      label,
+      useHom,
+      useSht,
+    };
+  }, [incidents, county.name, layers]);
+
+  if (!layers.hom && !layers.sht) return null;
+  if (!incidents.length || share.den === 0) return null;
+
+  const big = share.pct >= 10 ? share.pct.toFixed(0) : share.pct.toFixed(1);
+  const bar = share.useHom && !share.useSht ? "bg-hot" : share.useSht && !share.useHom ? "bg-watch" : "bg-hot";
+
+  return (
+    <div className="shrink-0 border-t border-line bg-elevated px-4 py-2.5">
+      <div className="flex items-end justify-between gap-3">
+        <div>
+          <div className={cn("font-display text-3xl leading-none tabular", share.useHom ? "text-hot" : "text-watch")}>
+            {big}%
+          </div>
+          <div className="mt-1 font-mono text-[10px] tracking-widest text-muted uppercase">
+            of Tennessee {share.label}
+          </div>
+        </div>
+        <div className="text-right font-mono text-[10px] tracking-widest text-faint uppercase">
+          {county.name}
+          <div className="mt-0.5 text-muted">
+            {fmtNum(share.num)} of {fmtNum(share.den)} · 2026
+          </div>
+        </div>
+      </div>
+      <div className="mt-2 h-1 overflow-hidden bg-bg">
+        <div className={cn("h-full", bar)} style={{ width: `${Math.min(100, share.pct)}%` }} />
+      </div>
+    </div>
+  );
+}
+
 export function FeedPanel({
   county,
   tab,
@@ -414,7 +476,6 @@ export function FeedPanel({
             [
               { id: "hom" as const, label: "Hom" },
               { id: "sht" as const, label: "Sht" },
-              { id: "rob" as const, label: "Rob" },
             ] as const
           ).map((item) => {
             const on = crimeLayers[item.id];

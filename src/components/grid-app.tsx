@@ -16,7 +16,7 @@ import type {
 } from "@/data/types";
 import { centroid } from "@/lib/geo";
 import { prefetchNews } from "@/lib/news-cache";
-import { FeedPanel } from "./feed-panel";
+import { CrimeShare, FeedPanel } from "./feed-panel";
 import { LayerToggles } from "./layer-toggles";
 import { MarketTicker } from "./market-ticker";
 import { TnMap } from "./tn-map";
@@ -30,7 +30,7 @@ const DEFAULT_LAYERS: Layers = {
   p26: false,
 };
 
-const DEFAULT_CRIME: CrimeLayers = { hom: true, sht: true, rob: false };
+const DEFAULT_CRIME: CrimeLayers = { hom: true, sht: true };
 
 const FALLBACK_WX: WxNow = { temp: 87, code: 2, label: "MEM · BNA · TYS", live: false };
 
@@ -248,6 +248,9 @@ export function GridApp() {
           <LayerToggles layers={layers} onToggle={toggle} zoomed={!!selected} />
         </div>
       </div>
+      {selected && tab === "crime" ? (
+        <CrimeShare county={selected} incidents={crime} layers={crimeLayers} />
+      ) : null}
       <FeedPanel
         county={selected}
         tab={tab}
