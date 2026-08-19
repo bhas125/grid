@@ -20,3 +20,4 @@ The existing Vercel project `grid` on team **bhas123's projects** owns that doma
 That replaces the old static/patched build with this repo and keeps `grid.blakehassler.com`.
 
 If Git is already connected to an older repo, disconnect it first, then connect `bhas125/grid` and redeploy production.
+
