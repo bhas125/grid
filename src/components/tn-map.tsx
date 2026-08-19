@@ -16,11 +16,11 @@ import type {
   Road,
   Site,
 } from "@/data/types";
+import { prefetchNews } from "@/lib/news-cache";
 import {
   FULL_VIEW,
   MAP_H,
   MAP_W,
-  centroid,
   easeOutCubic,
   featureBounds,
   lonLatIn,
@@ -41,8 +41,14 @@ const TIP_GAP = 28;
 const ZOOM_IN = 1 / 1.55;
 const ZOOM_OUT = 1.55;
 const MAX_ZOOM = 10;
+const CRIME_CAP = 720;
+const ALPR_CAP = 420;
 
 type ViewBox = { x: number; y: number; w: number; h: number };
+type XY = { x: number; y: number };
+type CrimePt = CrimeIncident & XY;
+type AlprPt = AlprPoint & XY;
+type Hit = { title: string; lines: string[]; x: number; y: number; r: number };
 
 type Tip = {
   title: string;
@@ -79,9 +85,9 @@ function fillColor(pop: number, selected: boolean, dim: boolean, alert: boolean)
   return `color-mix(in oklab, var(--color-grid) ${Math.round(a * 100)}%, #020308)`;
 }
 
-function crimeStack(type: string) {
+function crimeRank(type: string) {
   if (type === "Homicide") return 3;
-  if (type === "Shooting") return 2;
+  if (type === "Armed robbery") return 2;
   if (type.toLowerCase().includes("shooting") || type.toLowerCase().includes("aggravated")) return 1;
   return 0;
 }
@@ -94,7 +100,7 @@ function thinCrime(rows: CrimeIncident[]) {
     else rest.push(c);
   }
   rest.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
-  return [...hot, ...rest.slice(0, 260)];
+  return [...hot, ...rest.slice(0, 220)];
 }
 
 function fmtCrimeDate(iso: string | null) {
@@ -122,7 +128,6 @@ function crimeTipLines(c: CrimeIncident) {
   return lines;
 }
 
-
 function roadsInView(view: BBox | null) {
   if (!view) return ROADS;
   return ROADS.filter((r) => r.pts.some(([lon, lat]) => lonLatIn(view, lon, lat)));
@@ -146,13 +151,36 @@ function clampView(next: ViewBox, fit: ViewBox): ViewBox {
   return { x, y, w, h };
 }
 
-function viewScale(box: DOMRect, view: ViewBox) {
-  const s = Math.min(box.width / view.w, box.height / view.h);
+function viewScale(box: { width?: number; height?: number; w?: number; h?: number }, view: ViewBox) {
+  const width = box.width ?? box.w ?? 1;
+  const height = box.height ?? box.h ?? 1;
+  const s = Math.min(width / view.w, height / view.h);
   return {
     s,
-    ox: (box.width - view.w * s) / 2,
-    oy: (box.height - view.h * s) / 2,
+    ox: (width - view.w * s) / 2,
+    oy: (height - view.h * s) / 2,
   };
+}
+
+function ringBBox(geom: GeoFeature["geometry"]): BBox | null {
+  const rings =
+    geom.type === "Polygon"
+      ? (geom.coordinates as number[][][])
+      : (geom.coordinates as number[][][][]).flat();
+  if (!rings?.length) return null;
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+  for (const ring of rings) {
+    for (const [lon, lat] of ring) {
+      if (lon < minX) minX = lon;
+      if (lat < minY) minY = lat;
+      if (lon > maxX) maxX = lon;
+      if (lat > maxY) maxY = lat;
+    }
+  }
+  return { minX, minY, maxX, maxY };
 }
 
 export function TnMap({
@@ -179,6 +207,8 @@ export function TnMap({
   const root = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const sizeRef = useRef({ w: 1, h: 1 });
   const [tip, setTip] = useState<Tip | null>(null);
   const [alpr, setAlpr] = useState<AlprPoint[]>([]);
   const [precincts, setPrecincts] = useState<Precinct[]>([]);
@@ -189,21 +219,29 @@ export function TnMap({
   const fitRef = useRef<ViewBox>(FULL_VIEW);
   const raf = useRef<number | null>(null);
   const drawRaf = useRef<number | null>(null);
+  const commitTimer = useRef<number | null>(null);
   const pan = useRef<{ x: number; y: number; vx: number; vy: number } | null>(null);
-  const [panning, setPanning] = useState(false);
-  const crimeHits = useRef<{ c: CrimeIncident; x: number; y: number; r: number }[]>([]);
+  const hits = useRef<Hit[]>([]);
+  const busy = useRef(false);
 
   const project = useMemo(() => (geo ? makeProject(geo, MAP_W, MAP_H) : null), [geo]);
 
   useEffect(() => {
+    if (!layers.flock || alpr.length) return;
+    let live = true;
     fetch("/alpr-tn.json")
       .then((r) => r.json())
-      .then((d: AlprPoint[]) => setAlpr(d))
+      .then((d: AlprPoint[]) => {
+        if (live) setAlpr(d);
+      })
       .catch(() => undefined);
-  }, []);
+    return () => {
+      live = false;
+    };
+  }, [layers.flock, alpr.length]);
 
   useEffect(() => {
-    if (!selected) {
+    if (!selected || !layers.p24) {
       setPrecincts([]);
       setRaces({});
       return;
@@ -228,7 +266,7 @@ export function TnMap({
     return () => {
       live = false;
     };
-  }, [selected]);
+  }, [selected, layers.p24]);
 
   const paths = useMemo(() => {
     if (!geo || !project) return [];
@@ -253,80 +291,209 @@ export function TnMap({
   }
 
   const crimePts = useMemo(() => {
-    if (!project || !showCrime) return [];
-    const rows = selected ? crime.filter((c) => c.county === selected.name) : crime;
-    const ranked = selected
-      ? [...rows].sort((a, b) => crimeStack(a.type) - crimeStack(b.type))
-      : thinCrime(rows);
-    return ranked.map((c) => ({ ...c, ...project(c.lon, c.lat) }));
+    if (!project || !showCrime) return [] as CrimePt[];
+    const rows = selected ? crime.filter((c) => c.county === selected.name) : thinCrime(crime);
+    const ranked = selected ? [...rows].sort((a, b) => crimeRank(a.type) - crimeRank(b.type)) : rows;
+    return ranked.map((c) => {
+      const p = project(c.lon, c.lat);
+      return { ...c, x: p.x, y: p.y };
+    });
   }, [project, crime, selected, showCrime]);
   const crimePtsRef = useRef(crimePts);
   crimePtsRef.current = crimePts;
 
-  useEffect(() => {
-    drawCrime();
-  }, [crimePts, showCrime, selected]);
+  const visibleRoads = useMemo(() => {
+    if (!project) return [];
+    if (!selected) return ROADS;
+    const feat = paths.find((p) => p.fips === selected.fips);
+    if (!feat) return [];
+    const box = ringBBox(feat.feature.geometry);
+    return roadsInView(box);
+  }, [project, selected, paths]);
 
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => drawCrime());
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const sitePts = useMemo(() => {
+    if (!project) return [];
+    return SITES.filter((s) => !selected || s.county === selected.name).map((s) => ({
+      ...s,
+      ...project(s.lon, s.lat),
+    }));
+  }, [project, selected]);
+
+  const alprPts = useMemo(() => {
+    if (!project || !layers.flock || !alpr.length) return [] as AlprPt[];
+    let pts = alpr;
+    if (!selected) {
+      pts = alpr.filter((_, i) => i % 8 === 0);
+    } else {
+      const feat = paths.find((p) => p.fips === selected.fips);
+      const box = feat ? ringBBox(feat.feature.geometry) : null;
+      if (box) pts = alpr.filter((p) => p.lon >= box.minX && p.lon <= box.maxX && p.lat >= box.minY && p.lat <= box.maxY);
+    }
+    return pts.map((p) => ({ ...p, ...project(p.lon, p.lat) }));
+  }, [project, alpr, selected, paths, layers.flock]);
+  const alprPtsRef = useRef(alprPts);
+  alprPtsRef.current = alprPts;
+  const showCrimeRef = useRef(showCrime);
+  showCrimeRef.current = showCrime;
+  const flockRef = useRef(layers.flock);
+  flockRef.current = layers.flock;
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
 
   function paintView(next: ViewBox, commit = false) {
     viewRef.current = next;
     svgRef.current?.setAttribute("viewBox", `${next.x} ${next.y} ${next.w} ${next.h}`);
     if (drawRaf.current) cancelAnimationFrame(drawRaf.current);
-    drawRaf.current = requestAnimationFrame(drawCrime);
+    drawRaf.current = requestAnimationFrame(drawDots);
     if (commit) setView(next);
   }
 
-  function drawCrime() {
+  function scheduleCommit() {
+    if (commitTimer.current) window.clearTimeout(commitTimer.current);
+    commitTimer.current = window.setTimeout(() => {
+      commitTimer.current = null;
+      setView({ ...viewRef.current });
+    }, 90);
+  }
+
+  function drawDots() {
+    drawRaf.current = null;
     const canvas = canvasRef.current;
-    const box = root.current?.getBoundingClientRect();
-    const pts = crimePtsRef.current;
-    crimeHits.current = [];
-    if (!canvas || !box) return;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const w = Math.max(1, Math.round(box.width));
-    const h = Math.max(1, Math.round(box.height));
-    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+    const size = sizeRef.current;
+    hits.current = [];
+    if (!canvas) return;
+    let ctx = ctxRef.current;
+    if (!ctx) {
+      ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+      ctxRef.current = ctx;
     }
-    const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
+    const w = size.w;
+    const h = size.h;
+    const pw = Math.max(1, Math.round(w * dpr));
+    const ph = Math.max(1, Math.round(h * dpr));
+    if (canvas.width !== pw || canvas.height !== ph) {
+      canvas.width = pw;
+      canvas.height = ph;
+    }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    if (!showCrime || !pts.length) return;
+    const crimeOn = showCrimeRef.current;
+    const flockOn = flockRef.current;
+    const pts = crimePtsRef.current;
+    const cameras = alprPtsRef.current;
+    if ((!crimeOn || !pts.length) && (!flockOn || !cameras.length)) return;
     const cur = viewRef.current;
-    const { s, ox, oy } = viewScale(box, cur);
-    const zoomedNow = !!selected;
-    const pad = 12;
-    for (const c of pts) {
-      const sx = (c.x - cur.x) * s + ox;
-      const sy = (c.y - cur.y) * s + oy;
-      if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
-      const hom = c.type === "Homicide";
-      const r = zoomedNow ? (hom ? 5.5 : 4.2) : hom ? 3.6 : 2.6;
+    const { s, ox, oy } = viewScale(size, cur);
+    const zoomedNow = !!selectedRef.current;
+    const pad = 10;
+    const cell = zoomedNow ? (s > 6 ? 4 : s > 2.4 ? 6 : 8) : 9;
+    const cols = Math.max(1, Math.ceil(w / cell));
+    const seen = new Uint8Array(cols * Math.max(1, Math.ceil(h / cell)));
+    const record = !busy.current;
+
+    const stamp = (sx: number, sy: number, force: boolean) => {
+      const gi = ((sy / cell) | 0) * cols + ((sx / cell) | 0);
+      if (gi < 0 || gi >= seen.length) return force;
+      if (seen[gi] && !force) return false;
+      seen[gi] = 1;
+      return true;
+    };
+
+    if (flockOn && cameras.length) {
+      const r = zoomedNow ? 2.4 : 2;
+      ctx.fillStyle = "#ffb347";
+      ctx.globalAlpha = 0.85;
       ctx.beginPath();
-      ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fillStyle = hom ? "#ff4d4d" : c.type === "Armed robbery" ? "#8ec8e0" : "#ffb347";
-      ctx.globalAlpha = hom ? 0.95 : 0.78;
+      let n = 0;
+      for (const p of cameras) {
+        const sx = (p.x - cur.x) * s + ox;
+        const sy = (p.y - cur.y) * s + oy;
+        if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+        if (!stamp(sx, sy, false)) continue;
+        ctx.moveTo(sx + r, sy);
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        if (record && zoomedNow) {
+          hits.current.push({
+            title: p.op,
+            lines: ["ALPR · DeFlock / OSM", p.dir ? `Facing ${p.dir}°` : "Direction unlisted", `${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}`],
+            x: sx,
+            y: sy,
+            r: r + 5,
+          });
+        }
+        if (++n >= ALPR_CAP) break;
+      }
       ctx.fill();
-      crimeHits.current.push({ c, x: sx, y: sy, r: r + 4 });
+    }
+
+    if (crimeOn && pts.length) {
+      const batches: { rank: number; color: string; r: number; a: number; rows: CrimePt[] }[] = [
+        { rank: 1, color: "#ffb347", r: zoomedNow ? 4.2 : 2.6, a: 0.78, rows: [] },
+        { rank: 2, color: "#8ec8e0", r: zoomedNow ? 4.2 : 2.6, a: 0.82, rows: [] },
+        { rank: 3, color: "#ff4d4d", r: zoomedNow ? 5.5 : 3.6, a: 0.95, rows: [] },
+      ];
+      for (const c of pts) {
+        const rank = crimeRank(c.type);
+        const b = batches[rank === 3 ? 2 : rank === 2 ? 1 : 0];
+        b.rows.push(c);
+      }
+      let drawn = 0;
+      for (const b of batches) {
+        ctx.fillStyle = b.color;
+        ctx.globalAlpha = b.a;
+        ctx.beginPath();
+        for (const c of b.rows) {
+          const sx = (c.x - cur.x) * s + ox;
+          const sy = (c.y - cur.y) * s + oy;
+          if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+          if (!stamp(sx, sy, b.rank === 3)) continue;
+          ctx.moveTo(sx + b.r, sy);
+          ctx.arc(sx, sy, b.r, 0, Math.PI * 2);
+          if (record) {
+            hits.current.push({
+              title: c.type,
+              lines: crimeTipLines(c),
+              x: sx,
+              y: sy,
+              r: b.r + 4,
+            });
+          }
+          if (++drawn >= CRIME_CAP) break;
+        }
+        ctx.fill();
+        if (drawn >= CRIME_CAP) break;
+      }
     }
     ctx.globalAlpha = 1;
   }
+
+  useEffect(() => {
+    drawDots();
+  }, [crimePts, alprPts, showCrime, selected, layers.flock]);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const apply = () => {
+      const box = el.getBoundingClientRect();
+      sizeRef.current = { w: Math.max(1, Math.round(box.width)), h: Math.max(1, Math.round(box.height)) };
+      drawDots();
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   function animateTo(next: ViewBox) {
     if (raf.current) cancelAnimationFrame(raf.current);
     const from = viewRef.current;
     const start = performance.now();
+    busy.current = true;
     const step = (now: number) => {
-      const t = easeOutCubic(Math.min(1, (now - start) / 280));
+      const t = easeOutCubic(Math.min(1, (now - start) / 220));
       paintView({
         x: from.x + (next.x - from.x) * t,
         y: from.y + (next.y - from.y) * t,
@@ -336,6 +503,7 @@ export function TnMap({
       if (t < 1) raf.current = requestAnimationFrame(step);
       else {
         raf.current = null;
+        busy.current = false;
         paintView(next, true);
       }
     };
@@ -401,6 +569,7 @@ export function TnMap({
       const pt = clientToView(e.clientX, e.clientY);
       const factor = e.deltaY > 0 ? ZOOM_OUT : ZOOM_IN;
       zoomBy(factor, pt?.x, pt?.y, false);
+      scheduleCommit();
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
@@ -423,95 +592,31 @@ export function TnMap({
     return m;
   }, [alerts]);
 
-  const visibleRoads = useMemo(() => {
-    if (!project) return [];
-    if (!selected) return ROADS;
-    const feat = paths.find((p) => p.fips === selected.fips);
-    if (!feat) return [];
-    const raw = feat.feature.geometry;
-    const ring =
-      raw.type === "Polygon"
-        ? (raw.coordinates as number[][][])[0]
-        : (raw.coordinates as number[][][][])[0]?.[0];
-    if (!ring) return [];
-    let minX = Infinity,
-      minY = Infinity,
-      maxX = -Infinity,
-      maxY = -Infinity;
-    for (const [lon, lat] of ring) {
-      if (lon < minX) minX = lon;
-      if (lat < minY) minY = lat;
-      if (lon > maxX) maxX = lon;
-      if (lat > maxY) maxY = lat;
-    }
-    return roadsInView({ minX, minY, maxX, maxY });
-  }, [project, selected, paths]);
-
-  const sitePts = useMemo(() => {
-    if (!project) return [];
-    return SITES.filter((s) => !selected || s.county === selected.name).map((s) => ({
-      ...s,
-      ...project(s.lon, s.lat),
-    }));
-  }, [project, selected]);
-
-  const alprPts = useMemo(() => {
-    if (!project) return [];
-    let pts = alpr;
-    if (!selected) {
-      pts = alpr.filter((_, i) => i % 6 === 0);
-    } else {
-      const feat = paths.find((p) => p.fips === selected.fips);
-      if (feat) {
-        const geom = feat.feature.geometry;
-        const rings =
-          geom.type === "Polygon"
-            ? (geom.coordinates as number[][][])
-            : (geom.coordinates as number[][][][]).flat();
-        let minX = Infinity,
-          minY = Infinity,
-          maxX = -Infinity,
-          maxY = -Infinity;
-        for (const ring of rings) {
-          for (const [lon, lat] of ring) {
-            if (lon < minX) minX = lon;
-            if (lat < minY) minY = lat;
-            if (lon > maxX) maxX = lon;
-            if (lat > maxY) maxY = lat;
-          }
-        }
-        pts = alpr.filter((p) => p.lon >= minX && p.lon <= maxX && p.lat >= minY && p.lat <= maxY);
-      }
-    }
-    return pts.map((p) => ({ ...p, ...project(p.lon, p.lat) }));
-  }, [project, alpr, selected, paths]);
-
   function interactiveTarget(el: EventTarget | null) {
     if (!(el instanceof Element)) return false;
-    return Boolean(
-      el.closest("button") ||
-        el.closest("a") ||
-        el.tagName === "circle" ||
-        el.closest("[data-precinct]") ||
-        el.closest("[data-crime]"),
-    );
+    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-precinct]"));
+  }
+
+  function setBusy(on: boolean) {
+    busy.current = on;
+    root.current?.classList.toggle("is-panning", on);
   }
 
   return (
     <div
       ref={root}
       className="absolute inset-0"
+      style={{ contain: "layout paint" }}
       onPointerDown={(e) => {
         if (!selected || interactiveTarget(e.target)) return;
         if (e.button !== 0) return;
         pan.current = { x: e.clientX, y: e.clientY, vx: viewRef.current.x, vy: viewRef.current.y };
-        setPanning(true);
+        setBusy(true);
         e.currentTarget.setPointerCapture(e.pointerId);
       }}
       onPointerMove={(e) => {
         if (!pan.current) return;
-        const box = root.current?.getBoundingClientRect();
-        if (!box) return;
+        const box = sizeRef.current;
         const { s } = viewScale(box, viewRef.current);
         applyView(
           {
@@ -524,28 +629,30 @@ export function TnMap({
       }}
       onPointerUp={() => {
         pan.current = null;
-        setPanning(false);
+        setBusy(false);
         paintView(viewRef.current, true);
       }}
       onPointerCancel={() => {
         pan.current = null;
-        setPanning(false);
+        setBusy(false);
         paintView(viewRef.current, true);
       }}
       onMouseMove={(e) => {
-        if (pan.current || !showCrime || !selected) return;
+        if (pan.current) return;
         if (interactiveTarget(e.target)) return;
+        if (!selected) return;
+        if (!hits.current.length) return;
         const box = root.current?.getBoundingClientRect();
         if (!box) return;
         const mx = e.clientX - box.left;
         const my = e.clientY - box.top;
-        let best: { c: CrimeIncident; d: number } | null = null;
-        for (const h of crimeHits.current) {
+        let best: { h: Hit; d: number } | null = null;
+        for (const h of hits.current) {
           const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
-          if (d <= h.r * h.r && (!best || d < best.d)) best = { c: h.c, d };
+          if (d <= h.r * h.r && (!best || d < best.d)) best = { h, d };
         }
         if (!best) return;
-        showTip(e, best.c.type, crimeTipLines(best.c));
+        showTip(e, best.h.title, best.h.lines);
       }}
       onMouseLeave={() => {
         if (!pan.current) setTip(null);
@@ -555,253 +662,205 @@ export function TnMap({
         <div className="absolute inset-0 animate-pulse bg-elevated/40" />
       ) : (
         <>
-        <svg
-          ref={svgRef}
-          viewBox={`${viewRef.current.x} ${viewRef.current.y} ${viewRef.current.w} ${viewRef.current.h}`}
-          className={cn(
-            "absolute inset-0 h-full w-full",
-            selected ? (panning ? "cursor-grabbing" : "cursor-grab") : undefined,
-          )}
-          role="img"
-          aria-label="Tennessee grid map"
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <defs>
-            <filter id="line-glow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="1.4" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <filter id="line-glow-hot" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2.2" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <filter id="precinct-glow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="0.7" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <pattern id="tn-mesh" width="14" height="14" patternUnits="userSpaceOnUse">
-              <path
-                d="M 14 0 L 0 0 0 14"
-                fill="none"
-                stroke="var(--color-grid)"
-                strokeWidth="0.35"
-                opacity="0.55"
-              />
-            </pattern>
-            <clipPath id="tn-clip">
-              {paths.map((p) => (
-                <path key={p.fips} d={p.d} />
-              ))}
-            </clipPath>
-          </defs>
-          {paths.map((p) => {
-            const county = BY_FIPS.get(p.fips);
-            const isSel = selected?.fips === p.fips;
-            const dim = zoomed && !isSel;
-            const hits = county ? (alertsByCounty.get(county.name) ?? []) : [];
-            const wx = !!(layers.weather && hits.length && !dim);
-            return (
-              <path
-                key={p.fips}
-                d={p.d}
-                data-name={county?.name}
-                fill={fillColor(county?.pop ?? 8000, isSel, dim, wx)}
-                stroke={isSel ? "var(--color-fg)" : dim ? "transparent" : "var(--color-grid)"}
-                strokeWidth={isSel ? (zoomed ? 0.85 : 1.35) : zoomed ? 0 : 0.55}
-                filter={dim ? undefined : isSel ? "url(#line-glow-hot)" : zoomed ? undefined : "url(#line-glow)"}
-                className={dim ? "pointer-events-none" : zoomed ? undefined : "cursor-pointer"}
-                pointerEvents={dim ? "none" : "auto"}
-                onMouseEnter={(e) => {
-                  if (zoomed || !county) return;
-                  showTip(e, county.name, [
-                    `${county.pop.toLocaleString()} people · ${county.seat}`,
-                    ...hits.map((a) => `${a.event} · ${a.severity}`),
-                  ]);
-                }}
-                onMouseMove={(e) => {
-                  if (zoomed || !county) return;
-                  showTip(e, county.name, [
-                    `${county.pop.toLocaleString()} people · ${county.seat}`,
-                    ...hits.map((a) => `${a.event} · ${a.severity}`),
-                  ]);
-                }}
-                onMouseLeave={() => setTip(null)}
-                onClick={() => {
-                  if (!zoomed && county) onSelect(county);
-                }}
-              />
-            );
-          })}
-          {zoomed ? null : (
-            <g clipPath="url(#tn-clip)" pointerEvents="none">
-              <g className="mesh-drift">
-                <rect x="-40" y="-40" width="1080" height="440" fill="url(#tn-mesh)" opacity="0.7" />
-              </g>
-            </g>
-          )}
-          {zoomed && layers.p24 && project
-            ? precincts.map((pr) => {
-                const tot = pr.t || 1;
-                const other = Math.max(0, pr.t - pr.d - pr.r);
-                const picked = pickedId === pr.id;
-                const lines = [
-                  "2024 President",
-                  `Trump ${pr.r.toLocaleString()} (${Math.round((pr.r / tot) * 100)}%)`,
-                  `Harris ${pr.d.toLocaleString()} (${Math.round((pr.d / tot) * 100)}%)`,
-                  other
-                    ? `Other ${other.toLocaleString()} (${Math.round((other / tot) * 100)}%)`
-                    : "Other —",
-                  `${pr.t.toLocaleString()} ballots · click for full tally`,
-                ];
-                return (
-                  <path
-                    key={pr.id}
-                    d={pathFromGeom(pr.g, project)}
-                    data-precinct={pr.id}
-                    fill={
-                      picked
-                        ? "color-mix(in oklab, var(--color-hot) 38%, #020308)"
-                        : "color-mix(in oklab, var(--color-hot) 16%, #020308)"
+          <svg
+            ref={svgRef}
+            viewBox={`${viewRef.current.x} ${viewRef.current.y} ${viewRef.current.w} ${viewRef.current.h}`}
+            className={cn("absolute inset-0 h-full w-full", selected ? "cursor-grab" : undefined)}
+            role="img"
+            aria-label="Tennessee grid map"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <defs>
+              <filter id="line-glow-hot" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.2" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <pattern id="tn-mesh" width="14" height="14" patternUnits="userSpaceOnUse">
+                <path
+                  d="M 14 0 L 0 0 0 14"
+                  fill="none"
+                  stroke="var(--color-grid)"
+                  strokeWidth="0.35"
+                  opacity="0.55"
+                />
+              </pattern>
+              <clipPath id="tn-clip">
+                {paths.map((p) => (
+                  <path key={p.fips} d={p.d} />
+                ))}
+              </clipPath>
+            </defs>
+            {paths.map((p) => {
+              const county = BY_FIPS.get(p.fips);
+              const isSel = selected?.fips === p.fips;
+              const dim = zoomed && !isSel;
+              const hitsAlert = county ? (alertsByCounty.get(county.name) ?? []) : [];
+              const wx = !!(layers.weather && hitsAlert.length && !dim);
+              return (
+                <path
+                  key={p.fips}
+                  d={p.d}
+                  data-name={county?.name}
+                  fill={fillColor(county?.pop ?? 8000, isSel, dim, wx)}
+                  stroke={isSel ? "var(--color-fg)" : dim ? "transparent" : "var(--color-grid)"}
+                  strokeWidth={isSel ? (zoomed ? 0.85 : 1.35) : zoomed ? 0 : 0.55}
+                  filter={isSel ? "url(#line-glow-hot)" : undefined}
+                  className={dim ? "pointer-events-none" : zoomed ? undefined : "cursor-pointer"}
+                  pointerEvents={dim ? "none" : "auto"}
+                  onMouseEnter={(e) => {
+                    if (!county) return;
+                    if (!zoomed) {
+                      prefetchNews(county.name, county.seat, county.market);
+                      showTip(e, county.name, [
+                        `${county.pop.toLocaleString()} people · ${county.seat}`,
+                        ...hitsAlert.map((a) => `${a.event} · ${a.severity}`),
+                      ]);
                     }
-                    stroke={picked ? "var(--color-fg)" : "#ff6b6b"}
-                    strokeWidth={picked ? 0.35 : 0.22}
-                    filter="url(#precinct-glow)"
-                    className="cursor-pointer"
-                    opacity={pickedId && !picked ? 0.4 : 1}
-                    onMouseEnter={(e) => showTip(e, pr.name, lines)}
-                    onMouseMove={(e) => showTip(e, pr.name, lines)}
-                    onMouseLeave={() => setTip(null)}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (layers.p24) onPickPrecinct(pr, races[pr.id]);
-                    }}
-                  />
-                );
-              })
-            : null}
-          {layers.interstates || layers.roads
-            ? visibleRoads
-                .filter((r) => (r.kind === "interstate" ? layers.interstates : layers.roads))
-                .map((r) => {
-                  const interstate = r.kind === "interstate";
+                  }}
+                  onMouseMove={(e) => {
+                    if (zoomed || !county) return;
+                    showTip(e, county.name, [
+                      `${county.pop.toLocaleString()} people · ${county.seat}`,
+                      ...hitsAlert.map((a) => `${a.event} · ${a.severity}`),
+                    ]);
+                  }}
+                  onMouseLeave={() => setTip(null)}
+                  onClick={() => {
+                    if (!zoomed && county) onSelect(county);
+                  }}
+                />
+              );
+            })}
+            {zoomed ? null : (
+              <g clipPath="url(#tn-clip)" pointerEvents="none">
+                <g className="mesh-drift">
+                  <rect x="-40" y="-40" width="1080" height="440" fill="url(#tn-mesh)" opacity="0.7" />
+                </g>
+              </g>
+            )}
+            {zoomed && layers.p24 && project
+              ? precincts.map((pr) => {
+                  const tot = pr.t || 1;
+                  const other = Math.max(0, pr.t - pr.d - pr.r);
+                  const picked = pickedId === pr.id;
+                  const lines = [
+                    "2024 President",
+                    `Trump ${pr.r.toLocaleString()} (${Math.round((pr.r / tot) * 100)}%)`,
+                    `Harris ${pr.d.toLocaleString()} (${Math.round((pr.d / tot) * 100)}%)`,
+                    other
+                      ? `Other ${other.toLocaleString()} (${Math.round((other / tot) * 100)}%)`
+                      : "Other —",
+                    `${pr.t.toLocaleString()} ballots · click for full tally`,
+                  ];
                   return (
-                    <g key={r.id}>
-                      <path
-                        d={pathFromPts(r.pts, project)}
-                        fill="none"
-                        stroke="transparent"
-                        strokeWidth={zoomed ? 1.6 : 3}
-                        className="cursor-pointer"
-                        onMouseEnter={(e) =>
-                          showTip(e, r.id, [
-                            interstate ? "Interstate" : "US / state route",
-                            "Corridor trace — not live traffic",
-                          ])
-                        }
-                        onMouseMove={(e) =>
-                          showTip(e, r.id, [
-                            interstate ? "Interstate" : "US / state route",
-                            "Corridor trace — not live traffic",
-                          ])
-                        }
-                        onMouseLeave={() => setTip(null)}
-                      />
-                      <path
-                        d={pathFromPts(r.pts, project)}
-                        fill="none"
-                        stroke={interstate ? "var(--color-flow)" : "var(--color-steel)"}
-                        strokeWidth={zoomed ? (interstate ? 0.28 : 0.16) : interstate ? 0.38 : 0.22}
-                        className={interstate ? "traffic-flow" : "road-flow"}
-                        opacity={interstate ? 0.85 : 0.5}
-                        pointerEvents="none"
-                      />
-                    </g>
+                    <path
+                      key={pr.id}
+                      d={pathFromGeom(pr.g, project)}
+                      data-precinct={pr.id}
+                      fill={
+                        picked
+                          ? "color-mix(in oklab, var(--color-hot) 38%, #020308)"
+                          : "color-mix(in oklab, var(--color-hot) 16%, #020308)"
+                      }
+                      stroke={picked ? "var(--color-fg)" : "#ff6b6b"}
+                      strokeWidth={picked ? 0.35 : 0.22}
+                      className="cursor-pointer"
+                      opacity={pickedId && !picked ? 0.4 : 1}
+                      onMouseEnter={(e) => showTip(e, pr.name, lines)}
+                      onMouseMove={(e) => showTip(e, pr.name, lines)}
+                      onMouseLeave={() => setTip(null)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (layers.p24) onPickPrecinct(pr, races[pr.id]);
+                      }}
+                    />
                   );
                 })
-            : null}
-          {layers.flock
-            ? alprPts.map((p) => (
-                <circle
-                  key={p.id}
-                  cx={p.x}
-                  cy={p.y}
-                  r={zoomed ? 0.45 : 0.7}
-                  fill="var(--color-watch)"
-                  opacity="0.9"
-                  pointerEvents={zoomed ? "auto" : "none"}
-                  className={zoomed ? "cursor-pointer" : undefined}
-                  onMouseEnter={(e) =>
-                    showTip(e, p.op, [
-                      "ALPR · DeFlock / OSM",
-                      p.dir ? `Facing ${p.dir}°` : "Direction unlisted",
-                      `${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}`,
-                    ])
-                  }
-                  onMouseMove={(e) =>
-                    showTip(e, p.op, [
-                      "ALPR · DeFlock / OSM",
-                      p.dir ? `Facing ${p.dir}°` : "Direction unlisted",
-                      `${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}`,
-                    ])
-                  }
-                  onMouseLeave={() => setTip(null)}
-                />
-              ))
-            : null}
-          {layers.sites
-            ? sitePts.map((s) => (
-                <g
-                  key={s.name}
-                  className="cursor-pointer"
-                  onMouseEnter={(e) =>
-                    showTip(e, s.name, [
-                      `${s.kind} data center`,
-                      `${s.county} County`,
-                      `${s.lat.toFixed(2)}N ${Math.abs(s.lon).toFixed(2)}W`,
-                    ])
-                  }
-                  onMouseMove={(e) =>
-                    showTip(e, s.name, [
-                      `${s.kind} data center`,
-                      `${s.county} County`,
-                      `${s.lat.toFixed(2)}N ${Math.abs(s.lon).toFixed(2)}W`,
-                    ])
-                  }
-                  onMouseLeave={() => setTip(null)}
-                >
-                  <rect
-                    x={s.x - (zoomed ? 0.7 : 2.2)}
-                    y={s.y - (zoomed ? 0.7 : 2.2)}
-                    width={zoomed ? 1.4 : 4.4}
-                    height={zoomed ? 1.4 : 4.4}
-                    fill="var(--color-hot)"
-                    filter="url(#line-glow-hot)"
-                  />
-                </g>
-              ))
-            : null}
-        </svg>
-        <canvas
-          ref={canvasRef}
-          className="pointer-events-none absolute inset-0 h-full w-full"
-          aria-hidden
-        />
+              : null}
+            {layers.interstates || layers.roads
+              ? visibleRoads
+                  .filter((r) => (r.kind === "interstate" ? layers.interstates : layers.roads))
+                  .map((r) => {
+                    const interstate = r.kind === "interstate";
+                    return (
+                      <g key={r.id}>
+                        <path
+                          d={pathFromPts(r.pts, project)}
+                          fill="none"
+                          stroke="transparent"
+                          strokeWidth={zoomed ? 1.6 : 3}
+                          className="cursor-pointer"
+                          onMouseEnter={(e) =>
+                            showTip(e, r.id, [
+                              interstate ? "Interstate" : "US / state route",
+                              "Corridor trace — not live traffic",
+                            ])
+                          }
+                          onMouseMove={(e) =>
+                            showTip(e, r.id, [
+                              interstate ? "Interstate" : "US / state route",
+                              "Corridor trace — not live traffic",
+                            ])
+                          }
+                          onMouseLeave={() => setTip(null)}
+                        />
+                        <path
+                          d={pathFromPts(r.pts, project)}
+                          fill="none"
+                          stroke={interstate ? "var(--color-flow)" : "var(--color-steel)"}
+                          strokeWidth={zoomed ? (interstate ? 0.28 : 0.16) : interstate ? 0.38 : 0.22}
+                          className={interstate ? "traffic-flow" : "road-flow"}
+                          opacity={interstate ? 0.85 : 0.5}
+                          pointerEvents="none"
+                        />
+                      </g>
+                    );
+                  })
+              : null}
+            {layers.sites
+              ? sitePts.map((s) => (
+                  <g
+                    key={s.name}
+                    className="cursor-pointer"
+                    onMouseEnter={(e) =>
+                      showTip(e, s.name, [
+                        `${s.kind} data center`,
+                        `${s.county} County`,
+                        `${s.lat.toFixed(2)}N ${Math.abs(s.lon).toFixed(2)}W`,
+                      ])
+                    }
+                    onMouseMove={(e) =>
+                      showTip(e, s.name, [
+                        `${s.kind} data center`,
+                        `${s.county} County`,
+                        `${s.lat.toFixed(2)}N ${Math.abs(s.lon).toFixed(2)}W`,
+                      ])
+                    }
+                    onMouseLeave={() => setTip(null)}
+                  >
+                    <rect
+                      x={s.x - (zoomed ? 0.7 : 2.2)}
+                      y={s.y - (zoomed ? 0.7 : 2.2)}
+                      width={zoomed ? 1.4 : 4.4}
+                      height={zoomed ? 1.4 : 4.4}
+                      fill="var(--color-hot)"
+                      filter="url(#line-glow-hot)"
+                    />
+                  </g>
+                ))
+              : null}
+          </svg>
+          <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden />
         </>
       )}
       {zoomed ? (
         <div className="absolute bottom-2 left-2 z-10 flex flex-col border border-line bg-elevated/95">
           <button
             type="button"
-            onClick={() => zoomBy(ZOOM_IN)}
+            onClick={() => zoomBy(ZOOM_IN, undefined, undefined, true)}
             disabled={!canIn}
             aria-label="Zoom in"
             className="grid size-11 place-items-center text-grid hover:bg-grid/15 disabled:text-faint disabled:hover:bg-transparent"
@@ -810,7 +869,7 @@ export function TnMap({
           </button>
           <button
             type="button"
-            onClick={() => zoomBy(ZOOM_OUT)}
+            onClick={() => zoomBy(ZOOM_OUT, undefined, undefined, true)}
             disabled={!canOut}
             aria-label="Zoom out"
             className="grid size-11 place-items-center border-t border-line text-grid hover:bg-grid/15 disabled:text-faint disabled:hover:bg-transparent"

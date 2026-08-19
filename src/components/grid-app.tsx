@@ -13,6 +13,7 @@ import type {
   WxNow,
 } from "@/data/types";
 import { centroid } from "@/lib/geo";
+import { prefetchNews } from "@/lib/news-cache";
 import { FeedPanel } from "./feed-panel";
 import { LayerToggles } from "./layer-toggles";
 import { MarketTicker } from "./market-ticker";
@@ -67,16 +68,44 @@ export function GridApp() {
       .then((r) => r.json())
       .then((d: Record<string, string>) => setBriefs(d))
       .catch(() => undefined);
-    fetch("/crime-tn.json")
-      .then((r) => r.json())
-      .then((d: CrimeIncident[]) => setCrime(Array.isArray(d) ? d : []))
-      .catch(() => undefined);
     try {
       setExpanded(sessionStorage.getItem("grid-feed-expanded") === "1");
     } catch {
       /* ignore */
     }
+    const idle = window.setTimeout(() => {
+      prefetchNews(null);
+      prefetchNews("Shelby", "Memphis", "Memphis");
+      prefetchNews("Davidson", "Nashville", "Nashville");
+      prefetchNews("Knox", "Knoxville", "Knoxville");
+      prefetchNews("Hamilton", "Chattanooga", "Chattanooga");
+    }, 700);
+    return () => window.clearTimeout(idle);
   }, []);
+
+  useEffect(() => {
+    if (crime.length) return;
+    let live = true;
+    const start = () => {
+      fetch("/crime-tn.json")
+        .then((r) => r.json())
+        .then((d: CrimeIncident[]) => {
+          if (live) setCrime(Array.isArray(d) ? d : []);
+        })
+        .catch(() => undefined);
+    };
+    if (tab === "crime") {
+      start();
+      return () => {
+        live = false;
+      };
+    }
+    const id = window.setTimeout(start, 500);
+    return () => {
+      live = false;
+      window.clearTimeout(id);
+    };
+  }, [tab, crime.length]);
 
   useEffect(() => {
     let live = true;
@@ -103,6 +132,7 @@ export function GridApp() {
     setTab((t) => (t === "crime" ? "crime" : "news"));
     setPrecinct(null);
     setRaces(undefined);
+    prefetchNews(c.name, c.seat, c.market);
   }
 
   function backToState() {

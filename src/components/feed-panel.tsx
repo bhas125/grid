@@ -4,7 +4,7 @@ import { countyIntel, sitProfile, sitShape } from "@/data/intel";
 import officialsJson from "@/data/officials.json";
 import type { Alert, County, CrimeIncident, NewsItem, Precinct, Race, TabId } from "@/data/types";
 import { cn, fmtAge, fmtMargin, fmtNum, fmtPct } from "@/lib/utils";
-import { newsCacheKey, readNewsCache, writeNewsCache } from "@/lib/news-cache";
+import { newsCacheAge, newsCacheKey, fetchNews, readNewsCache } from "@/lib/news-cache";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "news", label: "News" },
@@ -54,10 +54,12 @@ function Stat({ k, v }: { k: string; v: string }) {
 function NewsFeed({
   county,
   seat,
+  market,
   extra,
 }: {
   county: string | null;
   seat?: string;
+  market?: string;
   extra: NewsItem[];
 }) {
   const [items, setItems] = useState<NewsItem[]>([]);
@@ -67,7 +69,7 @@ function NewsFeed({
 
   useEffect(() => {
     let live = true;
-    const key = newsCacheKey(county, seat);
+    const key = newsCacheKey(county, seat, market);
     const cached = readNewsCache(key);
     if (cached?.length) {
       setItems(cached);
@@ -76,15 +78,11 @@ function NewsFeed({
       setStatus("load");
     }
     setShown(PAGE);
-    const q = county
-      ? `?county=${encodeURIComponent(county)}${seat ? `&seat=${encodeURIComponent(seat)}` : ""}`
-      : "";
-    fetch(`/api/news${q}`)
-      .then((r) => r.json())
-      .then((d: { items?: NewsItem[] }) => {
+    const age = newsCacheAge(key);
+    const fresh = age == null || age > 15_000;
+    fetchNews(county, seat, market, fresh)
+      .then((next) => {
         if (!live) return;
-        const next = d.items ?? [];
-        writeNewsCache(key, next);
         setItems(next);
         setStatus("ok");
       })
@@ -94,7 +92,7 @@ function NewsFeed({
     return () => {
       live = false;
     };
-  }, [county, seat]);
+  }, [county, seat, market]);
 
   const merged = useMemo(() => {
     const all = [...extra, ...items];
@@ -385,10 +383,17 @@ export function FeedPanel({
           {expanded ? <ChevronDown className="size-3.5" /> : <ChevronUp className="size-3.5" />}
         </button>
       </div>
-      {tab === "news" ? (
-        <NewsFeed county={county?.name ?? null} seat={county?.seat} extra={extra} />
-      ) : null}
-      {tab === "crime" ? <CrimeFeed county={county} incidents={crime} /> : null}
+      <div className={tab === "news" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
+        <NewsFeed
+          county={county?.name ?? null}
+          seat={county?.seat}
+          market={county?.market}
+          extra={extra}
+        />
+      </div>
+      <div className={tab === "crime" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
+        <CrimeFeed county={county} incidents={crime} />
+      </div>
       {tab === "sit" && county && intel ? (
         <div className="space-y-2 overflow-y-auto px-4 pb-3">
           <div className="flex flex-wrap gap-2">

@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { outletsFor } from "@/data/local-outlets";
+import { dedicatedCounty, outletsFor, STATE_OUTLETS } from "@/data/local-outlets";
 import type { NewsItem } from "@/data/types";
 
 const UA = "GridTN/1.0 (tennessee situation monitor; grid.blakehassler.com)";
-const TTL_MS = 90_000;
+const FRESH_MS = 20_000;
+const STALE_MS = 8 * 60_000;
+const FETCH_MS = 1300;
 
 const OFF_STATE = [
   "kentucky",
@@ -18,6 +20,18 @@ const OFF_STATE = [
   "washington dc",
   "montgomery, al",
   "louisville, ky",
+];
+
+const FOREIGN = [
+  "boston",
+  "atlanta",
+  "chicago",
+  "new york",
+  "los angeles",
+  "philadelphia",
+  "penn state",
+  "seattle seahawks",
+  "south station",
 ];
 
 const TN_HINTS = [
@@ -49,24 +63,40 @@ function slug(s: string) {
 function decode(s: string) {
   return s
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
     .replace(/&/g, "&")
     .replace(/</g, "<")
     .replace(/>/g, ">")
     .replace(/"/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/'/g, "'");
 }
 
-function parseRss(xml: string, county?: string): NewsItem[] {
+function hostname(href: string) {
+  try {
+    return new URL(href).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
+function parseRss(xml: string, county?: string, fallback = "Google News"): NewsItem[] {
   const items: NewsItem[] = [];
-  const chunks = xml.split(/<item>/i).slice(1);
+  const chunks = xml.split(/<item[\s>]/i).slice(1);
   for (const chunk of chunks) {
     const title = decode((chunk.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "").trim());
-    const href = decode((chunk.match(/<link>([\s\S]*?)<\/link>/i)?.[1] ?? "").trim());
+    const href = decode(
+      (
+        chunk.match(/<link[^>]*>([\s\S]*?)<\/link>/i)?.[1] ??
+        chunk.match(/<guid[^>]*>([\s\S]*?)<\/guid>/i)?.[1] ??
+        ""
+      ).trim(),
+    );
     const published = decode(
       (chunk.match(/<pubDate>([\s\S]*?)<\/pubDate>/i)?.[1] ?? "").trim(),
     );
     const source = decode(
-      (chunk.match(/<source[^>]*>([\s\S]*?)<\/source>/i)?.[1] ?? "Google News").trim(),
+      (chunk.match(/<source[^>]*>([\s\S]*?)<\/source>/i)?.[1] ?? "").trim(),
     );
     if (!title || !href) continue;
     items.push({
@@ -74,7 +104,7 @@ function parseRss(xml: string, county?: string): NewsItem[] {
       kind: "news",
       headline: title,
       href,
-      source,
+      source: source || hostname(href) || fallback,
       published,
       county,
     });
@@ -82,7 +112,14 @@ function parseRss(xml: string, county?: string): NewsItem[] {
   return items;
 }
 
-function keep(item: NewsItem, county?: string, seat?: string, sites?: string[]) {
+function keep(
+  item: NewsItem,
+  county?: string,
+  seat?: string,
+  sites?: string[],
+  dedicated = false,
+  trusted = false,
+) {
   const blob = `${item.headline} ${item.href} ${item.source}`.toLowerCase();
   if (
     blob.includes("obituary") ||
@@ -97,23 +134,33 @@ function keep(item: NewsItem, county?: string, seat?: string, sites?: string[]) 
   const named =
     (county && blob.includes(county.toLowerCase())) ||
     (seat && blob.includes(seat.toLowerCase()));
+  const foreign = FOREIGN.some((x) => blob.includes(x));
   const tn = TN_HINTS.some((x) => blob.includes(x)) || named || localSite;
+  if (foreign && !named) return false;
   if (county) {
     if (off && !named && !localSite) return false;
-    return Boolean(named || localSite);
+    if (trusted) return true;
+    if (dedicated) return Boolean(named || localSite);
+    return Boolean(named);
   }
   if (off && !tn) return false;
   return true;
 }
 
-async function fetchRss(q: string): Promise<string> {
-  const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
+async function fetchText(url: string): Promise<string> {
   const res = await fetch(url, {
-    headers: { "User-Agent": UA },
-    signal: AbortSignal.timeout(2800),
+    headers: {
+      "User-Agent": UA,
+      Accept: "application/rss+xml, application/xml, text/xml, */*",
+    },
+    signal: AbortSignal.timeout(FETCH_MS),
   });
   if (!res.ok) throw new Error(`news ${res.status}`);
   return res.text();
+}
+
+function googleRss(q: string) {
+  return `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
 }
 
 function ageMs(published: string) {
@@ -134,6 +181,18 @@ function merge(rows: NewsItem[]) {
   return out;
 }
 
+function jsonNews(items: NewsItem[], extra?: Record<string, string>) {
+  return Response.json(
+    { items },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=20, stale-while-revalidate=300",
+        ...extra,
+      },
+    },
+  );
+}
+
 export const Route = createFileRoute("/api/news")({
   server: {
     handlers: {
@@ -141,42 +200,57 @@ export const Route = createFileRoute("/api/news")({
         const u = new URL(request.url);
         const county = u.searchParams.get("county") ?? undefined;
         const seat = u.searchParams.get("seat") ?? undefined;
-        const key = `${county ?? ""}|${seat ?? ""}`;
+        const market = u.searchParams.get("market") ?? undefined;
+        const fresh = u.searchParams.get("fresh") === "1";
+        const key = `${county ?? ""}|${seat ?? ""}|${market ?? ""}`;
         const hit = cache.get(key);
-        if (hit && Date.now() - hit.at < TTL_MS) {
-          return Response.json(
-            { items: hit.items },
-            { headers: { "Cache-Control": "public, s-maxage=90, stale-while-revalidate=300" } },
-          );
-        }
+        const age = hit ? Date.now() - hit.at : Infinity;
+        if (hit && age < FRESH_MS && !fresh) return jsonNews(hit.items, { "X-Grid-News": "cache" });
+        if (hit && age < STALE_MS && !fresh) return jsonNews(hit.items, { "X-Grid-News": "stale" });
 
-        const outlets = outletsFor(county);
+        const outlets = outletsFor(county, market ?? undefined);
         const sites = outlets.map((o) => o.site);
         const siteQ = sites.map((s) => `site:${s}`).join(" OR ");
+        const dedicated = dedicatedCounty(county);
         const stateSites =
           "site:tennesseelookout.com OR site:wkrn.com OR site:newschannel5.com OR site:tennessean.com OR site:knoxnews.com OR site:timesfreepress.com";
-        const queries = county
+        const google = county
           ? [
-              `"${county} County" OR "${seat ?? county}" Tennessee when:3d`,
-              `("${county} County" OR "${seat ?? county}") (${siteQ}) when:7d`,
-            ]
-          : ["Tennessee when:2d", `(${stateSites}) Tennessee when:2d`];
+              `"${county} County" OR "${seat ?? county}" Tennessee when:${dedicated ? "3d" : "14d"}`,
+              siteQ ? `("${county} County" OR "${seat ?? county}") (${siteQ}) when:${dedicated ? "5d" : "14d"}` : "",
+            ].filter(Boolean)
+          : ["Tennessee when:1d", `(${stateSites}) Tennessee when:2d`];
+        const rss = (county ? outlets : STATE_OUTLETS.filter((o) => o.rss))
+          .map((o) => o.rss)
+          .filter((x): x is string => Boolean(x))
+          .slice(0, 2);
 
         try {
-          const xmls = await Promise.allSettled(queries.map(fetchRss));
+          const jobs = [
+            ...google.map((q) => fetchText(googleRss(q))),
+            ...rss.map((url) => fetchText(url)),
+          ];
+          const xmls = await Promise.allSettled(jobs);
           const parsed: NewsItem[] = [];
-          for (const r of xmls) {
-            if (r.status !== "fulfilled") continue;
-            parsed.push(...parseRss(r.value, county));
-          }
-          const items = merge(parsed.filter((it) => keep(it, county, seat, sites))).slice(0, 40);
-          cache.set(key, { at: Date.now(), items });
-          return Response.json(
-            { items },
-            { headers: { "Cache-Control": "public, s-maxage=90, stale-while-revalidate=300" } },
-          );
+          const trusted = new Set<string>();
+          xmls.forEach((r, i) => {
+            if (r.status !== "fulfilled") return;
+            const rows = parseRss(r.value, county);
+            if (county && i === 0) {
+              for (const it of rows) trusted.add(it.headline.toLowerCase());
+            }
+            parsed.push(...rows);
+          });
+          const items = merge(
+            parsed.filter((it) =>
+              keep(it, county, seat, sites, dedicated, trusted.has(it.headline.toLowerCase())),
+            ),
+          ).slice(0, 40);
+          if (items.length) cache.set(key, { at: Date.now(), items });
+          else if (hit) return jsonNews(hit.items, { "X-Grid-News": "keep" });
+          return jsonNews(items, { "X-Grid-News": "live" });
         } catch {
-          return Response.json({ items: hit?.items ?? [] }, { status: 200 });
+          return jsonNews(hit?.items ?? [], { "X-Grid-News": "err" });
         }
       },
     },

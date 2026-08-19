@@ -89,6 +89,16 @@
   }
 }
 
+.is-panning .traffic-flow,
+.is-panning .road-flow,
+.is-panning .mesh-drift {
+  animation-play-state: paused;
+}
+
+.is-panning svg {
+  cursor: grabbing;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mesh-drift,
   .traffic-flow,
