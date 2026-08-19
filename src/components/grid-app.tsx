@@ -105,12 +105,12 @@ export function GridApp() {
           if (live) merge(Array.isArray(d) ? d : []);
         })
         .catch(() => undefined);
-    }, tab === "crime" ? 0 : 400);
+    }, 350);
     return () => {
       live = false;
       window.clearTimeout(wait);
     };
-  }, [tab]);
+  }, []);
 
   useEffect(() => {
     let live = true;
@@ -124,21 +124,27 @@ export function GridApp() {
       });
     };
     const loadLive = () => {
-      fetch("/api/crime-live", { signal: AbortSignal.timeout(2500) })
+      if (document.visibilityState === "hidden") return;
+      fetch("/api/crime-live", { signal: AbortSignal.timeout(1200) })
         .then((r) => r.json())
         .then((d: { incidents?: CrimeIncident[] }) => {
           if (live) merge(d.incidents ?? []);
         })
         .catch(() => undefined);
     };
-    const wait = window.setTimeout(loadLive, tab === "crime" ? 250 : 1400);
-    const poll = window.setInterval(loadLive, 30 * 60_000);
+    const wait = window.setTimeout(loadLive, 1800);
+    const poll = window.setInterval(loadLive, 60 * 60_000);
+    const onVis = () => {
+      if (document.visibilityState === "visible") loadLive();
+    };
+    document.addEventListener("visibilitychange", onVis);
     return () => {
       live = false;
       window.clearTimeout(wait);
       window.clearInterval(poll);
+      document.removeEventListener("visibilitychange", onVis);
     };
-  }, [tab]);
+  }, []);
 
   useEffect(() => {
     let live = true;

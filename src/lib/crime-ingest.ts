@@ -1,5 +1,5 @@
 import type { CrimeIncident } from "@/data/types";
-import { COUNTY_NAMES, COUNTY_XY } from "@/lib/county-xy";
+import { COUNTY_XY, countyFromText } from "@/lib/county-xy";
 
 const UA = "GridTN/1.0 (tennessee situation monitor; grid.blakehassler.com)";
 const FETCH_MS = 4500;
@@ -8,6 +8,9 @@ const NASH =
   "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Metro_Nashville_Police_Department_Incidents_view/FeatureServer/0/query";
 const MEM =
   "https://services2.arcgis.com/saWmpKJIUAjyyNVc/arcgis/rest/services/MPD_Public_Safety_Incidents_Mapping/FeatureServer/0/query";
+
+const NEWS_SKIP =
+  /boston|dorchester|south station|probation|daycare|security deposit|penn state|louisville|kentucky|north carolina/i;
 
 function ymd(ms: number) {
   try {
@@ -112,19 +115,14 @@ function decode(s: string) {
     .replace(/&/g, "&");
 }
 
-function countyIn(text: string) {
-  const blob = text.toLowerCase();
-  let hit: string | null = null;
-  for (const name of COUNTY_NAMES) {
-    if (blob.includes(`${name.toLowerCase()} county`)) {
-      if (!hit || name.length > hit.length) hit = name;
-    }
-  }
-  return hit;
+function rssDay(raw: string) {
+  const d = new Date(raw);
+  if (Number.isNaN(+d)) return daysAgo(0);
+  return d.toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 }
 
-async function fromNews(since: string): Promise<CrimeIncident[]> {
-  const q = `Tennessee (homicide OR "fatal shooting" OR "shot and killed") when:2d`;
+async function fromNews(): Promise<CrimeIncident[]> {
+  const q = `Tennessee (homicide OR "fatal shooting" OR "shot and killed" OR "officer-involved") when:3d`;
   const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
   try {
     const res = await fetch(url, {
@@ -135,27 +133,32 @@ async function fromNews(since: string): Promise<CrimeIncident[]> {
     const xml = await res.text();
     const out: CrimeIncident[] = [];
     const seen = new Set<string>();
-    for (const chunk of xml.split(/<item>/i).slice(1).slice(0, 18)) {
+    for (const chunk of xml.split(/<item>/i).slice(1).slice(0, 24)) {
       const title = decode((chunk.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "").trim());
+      const pub = decode((chunk.match(/<pubDate>([\s\S]*?)<\/pubDate>/i)?.[1] ?? "").trim());
       if (!title) continue;
-      if (!/homicide|killed|fatal shooting|shot and killed|murder/i.test(title)) continue;
-      const county = countyIn(title);
-      if (!county || county === "Shelby" || county === "Davidson" || county === "Hamilton") continue;
+      if (NEWS_SKIP.test(title)) continue;
+      if (!/homicide|killed|fatal shooting|shot and killed|murder|officer-involved/i.test(title)) continue;
+      if (!/tennessee|\btn\b|county|knoxville|memphis|nashville|chattanooga|clarksville/i.test(title)) continue;
+      const county = countyFromText(title);
+      if (!county) continue;
+      if (county === "Shelby" || county === "Davidson") continue;
       const xy = COUNTY_XY[county];
       if (!xy) continue;
-      const id = `NEWS-${since}-${county}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "").slice(0, 28)}`;
-      if (seen.has(id)) continue;
-      seen.add(id);
+      const date = rssDay(pub);
+      const dayKey = `${county}|${date}`;
+      if (seen.has(dayKey)) continue;
+      seen.add(dayKey);
       out.push({
-        id,
-        date: since,
+        id: `NEWS-${date}-${county}`,
+        date,
         city: "",
         county,
-        address: title.slice(0, 80),
+        address: title.replace(/\s+-\s+[^-]+$/, "").slice(0, 80),
         lat: xy[0],
         lon: xy[1],
         type: "Homicide",
-        offense: "Gun homicide",
+        offense: /shooting|gun|shot/i.test(title) ? "Gun homicide" : "Homicide",
         source: "News",
         killed: 1,
         injured: 0,
@@ -195,14 +198,14 @@ export async function fetchNewCrime(since?: string): Promise<CrimeIncident[]> {
       "Crime_ID,Offense_Datetime,Street_Address,ZIP_Code,Latitude,Longitude,UCR_Category,UCR_Description,UCR_Incident_Code,Full_Address,City",
       "Offense_Datetime DESC",
     ).then((rows) => rows.map((f) => fromMem(f.attributes)).filter((x): x is CrimeIncident => Boolean(x))),
-    fromNews(daysAgo(0)),
+    fromNews(),
   ]);
   const rows: CrimeIncident[] = [];
   for (const j of jobs) {
     if (j.status === "fulfilled") rows.push(...j.value);
   }
   const pd = unique(rows.filter((r) => r.source !== "News"));
-  const seenDay = new Set(pd.map((r) => `${r.county}|${r.date}`));
+  const seenDay = new Set(pd.filter((r) => r.type === "Homicide").map((r) => `${r.county}|${r.date}`));
   for (const n of rows.filter((r) => r.source === "News")) {
     if (seenDay.has(`${n.county}|${n.date}`)) continue;
     pd.push(n);

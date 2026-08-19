@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: crime-daily
+  cancel-in-progress: true
+
 jobs:
   refresh:
     runs-on: ubuntu-latest

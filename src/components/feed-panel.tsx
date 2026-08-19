@@ -106,19 +106,27 @@ function NewsFeed({
   useEffect(() => {
     if (!active) return;
     let live = true;
-    const tick = window.setInterval(() => {
+    const pull = () => {
       if (document.visibilityState === "hidden") return;
-      fetchNews(county, seat, market, true)
+      const key = newsCacheKey(county, seat, market);
+      const age = newsCacheAge(key);
+      fetchNews(county, seat, market, age == null || age > 12_000)
         .then((next) => {
           if (!live) return;
           setItems(next);
           setStatus("ok");
         })
         .catch(() => undefined);
-    }, 20_000);
+    };
+    const tick = window.setInterval(pull, 15_000);
+    const onVis = () => {
+      if (document.visibilityState === "visible") pull();
+    };
+    document.addEventListener("visibilitychange", onVis);
     return () => {
       live = false;
       window.clearInterval(tick);
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, [active, county, seat, market]);
 
