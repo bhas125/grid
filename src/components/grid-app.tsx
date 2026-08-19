@@ -98,30 +98,41 @@ export function GridApp() {
         return extra.length ? prev.concat(extra) : prev;
       });
     };
-    const loadStatic = () => {
+    const wait = window.setTimeout(() => {
       fetch("/crime-tn.json")
         .then((r) => r.json())
         .then((d: CrimeIncident[]) => {
           if (live) merge(Array.isArray(d) ? d : []);
         })
         .catch(() => undefined);
+    }, tab === "crime" ? 0 : 400);
+    return () => {
+      live = false;
+      window.clearTimeout(wait);
+    };
+  }, [tab]);
+
+  useEffect(() => {
+    let live = true;
+    const merge = (next: CrimeIncident[]) => {
+      if (!live || !next.length) return;
+      setCrime((prev) => {
+        if (!prev.length) return next;
+        const have = new Set(prev.map((r) => r.id));
+        const extra = next.filter((r) => !have.has(r.id));
+        return extra.length ? prev.concat(extra) : prev;
+      });
     };
     const loadLive = () => {
-      fetch("/api/crime-live")
+      fetch("/api/crime-live", { signal: AbortSignal.timeout(2500) })
         .then((r) => r.json())
         .then((d: { incidents?: CrimeIncident[] }) => {
           if (live) merge(d.incidents ?? []);
         })
         .catch(() => undefined);
     };
-    const wait = window.setTimeout(
-      () => {
-        loadStatic();
-        loadLive();
-      },
-      tab === "crime" ? 0 : 500,
-    );
-    const poll = window.setInterval(loadLive, 15 * 60_000);
+    const wait = window.setTimeout(loadLive, tab === "crime" ? 250 : 1400);
+    const poll = window.setInterval(loadLive, 30 * 60_000);
     return () => {
       live = false;
       window.clearTimeout(wait);

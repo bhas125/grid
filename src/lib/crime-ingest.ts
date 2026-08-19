@@ -2,14 +2,12 @@ import type { CrimeIncident } from "@/data/types";
 import { COUNTY_NAMES, COUNTY_XY } from "@/lib/county-xy";
 
 const UA = "GridTN/1.0 (tennessee situation monitor; grid.blakehassler.com)";
-const FETCH_MS = 8000;
+const FETCH_MS = 4500;
 
 const NASH =
   "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Metro_Nashville_Police_Department_Incidents_view/FeatureServer/0/query";
 const MEM =
   "https://services2.arcgis.com/saWmpKJIUAjyyNVc/arcgis/rest/services/MPD_Public_Safety_Incidents_Mapping/FeatureServer/0/query";
-const CHA =
-  "https://services2.arcgis.com/OIAIimblRxPs0xxc/arcgis/rest/services/testingtestingtestingpolicepoints/FeatureServer/0/query";
 
 function ymd(ms: number) {
   try {
@@ -39,7 +37,7 @@ async function arcgis(url: string, where: string, fields: string, order: string)
   q.searchParams.set("where", where);
   q.searchParams.set("outFields", fields);
   q.searchParams.set("orderByFields", order);
-  q.searchParams.set("resultRecordCount", "400");
+  q.searchParams.set("resultRecordCount", "250");
   q.searchParams.set("returnGeometry", "false");
   q.searchParams.set("f", "pjson");
   const res = await fetch(q, {
@@ -107,35 +105,6 @@ function fromMem(a: Record<string, unknown>): CrimeIncident | null {
   };
 }
 
-function fromCha(a: Record<string, unknown>): CrimeIncident | null {
-  const raw = String(a.case_number ?? "").replace(/^CHAT-/, "");
-  const lat = num(a.latitude);
-  const lon = num(a.longitude);
-  if (!raw || !lat || !lon) return null;
-  const code = String(a.ucr_incident_code ?? "");
-  const desc = String(a.incident_description ?? "");
-  const homicide = code === "09A" || /homicide|murder/i.test(desc);
-  const assault = code === "13A" || /aggravated assault|shots fired|shooting/i.test(desc);
-  if (!homicide && !assault) return null;
-  const date = ymd(num(a.date_incident));
-  if (date < "2026-01-01") return null;
-  return {
-    id: `CHAT-${raw}`,
-    date,
-    city: String(a.city ?? "Chattanooga"),
-    county: "Hamilton",
-    address: String(a.address ?? "").trim(),
-    zip: String(a.zip ?? "") || undefined,
-    lat,
-    lon,
-    type: homicide ? "Homicide" : /shot/i.test(desc) ? "Shooting" : "Shooting / aggravated assault",
-    offense: desc,
-    source: "Chattanooga_CPD",
-    killed: homicide ? 1 : 0,
-    injured: 0,
-  };
-}
-
 function decode(s: string) {
   return s
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
@@ -155,7 +124,7 @@ function countyIn(text: string) {
 }
 
 async function fromNews(since: string): Promise<CrimeIncident[]> {
-  const q = `Tennessee (homicide OR "fatal shooting" OR "shot and killed" OR "man killed" OR "woman killed") when:3d`;
+  const q = `Tennessee (homicide OR "fatal shooting" OR "shot and killed") when:2d`;
   const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
   try {
     const res = await fetch(url, {
@@ -166,7 +135,7 @@ async function fromNews(since: string): Promise<CrimeIncident[]> {
     const xml = await res.text();
     const out: CrimeIncident[] = [];
     const seen = new Set<string>();
-    for (const chunk of xml.split(/<item>/i).slice(1).slice(0, 25)) {
+    for (const chunk of xml.split(/<item>/i).slice(1).slice(0, 18)) {
       const title = decode((chunk.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? "").trim());
       if (!title) continue;
       if (!/homicide|killed|fatal shooting|shot and killed|murder/i.test(title)) continue;
@@ -210,10 +179,9 @@ function unique(rows: CrimeIncident[]) {
 }
 
 export async function fetchNewCrime(since?: string): Promise<CrimeIncident[]> {
-  const from = since && since >= "2026-01-01" ? since : daysAgo(14);
+  const from = since && since >= "2026-01-01" ? since : daysAgo(4);
   const nashWhere = `Incident_Occurred > DATE '${from}' AND (Offense_NIBRS IN ('09A','09C','13A'))`;
   const memWhere = `Offense_Datetime > DATE '${from}' AND (UCR_Incident_Code IN ('09A','13A') OR UCR_Category = 'HOMICIDE')`;
-  const chaWhere = `date_incident > DATE '${from}' AND ucr_incident_code IN ('09A','13A')`;
   const jobs = await Promise.allSettled([
     arcgis(
       NASH,
@@ -227,21 +195,15 @@ export async function fetchNewCrime(since?: string): Promise<CrimeIncident[]> {
       "Crime_ID,Offense_Datetime,Street_Address,ZIP_Code,Latitude,Longitude,UCR_Category,UCR_Description,UCR_Incident_Code,Full_Address,City",
       "Offense_Datetime DESC",
     ).then((rows) => rows.map((f) => fromMem(f.attributes)).filter((x): x is CrimeIncident => Boolean(x))),
-    arcgis(
-      CHA,
-      chaWhere,
-      "case_number,date_incident,address,city,zip,latitude,longitude,ucr_incident_code,incident_description",
-      "date_incident DESC",
-    ).then((rows) => rows.map((f) => fromCha(f.attributes)).filter((x): x is CrimeIncident => Boolean(x))),
+    fromNews(daysAgo(0)),
   ]);
   const rows: CrimeIncident[] = [];
   for (const j of jobs) {
     if (j.status === "fulfilled") rows.push(...j.value);
   }
-  const pd = unique(rows);
+  const pd = unique(rows.filter((r) => r.source !== "News"));
   const seenDay = new Set(pd.map((r) => `${r.county}|${r.date}`));
-  const news = await fromNews(daysAgo(0));
-  for (const n of news) {
+  for (const n of rows.filter((r) => r.source === "News")) {
     if (seenDay.has(`${n.county}|${n.date}`)) continue;
     pd.push(n);
     seenDay.add(`${n.county}|${n.date}`);

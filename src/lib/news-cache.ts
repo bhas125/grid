@@ -5,7 +5,7 @@ type Entry = { items: NewsItem[]; at: number };
 const mem = new Map<string, Entry>();
 const inflight = new Map<string, Promise<NewsItem[]>>();
 const SS_KEY = "grid-news-v1";
-const SS_TTL = 3 * 60_000;
+const SS_TTL = 45_000;
 
 function hydrate() {
   try {
@@ -91,7 +91,7 @@ function load(county: string | null, seat: string | undefined, market: string | 
 export function prefetchNews(county: string | null, seat?: string, market?: string) {
   const key = newsCacheKey(county, seat, market);
   const age = newsCacheAge(key);
-  if (age != null && age < 20_000) return;
+  if (age != null && age < 12_000) return;
   void load(county, seat, market, false);
 }
 

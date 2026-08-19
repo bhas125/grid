@@ -15,7 +15,7 @@ export const Route = createFileRoute("/api/crime-refresh")({
         } catch (err) {
           return Response.json(
             { ok: false, error: err instanceof Error ? err.message : "refresh failed" },
-            { status: 500 },
+            { status: 500, headers: { "Cache-Control": "no-store" } },
           );
         }
       },

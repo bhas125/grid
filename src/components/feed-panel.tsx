@@ -115,7 +115,7 @@ function NewsFeed({
           setStatus("ok");
         })
         .catch(() => undefined);
-    }, 30_000);
+    }, 20_000);
     return () => {
       live = false;
       window.clearInterval(tick);

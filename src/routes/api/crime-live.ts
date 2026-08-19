@@ -15,11 +15,14 @@ export const Route = createFileRoute("/api/crime-live")({
             : result.incidents;
           return Response.json(
             { incidents, skipped: result.skipped },
-            { headers: { "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600" } },
+            { headers: { "Cache-Control": "public, s-maxage=90, stale-while-revalidate=300" } },
           );
         } catch {
           const incidents = await readLiveCrime(since);
-          return Response.json({ incidents, skipped: true });
+          return Response.json(
+            { incidents, skipped: true },
+            { headers: { "Cache-Control": "public, s-maxage=30" } },
+          );
         }
       },
     },

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Merge yesterday/today homicides + shootings into public/crime-tn.json.
- * Run locally or from GitHub Actions. Does not touch the map render path.
+ * Merge new homicides + shootings into public/crime-tn.json.
+ * Run from GitHub Actions twice a day. This file is the permanent store —
+ * Vercel deploys it to the CDN so the map never depends on a sandbox.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -15,8 +16,6 @@ const NASH =
   "https://services2.arcgis.com/HdTo6HJqh92wn4D8/arcgis/rest/services/Metro_Nashville_Police_Department_Incidents_view/FeatureServer/0/query";
 const MEM =
   "https://services2.arcgis.com/saWmpKJIUAjyyNVc/arcgis/rest/services/MPD_Public_Safety_Incidents_Mapping/FeatureServer/0/query";
-const CHA =
-  "https://services2.arcgis.com/OIAIimblRxPs0xxc/arcgis/rest/services/testingtestingtestingpolicepoints/FeatureServer/0/query";
 
 function ymd(ms) {
   return new Date(ms).toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
@@ -40,7 +39,7 @@ async function arcgis(url, where, fields, order) {
   q.searchParams.set("resultRecordCount", "400");
   q.searchParams.set("returnGeometry", "false");
   q.searchParams.set("f", "pjson");
-  const res = await fetch(q, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(8000) });
+  const res = await fetch(q, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(12000) });
   if (!res.ok) throw new Error(`arcgis ${res.status}`);
   const d = await res.json();
   return d.features ?? [];
@@ -102,35 +101,6 @@ function fromMem(a) {
   };
 }
 
-function fromCha(a) {
-  const raw = String(a.case_number ?? "").replace(/^CHAT-/, "");
-  const lat = Number(a.latitude);
-  const lon = Number(a.longitude);
-  if (!raw || !lat || !lon) return null;
-  const code = String(a.ucr_incident_code ?? "");
-  const desc = String(a.incident_description ?? "");
-  const homicide = code === "09A" || /homicide|murder/i.test(desc);
-  const assault = code === "13A" || /aggravated assault|shots fired|shooting/i.test(desc);
-  if (!homicide && !assault) return null;
-  const date = ymd(Number(a.date_incident));
-  if (date < "2026-01-01") return null;
-  return {
-    id: `CHAT-${raw}`,
-    date,
-    city: String(a.city ?? "Chattanooga"),
-    county: "Hamilton",
-    address: String(a.address ?? "").trim(),
-    zip: String(a.zip ?? "") || undefined,
-    lat,
-    lon,
-    type: homicide ? "Homicide" : /shot/i.test(desc) ? "Shooting" : "Shooting / aggravated assault",
-    offense: desc,
-    source: "Chattanooga_CPD",
-    killed: homicide ? 1 : 0,
-    injured: 0,
-  };
-}
-
 async function main() {
   const since = daysAgo(14);
   const jobs = await Promise.allSettled([
@@ -146,12 +116,6 @@ async function main() {
       "Crime_ID,Offense_Datetime,Street_Address,ZIP_Code,Latitude,Longitude,UCR_Category,UCR_Description,UCR_Incident_Code,Full_Address,City",
       "Offense_Datetime DESC",
     ).then((rows) => rows.map((f) => fromMem(f.attributes)).filter(Boolean)),
-    arcgis(
-      CHA,
-      `date_incident > DATE '${since}' AND ucr_incident_code IN ('09A','13A')`,
-      "case_number,date_incident,address,city,zip,latitude,longitude,ucr_incident_code,incident_description",
-      "date_incident DESC",
-    ).then((rows) => rows.map((f) => fromCha(f.attributes)).filter(Boolean)),
   ]);
   const fresh = [];
   for (const j of jobs) {
