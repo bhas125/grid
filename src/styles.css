@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-display: "Barlow Condensed", "IBM Plex Sans", sans-serif;
+
+  --color-bg: #020308;
+  --color-bg-2: #05070e;
+  --color-surface: #080c14;
+  --color-elevated: #0c121c;
+  --color-fg: #e8f6ff;
+  --color-muted: #7a93a8;
+  --color-faint: #4d6274;
+  --color-line: #143044;
+  --color-steel: #8ec8e0;
+  --color-grid: #3de0ff;
+  --color-live: #6f9e7a;
+  --color-hot: #ff4d4d;
+  --color-watch: #ffb347;
+  --color-gop: #c46a5a;
+  --color-dem: #5a7eab;
+  --color-flow: #5cffc0;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 24px #3de0ff40;
+}
+
+.mesh-drift {
+  transform-box: fill-box;
+  transform-origin: 0 0;
+  animation: 9s linear infinite scan-drift;
+}
+
+.traffic-flow {
+  stroke-dasharray: 6 12;
+  animation: 1.4s linear infinite dash-flow;
+}
+
+.road-flow {
+  stroke-dasharray: 3 8;
+  animation: 2.4s linear infinite dash-flow;
+}
+
+@keyframes scan-drift {
+  0% {
+    transform: translate(0);
+  }
+  100% {
+    transform: translate(14px, 14px);
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh-drift,
+  .traffic-flow,
+  .road-flow {
+    animation: none;
+  }
+}

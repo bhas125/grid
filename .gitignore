@@ -1,0 +1,16 @@
+node_modules
+.vercel
+dist
+.output
+*.log
+.env
+.env.*
+.DS_Store
+artifacts
+attachments
+screenshots
+AGENTS.md
+AGENTS.project.md
+.grok
+/tmp
+*.xlsx

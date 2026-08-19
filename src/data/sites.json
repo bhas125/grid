@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Colossus 1",
+    "county": "Shelby",
+    "lon": -90.1,
+    "lat": 35.07,
+    "kind": "operating"
+  },
+  {
+    "name": "Colossus 2",
+    "county": "Shelby",
+    "lon": -90.05,
+    "lat": 35.03,
+    "kind": "operating"
+  },
+  {
+    "name": "Meta Gallatin",
+    "county": "Sumner",
+    "lon": -86.45,
+    "lat": 36.38,
+    "kind": "operating"
+  },
+  {
+    "name": "Nashville I",
+    "county": "Davidson",
+    "lon": -86.78,
+    "lat": 36.16,
+    "kind": "operating"
+  }
+]

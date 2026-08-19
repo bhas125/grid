@@ -1,0 +1,3691 @@
+[
+  {
+    "name": "Anderson",
+    "fips": "47001",
+    "seat": "Clinton",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 81449,
+    "pop2020": 77327,
+    "growth": 5.3,
+    "trump": 24582,
+    "harris": 11525,
+    "trumpPct": 67.26,
+    "harrisPct": 31.53,
+    "other": 441,
+    "totalVotes": 36548,
+    "margin": 35.73,
+    "medianIncome": 60000,
+    "temp": 63,
+    "tempLabel": "hot",
+    "profile": "rural_e",
+    "issues": [
+      "Aug 6 local control",
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Democrats flipped local races. Oak Ridge / Clinton split is the story."
+    },
+    "brief": {
+      "lede": "Democrats flipped local races. Oak Ridge / Clinton split is the story. Anderson County (East Tennessee, Knoxville market) voted Trump 67.3\u201331.5 in 2024. Population 81,449, +5.3% since 2020.",
+      "talking": [
+        "Aug 6 local control",
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation"
+      ],
+      "soWhat": "After-action the Aug 6 local losses. Identify every remaining local seat through 2028 and put a name on it."
+    }
+  },
+  {
+    "name": "Bedford",
+    "fips": "47003",
+    "seat": "Shelbyville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 54228,
+    "pop2020": 50396,
+    "growth": 7.6,
+    "trump": 15772,
+    "harris": 4122,
+    "trumpPct": 78.51,
+    "harrisPct": 20.52,
+    "other": 196,
+    "totalVotes": 20090,
+    "margin": 57.99,
+    "medianIncome": 52000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Bedford County (Middle Tennessee, Nashville market) voted Trump 78.5\u201320.5 in 2024. Population 54,228, +7.6% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Benton",
+    "fips": "47005",
+    "seat": "Camden",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 16173,
+    "pop2020": 15853,
+    "growth": 2.0,
+    "trump": 5886,
+    "harris": 1317,
+    "trumpPct": 81.07,
+    "harrisPct": 18.14,
+    "other": 57,
+    "totalVotes": 7260,
+    "margin": 62.93,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Benton County (West Tennessee, Jackson market) voted Trump 81.1\u201318.1 in 2024. Population 16,173, +2.0% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Bledsoe",
+    "fips": "47007",
+    "seat": "Pikeville",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 15591,
+    "pop2020": 14955,
+    "growth": 4.3,
+    "trump": 5254,
+    "harris": 891,
+    "trumpPct": 84.87,
+    "harrisPct": 14.39,
+    "other": 46,
+    "totalVotes": 6191,
+    "margin": 70.48,
+    "medianIncome": 40000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Bledsoe County (East Tennessee, Chattanooga market) voted Trump 84.9\u201314.4 in 2024. Population 15,591, +4.3% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Blount",
+    "fips": "47009",
+    "seat": "Maryville",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 142211,
+    "pop2020": 135656,
+    "growth": 4.8,
+    "trump": 50699,
+    "harris": 17664,
+    "trumpPct": 73.24,
+    "harrisPct": 25.52,
+    "other": 861,
+    "totalVotes": 69224,
+    "margin": 47.72,
+    "medianIncome": 70000,
+    "temp": 33,
+    "tempLabel": "steady",
+    "profile": "midsize_r",
+    "issues": [
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement",
+      "Industrial recruiting"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Blount County (East Tennessee, Knoxville market) voted Trump 73.2\u201325.5 in 2024. Population 142,211, +4.8% since 2020.",
+      "talking": [
+        "Local commission control",
+        "Cost of living",
+        "Immigration enforcement",
+        "Industrial recruiting"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Bradley",
+    "fips": "47011",
+    "seat": "Cleveland",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 113782,
+    "pop2020": 108831,
+    "growth": 4.5,
+    "trump": 38836,
+    "harris": 9852,
+    "trumpPct": 78.86,
+    "harrisPct": 20.01,
+    "other": 558,
+    "totalVotes": 49246,
+    "margin": 58.85,
+    "medianIncome": 58000,
+    "temp": 33,
+    "tempLabel": "steady",
+    "profile": "midsize_r",
+    "issues": [
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement",
+      "Industrial recruiting"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Bradley County (East Tennessee, Chattanooga market) voted Trump 78.9\u201320.0 in 2024. Population 113,782, +4.5% since 2020.",
+      "talking": [
+        "Local commission control",
+        "Cost of living",
+        "Immigration enforcement",
+        "Industrial recruiting"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Campbell",
+    "fips": "47013",
+    "seat": "Jacksboro",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 40238,
+    "pop2020": 39306,
+    "growth": 2.4,
+    "trump": 13115,
+    "harris": 2305,
+    "trumpPct": 84.46,
+    "harrisPct": 14.84,
+    "other": 108,
+    "totalVotes": 15528,
+    "margin": 69.62,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Campbell County (East Tennessee, Knoxville market) voted Trump 84.5\u201314.8 in 2024. Population 40,238, +2.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Cannon",
+    "fips": "47015",
+    "seat": "Woodbury",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 15142,
+    "pop2020": 14561,
+    "growth": 4.0,
+    "trump": 5682,
+    "harris": 1132,
+    "trumpPct": 82.58,
+    "harrisPct": 16.45,
+    "other": 67,
+    "totalVotes": 6881,
+    "margin": 66.13,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Cannon County (Middle Tennessee, Nashville market) voted Trump 82.6\u201316.4 in 2024. Population 15,142, +4.0% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Carroll",
+    "fips": "47017",
+    "seat": "Huntingdon",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 29107,
+    "pop2020": 28428,
+    "growth": 2.4,
+    "trump": 9547,
+    "harris": 2233,
+    "trumpPct": 80.35,
+    "harrisPct": 18.79,
+    "other": 102,
+    "totalVotes": 11882,
+    "margin": 61.56,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Carroll County (West Tennessee, Jackson market) voted Trump 80.3\u201318.8 in 2024. Population 29,107, +2.4% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Carter",
+    "fips": "47019",
+    "seat": "Elizabethton",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 57434,
+    "pop2020": 56386,
+    "growth": 1.9,
+    "trump": 20167,
+    "harris": 4454,
+    "trumpPct": 81.15,
+    "harrisPct": 17.92,
+    "other": 231,
+    "totalVotes": 24852,
+    "margin": 63.23,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "tri",
+    "issues": [
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing",
+      "School curriculum"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Carter County (East Tennessee, Tri-Cities market) voted Trump 81.2\u201317.9 in 2024. Population 57,434, +1.9% since 2020.",
+      "talking": [
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing",
+        "School curriculum"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Cheatham",
+    "fips": "47021",
+    "seat": "Ashland City",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 42604,
+    "pop2020": 41090,
+    "growth": 3.7,
+    "trump": 14987,
+    "harris": 5464,
+    "trumpPct": 72.26,
+    "harrisPct": 26.34,
+    "other": 290,
+    "totalVotes": 20741,
+    "margin": 45.92,
+    "medianIncome": 78000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "collar",
+    "issues": [
+      "School boards",
+      "Growth and traffic",
+      "Property taxes",
+      "Education culture"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Cheatham County (Middle Tennessee, Nashville market) voted Trump 72.3\u201326.3 in 2024. Population 42,604, +3.7% since 2020.",
+      "talking": [
+        "School boards",
+        "Growth and traffic",
+        "Property taxes",
+        "Education culture"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Chester",
+    "fips": "47023",
+    "seat": "Henderson",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 17876,
+    "pop2020": 17385,
+    "growth": 2.8,
+    "trump": 6206,
+    "harris": 1286,
+    "trumpPct": 81.91,
+    "harrisPct": 16.97,
+    "other": 85,
+    "totalVotes": 7577,
+    "margin": 64.94,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Chester County (West Tennessee, Jackson market) voted Trump 81.9\u201317.0 in 2024. Population 17,876, +2.8% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Claiborne",
+    "fips": "47025",
+    "seat": "Tazewell",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 33070,
+    "pop2020": 32066,
+    "growth": 3.1,
+    "trump": 11463,
+    "harris": 1971,
+    "trumpPct": 84.7,
+    "harrisPct": 14.56,
+    "other": 100,
+    "totalVotes": 13534,
+    "margin": 70.14,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Claiborne County (East Tennessee, Knoxville market) voted Trump 84.7\u201314.6 in 2024. Population 33,070, +3.1% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Clay",
+    "fips": "47027",
+    "seat": "Celina",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 7857,
+    "pop2020": 7594,
+    "growth": 3.5,
+    "trump": 3117,
+    "harris": 614,
+    "trumpPct": 82.9,
+    "harrisPct": 16.33,
+    "other": 29,
+    "totalVotes": 3760,
+    "margin": 66.57,
+    "medianIncome": 39000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Clay County (Middle Tennessee, Nashville market) voted Trump 82.9\u201316.3 in 2024. Population 7,857, +3.5% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Cocke",
+    "fips": "47029",
+    "seat": "Newport",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 37596,
+    "pop2020": 36043,
+    "growth": 4.3,
+    "trump": 13105,
+    "harris": 2415,
+    "trumpPct": 83.67,
+    "harrisPct": 15.42,
+    "other": 143,
+    "totalVotes": 15663,
+    "margin": 68.25,
+    "medianIncome": 41000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Cocke County (East Tennessee, Knoxville market) voted Trump 83.7\u201315.4 in 2024. Population 37,596, +4.3% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Coffee",
+    "fips": "47031",
+    "seat": "Manchester",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 61285,
+    "pop2020": 58145,
+    "growth": 5.4,
+    "trump": 19174,
+    "harris": 5440,
+    "trumpPct": 76.91,
+    "harrisPct": 21.82,
+    "other": 318,
+    "totalVotes": 24932,
+    "margin": 55.09,
+    "medianIncome": 56000,
+    "temp": 63,
+    "tempLabel": "hot",
+    "profile": "rural_e",
+    "issues": [
+      "Aug 6 local control",
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Democrats flipped local seats around Manchester / Tullahoma."
+    },
+    "brief": {
+      "lede": "Democrats flipped local seats around Manchester / Tullahoma. Coffee County (Middle Tennessee, Nashville market) voted Trump 76.9\u201321.8 in 2024. Population 61,285, +5.4% since 2020.",
+      "talking": [
+        "Aug 6 local control",
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation"
+      ],
+      "soWhat": "After-action the Aug 6 local losses. Identify every remaining local seat through 2028 and put a name on it."
+    }
+  },
+  {
+    "name": "Crockett",
+    "fips": "47033",
+    "seat": "Alamo",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 13973,
+    "pop2020": 13905,
+    "growth": 0.5,
+    "trump": 4674,
+    "harris": 1196,
+    "trumpPct": 78.94,
+    "harrisPct": 20.2,
+    "other": 51,
+    "totalVotes": 5921,
+    "margin": 58.74,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Crockett County (West Tennessee, Memphis market) voted Trump 78.9\u201320.2 in 2024. Population 13,973, +0.5% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Cumberland",
+    "fips": "47035",
+    "seat": "Crossville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 65618,
+    "pop2020": 61372,
+    "growth": 6.9,
+    "trump": 27399,
+    "harris": 6996,
+    "trumpPct": 79.09,
+    "harrisPct": 20.2,
+    "other": 247,
+    "totalVotes": 34642,
+    "margin": 58.89,
+    "medianIncome": 52000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Cumberland County (Middle Tennessee, Nashville market) voted Trump 79.1\u201320.2 in 2024. Population 65,618, +6.9% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Davidson",
+    "fips": "47037",
+    "seat": "Nashville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 729505,
+    "pop2020": 716095,
+    "growth": 1.9,
+    "trump": 102256,
+    "harris": 181862,
+    "trumpPct": 35.26,
+    "harrisPct": 62.7,
+    "other": 5918,
+    "totalVotes": 290036,
+    "margin": -27.44,
+    "medianIncome": 71000,
+    "temp": 38,
+    "tempLabel": "steady",
+    "profile": "metro_d",
+    "issues": [
+      "Crime and public safety",
+      "School governance",
+      "Housing costs",
+      "Redistricting"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Nashville remains the state's loudest Democratic island and the media engine for every statewide fight. Harris +27 here; 2024 turnout was only 55 percent \u2014 among the worst in Tennessee.",
+      "talking": [
+        "Redistricting and the new map's effect on Davidson-adjacent seats",
+        "Housing and property-tax revolt in the core",
+        "Metro crime contrast with collar counties",
+        "Jerri Green urban base vs Blackburn statewide machine"
+      ],
+      "soWhat": "Do not chase Metro Twitter. Use Davidson press to set statewide frames; spend field and paid in the collar, not here."
+    }
+  },
+  {
+    "name": "DeKalb",
+    "fips": "47041",
+    "seat": "Smithville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 21747,
+    "pop2020": 20191,
+    "growth": 7.7,
+    "trump": 7599,
+    "harris": 1706,
+    "trumpPct": 80.87,
+    "harrisPct": 18.16,
+    "other": 91,
+    "totalVotes": 9396,
+    "margin": 62.71,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "DeKalb County (Middle Tennessee, Nashville market) voted Trump 80.9\u201318.2 in 2024. Population 21,747, +7.7% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Decatur",
+    "fips": "47039",
+    "seat": "Decaturville",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 11800,
+    "pop2020": 11433,
+    "growth": 3.2,
+    "trump": 4596,
+    "harris": 819,
+    "trumpPct": 84.08,
+    "harrisPct": 14.98,
+    "other": 51,
+    "totalVotes": 5466,
+    "margin": 69.1,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Decatur County (West Tennessee, Jackson market) voted Trump 84.1\u201315.0 in 2024. Population 11,800, +3.2% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Dickson",
+    "fips": "47043",
+    "seat": "Charlotte",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 57641,
+    "pop2020": 54453,
+    "growth": 5.9,
+    "trump": 19002,
+    "harris": 5913,
+    "trumpPct": 75.39,
+    "harrisPct": 23.46,
+    "other": 289,
+    "totalVotes": 25204,
+    "margin": 51.93,
+    "medianIncome": 52000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Dickson County (Middle Tennessee, Nashville market) voted Trump 75.4\u201323.5 in 2024. Population 57,641, +5.9% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Dyer",
+    "fips": "47045",
+    "seat": "Dyersburg",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 36403,
+    "pop2020": 36709,
+    "growth": -0.8,
+    "trump": 11603,
+    "harris": 2707,
+    "trumpPct": 80.61,
+    "harrisPct": 18.81,
+    "other": 84,
+    "totalVotes": 14394,
+    "margin": 61.8,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Dyer County (West Tennessee, Memphis market) voted Trump 80.6\u201318.8 in 2024. Population 36,403, -0.8% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Fayette",
+    "fips": "47047",
+    "seat": "Somerville",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 44476,
+    "pop2020": 41865,
+    "growth": 6.2,
+    "trump": 16756,
+    "harris": 6720,
+    "trumpPct": 70.71,
+    "harrisPct": 28.36,
+    "other": 220,
+    "totalVotes": 23696,
+    "margin": 42.35,
+    "medianIncome": 80000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Fayette County (West Tennessee, Memphis market) voted Trump 70.7\u201328.4 in 2024. Population 44,476, +6.2% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Fentress",
+    "fips": "47049",
+    "seat": "Jamestown",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 20129,
+    "pop2020": 18534,
+    "growth": 8.6,
+    "trump": 8555,
+    "harris": 1149,
+    "trumpPct": 87.56,
+    "harrisPct": 11.76,
+    "other": 67,
+    "totalVotes": 9771,
+    "margin": 75.8,
+    "medianIncome": 45000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Fentress County (Middle Tennessee, Nashville market) voted Trump 87.6\u201311.8 in 2024. Population 20,129, +8.6% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Franklin",
+    "fips": "47051",
+    "seat": "Winchester",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 45137,
+    "pop2020": 42812,
+    "growth": 5.4,
+    "trump": 15016,
+    "harris": 4529,
+    "trumpPct": 76.12,
+    "harrisPct": 22.96,
+    "other": 183,
+    "totalVotes": 19728,
+    "margin": 53.16,
+    "medianIncome": 52000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Franklin County (Middle Tennessee, Nashville market) voted Trump 76.1\u201323.0 in 2024. Population 45,137, +5.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Gibson",
+    "fips": "47053",
+    "seat": "Trenton",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 51422,
+    "pop2020": 50447,
+    "growth": 1.9,
+    "trump": 16346,
+    "harris": 5100,
+    "trumpPct": 75.51,
+    "harrisPct": 23.56,
+    "other": 202,
+    "totalVotes": 21648,
+    "margin": 51.95,
+    "medianIncome": 50000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Gibson County (West Tennessee, Jackson market) voted Trump 75.5\u201323.6 in 2024. Population 51,422, +1.9% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Giles",
+    "fips": "47055",
+    "seat": "Pulaski",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 30971,
+    "pop2020": 30344,
+    "growth": 2.1,
+    "trump": 10394,
+    "harris": 2974,
+    "trumpPct": 77.07,
+    "harrisPct": 22.05,
+    "other": 119,
+    "totalVotes": 13487,
+    "margin": 55.02,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Giles County (Middle Tennessee, Nashville market) voted Trump 77.1\u201322.1 in 2024. Population 30,971, +2.1% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Grainger",
+    "fips": "47057",
+    "seat": "Rutledge",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 25073,
+    "pop2020": 23569,
+    "growth": 6.4,
+    "trump": 9630,
+    "harris": 1432,
+    "trumpPct": 86.52,
+    "harrisPct": 12.87,
+    "other": 68,
+    "totalVotes": 11130,
+    "margin": 73.65,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Grainger County (East Tennessee, Knoxville market) voted Trump 86.5\u201312.9 in 2024. Population 25,073, +6.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Greene",
+    "fips": "47059",
+    "seat": "Greeneville",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 73398,
+    "pop2020": 70348,
+    "growth": 4.3,
+    "trump": 25586,
+    "harris": 5145,
+    "trumpPct": 82.28,
+    "harrisPct": 16.55,
+    "other": 364,
+    "totalVotes": 31095,
+    "margin": 65.73,
+    "medianIncome": 48000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "tri",
+    "issues": [
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing",
+      "School curriculum"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Greene County (East Tennessee, Tri-Cities market) voted Trump 82.3\u201316.6 in 2024. Population 73,398, +4.3% since 2020.",
+      "talking": [
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing",
+        "School curriculum"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Grundy",
+    "fips": "47061",
+    "seat": "Altamont",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 14148,
+    "pop2020": 13548,
+    "growth": 4.4,
+    "trump": 5334,
+    "harris": 948,
+    "trumpPct": 84.29,
+    "harrisPct": 14.98,
+    "other": 46,
+    "totalVotes": 6328,
+    "margin": 69.31,
+    "medianIncome": 36000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Grundy County (Middle Tennessee, Nashville market) voted Trump 84.3\u201315.0 in 2024. Population 14,148, +4.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Hamblen",
+    "fips": "47063",
+    "seat": "Morristown",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 67715,
+    "pop2020": 64542,
+    "growth": 4.9,
+    "trump": 20154,
+    "harris": 5132,
+    "trumpPct": 79.03,
+    "harrisPct": 20.12,
+    "other": 215,
+    "totalVotes": 25501,
+    "margin": 58.91,
+    "medianIncome": 50000,
+    "temp": 63,
+    "tempLabel": "hot",
+    "profile": "tri",
+    "issues": [
+      "Aug 6 local control",
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Local flips in a Trump +59 county."
+    },
+    "brief": {
+      "lede": "Local flips in a Trump +59 county. Hamblen County (East Tennessee, Tri-Cities market) voted Trump 79.0\u201320.1 in 2024. Population 67,715, +4.9% since 2020.",
+      "talking": [
+        "Aug 6 local control",
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing"
+      ],
+      "soWhat": "After-action the Aug 6 local losses. Identify every remaining local seat through 2028 and put a name on it."
+    }
+  },
+  {
+    "name": "Hamilton",
+    "fips": "47065",
+    "seat": "Chattanooga",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 386256,
+    "pop2020": 367891,
+    "growth": 5.0,
+    "trump": 97195,
+    "harris": 74437,
+    "trumpPct": 55.72,
+    "harrisPct": 42.67,
+    "other": 2806,
+    "totalVotes": 174438,
+    "margin": 13.05,
+    "medianIncome": 67000,
+    "temp": 98,
+    "tempLabel": "critical",
+    "profile": "midsize_r",
+    "issues": [
+      "Aug 6 local control",
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement"
+    ],
+    "aug6": {
+      "kind": "flip",
+      "offices": [
+        "Hamilton County Commission"
+      ],
+      "note": "Democrats flipped the Hamilton County Commission."
+    },
+    "brief": {
+      "lede": "Chattanooga flipped the county commission on Aug 6 in a Trump +13 county. New ownership chaos at the Times Free Press is scrambling the local information environment.",
+      "talking": [
+        "Commission flip",
+        "Times Free Press sale and staff cuts",
+        "Downtown vs Signal Mountain / Soddy-Daisy",
+        "VW / manufacturing and energy costs"
+      ],
+      "soWhat": "Treat Hamilton as a rebuild, not a safe. Map the new commission math. Fill the local-news vacuum with owned channels before Democrats do."
+    }
+  },
+  {
+    "name": "Hancock",
+    "fips": "47067",
+    "seat": "Sneedville",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 7038,
+    "pop2020": 6626,
+    "growth": 6.2,
+    "trump": 2558,
+    "harris": 334,
+    "trumpPct": 87.96,
+    "harrisPct": 11.49,
+    "other": 16,
+    "totalVotes": 2908,
+    "margin": 76.47,
+    "medianIncome": 32000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "tri",
+    "issues": [
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing",
+      "School curriculum"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Hancock County (East Tennessee, Tri-Cities market) voted Trump 88.0\u201311.5 in 2024. Population 7,038, +6.2% since 2020.",
+      "talking": [
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing",
+        "School curriculum"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Hardeman",
+    "fips": "47069",
+    "seat": "Bolivar",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 25434,
+    "pop2020": 25438,
+    "growth": -0.0,
+    "trump": 5793,
+    "harris": 3527,
+    "trumpPct": 61.63,
+    "harrisPct": 37.53,
+    "other": 79,
+    "totalVotes": 9399,
+    "margin": 24.1,
+    "medianIncome": 41000,
+    "temp": 30,
+    "tempLabel": "steady",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Hardeman County (West Tennessee, Jackson market) voted Trump 61.6\u201337.5 in 2024. Population 25,434, -0.0% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Hardin",
+    "fips": "47071",
+    "seat": "Savannah",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 27617,
+    "pop2020": 26958,
+    "growth": 2.4,
+    "trump": 10293,
+    "harris": 1704,
+    "trumpPct": 85.11,
+    "harrisPct": 14.09,
+    "other": 97,
+    "totalVotes": 12094,
+    "margin": 71.02,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Hardin County (West Tennessee, Jackson market) voted Trump 85.1\u201314.1 in 2024. Population 27,617, +2.4% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Hawkins",
+    "fips": "47073",
+    "seat": "Rogersville",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 59371,
+    "pop2020": 56721,
+    "growth": 4.7,
+    "trump": 22066,
+    "harris": 3987,
+    "trumpPct": 84.01,
+    "harrisPct": 15.18,
+    "other": 213,
+    "totalVotes": 26266,
+    "margin": 68.83,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "tri",
+    "issues": [
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing",
+      "School curriculum"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Hawkins County (East Tennessee, Tri-Cities market) voted Trump 84.0\u201315.2 in 2024. Population 59,371, +4.7% since 2020.",
+      "talking": [
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing",
+        "School curriculum"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Haywood",
+    "fips": "47075",
+    "seat": "Brownsville",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 17097,
+    "pop2020": 17825,
+    "growth": -4.1,
+    "trump": 3286,
+    "harris": 3311,
+    "trumpPct": 49.4,
+    "harrisPct": 49.77,
+    "other": 55,
+    "totalVotes": 6652,
+    "margin": -0.37,
+    "medianIncome": 42000,
+    "temp": 48,
+    "tempLabel": "watch",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "The last rural Democratic county. Harris held it by 25 votes. The same ballot went Republican down-ballot. This is the county that tells you West Tennessee is still moving right.",
+      "talking": [
+        "25-vote presidential hold",
+        "Down-ballot already Republican",
+        "Brownsville jobs and hospital access",
+        "Whether 2026 finishes the realignment"
+      ],
+      "soWhat": "Quiet, respectful rural operation. Do not nationalize. Sheriffs, pastors, and ag are the messengers."
+    }
+  },
+  {
+    "name": "Henderson",
+    "fips": "47077",
+    "seat": "Lexington",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 28183,
+    "pop2020": 27831,
+    "growth": 1.3,
+    "trump": 10083,
+    "harris": 1902,
+    "trumpPct": 83.7,
+    "harrisPct": 15.79,
+    "other": 62,
+    "totalVotes": 12047,
+    "margin": 67.91,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Henderson County (West Tennessee, Jackson market) voted Trump 83.7\u201315.8 in 2024. Population 28,183, +1.3% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Henry",
+    "fips": "47079",
+    "seat": "Paris",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 32883,
+    "pop2020": 32146,
+    "growth": 2.3,
+    "trump": 11629,
+    "harris": 3286,
+    "trumpPct": 77.14,
+    "harrisPct": 21.8,
+    "other": 161,
+    "totalVotes": 15076,
+    "margin": 55.34,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Henry County (West Tennessee, Jackson market) voted Trump 77.1\u201321.8 in 2024. Population 32,883, +2.3% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Hickman",
+    "fips": "47081",
+    "seat": "Centerville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 25859,
+    "pop2020": 24970,
+    "growth": 3.6,
+    "trump": 8265,
+    "harris": 1968,
+    "trumpPct": 80.17,
+    "harrisPct": 19.09,
+    "other": 76,
+    "totalVotes": 10309,
+    "margin": 61.08,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Hickman County (Middle Tennessee, Nashville market) voted Trump 80.2\u201319.1 in 2024. Population 25,859, +3.6% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Houston",
+    "fips": "47083",
+    "seat": "Erin",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 8538,
+    "pop2020": 8305,
+    "growth": 2.8,
+    "trump": 2989,
+    "harris": 773,
+    "trumpPct": 78.45,
+    "harrisPct": 20.29,
+    "other": 48,
+    "totalVotes": 3810,
+    "margin": 58.16,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Houston County (Middle Tennessee, Nashville market) voted Trump 78.5\u201320.3 in 2024. Population 8,538, +2.8% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Humphreys",
+    "fips": "47085",
+    "seat": "Waverly",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 19554,
+    "pop2020": 18996,
+    "growth": 2.9,
+    "trump": 6400,
+    "harris": 1767,
+    "trumpPct": 77.44,
+    "harrisPct": 21.38,
+    "other": 97,
+    "totalVotes": 8264,
+    "margin": 56.06,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Humphreys County (Middle Tennessee, Nashville market) voted Trump 77.4\u201321.4 in 2024. Population 19,554, +2.9% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Jackson",
+    "fips": "47087",
+    "seat": "Gainesboro",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 12376,
+    "pop2020": 11631,
+    "growth": 6.4,
+    "trump": 4586,
+    "harris": 1040,
+    "trumpPct": 80.8,
+    "harrisPct": 18.32,
+    "other": 50,
+    "totalVotes": 5676,
+    "margin": 62.48,
+    "medianIncome": 41000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Jackson County (Middle Tennessee, Nashville market) voted Trump 80.8\u201318.3 in 2024. Population 12,376, +6.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Jefferson",
+    "fips": "47089",
+    "seat": "Dandridge",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 59217,
+    "pop2020": 54917,
+    "growth": 7.8,
+    "trump": 21068,
+    "harris": 4503,
+    "trumpPct": 81.61,
+    "harrisPct": 17.44,
+    "other": 244,
+    "totalVotes": 25815,
+    "margin": 64.17,
+    "medianIncome": 56000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Jefferson County (East Tennessee, Knoxville market) voted Trump 81.6\u201317.4 in 2024. Population 59,217, +7.8% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Johnson",
+    "fips": "47091",
+    "seat": "Mountain City",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 18506,
+    "pop2020": 17994,
+    "growth": 2.8,
+    "trump": 6829,
+    "harris": 1212,
+    "trumpPct": 84.29,
+    "harrisPct": 14.96,
+    "other": 61,
+    "totalVotes": 8102,
+    "margin": 69.33,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "tri",
+    "issues": [
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing",
+      "School curriculum"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Johnson County (East Tennessee, Tri-Cities market) voted Trump 84.3\u201315.0 in 2024. Population 18,506, +2.8% since 2020.",
+      "talking": [
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing",
+        "School curriculum"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Knox",
+    "fips": "47093",
+    "seat": "Knoxville",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 506748,
+    "pop2020": 480530,
+    "growth": 5.5,
+    "trump": 130815,
+    "harris": 87516,
+    "trumpPct": 58.96,
+    "harrisPct": 39.45,
+    "other": 3533,
+    "totalVotes": 221864,
+    "margin": 19.51,
+    "medianIncome": 68000,
+    "temp": 93,
+    "tempLabel": "critical",
+    "profile": "midsize_r",
+    "issues": [
+      "Aug 6 local control",
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement"
+    ],
+    "aug6": {
+      "kind": "flip",
+      "offices": [
+        "Knox County Board of Education"
+      ],
+      "note": "Democrats flipped control of the Knox County Board of Education on Aug 6."
+    },
+    "brief": {
+      "lede": "Trump +20, and Democrats just took the school board. That is the 2026 local story in a sentence. Knoxville is not Nashville, but education politics now run hot.",
+      "talking": [
+        "Aug 6 school-board flip",
+        "UT / urban Knoxville vs west Knox GOP",
+        "Growth along Pellissippi and Hardin Valley",
+        "Curriculum, bathrooms, and taxes \u2014 not Trump"
+      ],
+      "soWhat": "Stand up a school-board rapid-response cell. Recruit for the next cycle now. Do not let a +20 county become a board that sets statewide education news."
+    }
+  },
+  {
+    "name": "Lake",
+    "fips": "47095",
+    "seat": "Tiptonville",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 6422,
+    "pop2020": 6985,
+    "growth": -8.1,
+    "trump": 1493,
+    "harris": 429,
+    "trumpPct": 77.0,
+    "harrisPct": 22.12,
+    "other": 17,
+    "totalVotes": 1939,
+    "margin": 54.88,
+    "medianIncome": 35000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Lake County (West Tennessee, Memphis market) voted Trump 77.0\u201322.1 in 2024. Population 6,422, -8.1% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Lauderdale",
+    "fips": "47097",
+    "seat": "Ripley",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 24630,
+    "pop2020": 25125,
+    "growth": -2.0,
+    "trump": 5633,
+    "harris": 2571,
+    "trumpPct": 68.15,
+    "harrisPct": 31.1,
+    "other": 62,
+    "totalVotes": 8266,
+    "margin": 37.05,
+    "medianIncome": 40000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Lauderdale County (West Tennessee, Memphis market) voted Trump 68.2\u201331.1 in 2024. Population 24,630, -2.0% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Lawrence",
+    "fips": "47099",
+    "seat": "Lawrenceburg",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 46467,
+    "pop2020": 44179,
+    "growth": 5.2,
+    "trump": 16429,
+    "harris": 2939,
+    "trumpPct": 84.11,
+    "harrisPct": 15.05,
+    "other": 165,
+    "totalVotes": 19533,
+    "margin": 69.06,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Lawrence County (Middle Tennessee, Nashville market) voted Trump 84.1\u201315.1 in 2024. Population 46,467, +5.2% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Lewis",
+    "fips": "47101",
+    "seat": "Hohenwald",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 13418,
+    "pop2020": 12607,
+    "growth": 6.4,
+    "trump": 4852,
+    "harris": 991,
+    "trumpPct": 82.38,
+    "harrisPct": 16.83,
+    "other": 47,
+    "totalVotes": 5890,
+    "margin": 65.55,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Lewis County (Middle Tennessee, Nashville market) voted Trump 82.4\u201316.8 in 2024. Population 13,418, +6.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Lincoln",
+    "fips": "47103",
+    "seat": "Fayetteville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 36751,
+    "pop2020": 35338,
+    "growth": 4.0,
+    "trump": 13208,
+    "harris": 2782,
+    "trumpPct": 81.89,
+    "harrisPct": 17.25,
+    "other": 138,
+    "totalVotes": 16128,
+    "margin": 64.64,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Lincoln County (Middle Tennessee, Nashville market) voted Trump 81.9\u201317.2 in 2024. Population 36,751, +4.0% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Loudon",
+    "fips": "47105",
+    "seat": "Loudon",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 62129,
+    "pop2020": 55136,
+    "growth": 12.7,
+    "trump": 25226,
+    "harris": 7625,
+    "trumpPct": 75.96,
+    "harrisPct": 22.96,
+    "other": 358,
+    "totalVotes": 33209,
+    "margin": 53.0,
+    "medianIncome": 72000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Loudon County (East Tennessee, Knoxville market) voted Trump 76.0\u201323.0 in 2024. Population 62,129, +12.7% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Macon",
+    "fips": "47111",
+    "seat": "Lafayette",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 27189,
+    "pop2020": 25269,
+    "growth": 7.6,
+    "trump": 8958,
+    "harris": 1277,
+    "trumpPct": 86.69,
+    "harrisPct": 12.36,
+    "other": 98,
+    "totalVotes": 10333,
+    "margin": 74.33,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Macon County (Middle Tennessee, Nashville market) voted Trump 86.7\u201312.4 in 2024. Population 27,189, +7.6% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Madison",
+    "fips": "47113",
+    "seat": "Jackson",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 100409,
+    "pop2020": 98834,
+    "growth": 1.6,
+    "trump": 23385,
+    "harris": 16115,
+    "trumpPct": 58.52,
+    "harrisPct": 40.32,
+    "other": 464,
+    "totalVotes": 39964,
+    "margin": 18.2,
+    "medianIncome": 54000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "midsize_r",
+    "issues": [
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement",
+      "Industrial recruiting"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Madison County (West Tennessee, Jackson market) voted Trump 58.5\u201340.3 in 2024. Population 100,409, +1.6% since 2020.",
+      "talking": [
+        "Local commission control",
+        "Cost of living",
+        "Immigration enforcement",
+        "Industrial recruiting"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Marion",
+    "fips": "47115",
+    "seat": "Jasper",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 29826,
+    "pop2020": 28905,
+    "growth": 3.2,
+    "trump": 10788,
+    "harris": 3026,
+    "trumpPct": 77.43,
+    "harrisPct": 21.72,
+    "other": 119,
+    "totalVotes": 13933,
+    "margin": 55.71,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Marion County (East Tennessee, Chattanooga market) voted Trump 77.4\u201321.7 in 2024. Population 29,826, +3.2% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Marshall",
+    "fips": "47117",
+    "seat": "Lewisburg",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 37847,
+    "pop2020": 34472,
+    "growth": 9.8,
+    "trump": 12426,
+    "harris": 3390,
+    "trumpPct": 77.85,
+    "harrisPct": 21.24,
+    "other": 146,
+    "totalVotes": 15962,
+    "margin": 56.61,
+    "medianIncome": 52000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Marshall County (Middle Tennessee, Nashville market) voted Trump 77.8\u201321.2 in 2024. Population 37,847, +9.8% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Maury",
+    "fips": "47119",
+    "seat": "Columbia",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 113411,
+    "pop2020": 101836,
+    "growth": 11.4,
+    "trump": 37376,
+    "harris": 14145,
+    "trumpPct": 71.75,
+    "harrisPct": 27.15,
+    "other": 569,
+    "totalVotes": 52090,
+    "margin": 44.6,
+    "medianIncome": 74000,
+    "temp": 75,
+    "tempLabel": "critical",
+    "profile": "collar",
+    "issues": [
+      "Aug 6 local control",
+      "School boards",
+      "Growth and traffic",
+      "Property taxes"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Columbia / Spring Hill growth corridor produced local Democratic pickups."
+    },
+    "brief": {
+      "lede": "Columbia / Spring Hill growth corridor produced local Democratic pickups. Maury County (Middle Tennessee, Nashville market) voted Trump 71.8\u201327.1 in 2024. Population 113,411, +11.4% since 2020.",
+      "talking": [
+        "Aug 6 local control",
+        "School boards",
+        "Growth and traffic",
+        "Property taxes"
+      ],
+      "soWhat": "After-action the Aug 6 local losses. Identify every remaining local seat through 2028 and put a name on it."
+    }
+  },
+  {
+    "name": "McMinn",
+    "fips": "47107",
+    "seat": "Athens",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 56754,
+    "pop2020": 53344,
+    "growth": 6.4,
+    "trump": 19673,
+    "harris": 4207,
+    "trumpPct": 81.73,
+    "harrisPct": 17.48,
+    "other": 192,
+    "totalVotes": 24072,
+    "margin": 64.25,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "McMinn County (East Tennessee, Chattanooga market) voted Trump 81.7\u201317.5 in 2024. Population 56,754, +6.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "McNairy",
+    "fips": "47109",
+    "seat": "Selmer",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 26103,
+    "pop2020": 25858,
+    "growth": 0.9,
+    "trump": 9437,
+    "harris": 1727,
+    "trumpPct": 83.76,
+    "harrisPct": 15.33,
+    "other": 103,
+    "totalVotes": 11267,
+    "margin": 68.43,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "McNairy County (West Tennessee, Jackson market) voted Trump 83.8\u201315.3 in 2024. Population 26,103, +0.9% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Meigs",
+    "fips": "47121",
+    "seat": "Decatur",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 13937,
+    "pop2020": 12809,
+    "growth": 8.8,
+    "trump": 5085,
+    "harris": 968,
+    "trumpPct": 83.37,
+    "harrisPct": 15.87,
+    "other": 46,
+    "totalVotes": 6099,
+    "margin": 67.5,
+    "medianIncome": 45000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Meigs County (East Tennessee, Chattanooga market) voted Trump 83.4\u201315.9 in 2024. Population 13,937, +8.8% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Monroe",
+    "fips": "47123",
+    "seat": "Madisonville",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 49154,
+    "pop2020": 46399,
+    "growth": 5.9,
+    "trump": 18526,
+    "harris": 3608,
+    "trumpPct": 82.99,
+    "harrisPct": 16.16,
+    "other": 189,
+    "totalVotes": 22323,
+    "margin": 66.83,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Monroe County (East Tennessee, Knoxville market) voted Trump 83.0\u201316.2 in 2024. Population 49,154, +5.9% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Montgomery",
+    "fips": "47125",
+    "seat": "Clarksville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 246025,
+    "pop2020": 221309,
+    "growth": 11.2,
+    "trump": 47795,
+    "harris": 32736,
+    "trumpPct": 58.46,
+    "harrisPct": 40.04,
+    "other": 1224,
+    "totalVotes": 81755,
+    "margin": 18.42,
+    "medianIncome": 65000,
+    "temp": 98,
+    "tempLabel": "critical",
+    "profile": "collar",
+    "issues": [
+      "Aug 6 local control",
+      "School boards",
+      "Growth and traffic",
+      "Property taxes"
+    ],
+    "aug6": {
+      "kind": "flip",
+      "offices": [
+        "Montgomery County Commission"
+      ],
+      "note": "Democrats flipped the Montgomery County Commission."
+    },
+    "brief": {
+      "lede": "Clarksville / Fort Campbell. Trump +18, commission flipped. Military families, in-migration, and a younger electorate than rural Middle Tennessee.",
+      "talking": [
+        "Commission flip",
+        "Fort Campbell tempo and housing",
+        "Low 2024 turnout (worst in the state)",
+        "In-migration and party ID lag"
+      ],
+      "soWhat": "Turnout machine. The margin is in military spouses and new arrivals who never got a Republican knock. Commission math is now a 24-month project."
+    }
+  },
+  {
+    "name": "Moore",
+    "fips": "47127",
+    "seat": "Lynchburg",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 6773,
+    "pop2020": 6466,
+    "growth": 4.7,
+    "trump": 3060,
+    "harris": 542,
+    "trumpPct": 83.74,
+    "harrisPct": 14.83,
+    "other": 52,
+    "totalVotes": 3654,
+    "margin": 68.91,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Moore County (Middle Tennessee, Nashville market) voted Trump 83.7\u201314.8 in 2024. Population 6,773, +4.7% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Morgan",
+    "fips": "47129",
+    "seat": "Wartburg",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 21954,
+    "pop2020": 21050,
+    "growth": 4.3,
+    "trump": 7427,
+    "harris": 1054,
+    "trumpPct": 86.76,
+    "harrisPct": 12.31,
+    "other": 79,
+    "totalVotes": 8560,
+    "margin": 74.45,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Morgan County (East Tennessee, Knoxville market) voted Trump 86.8\u201312.3 in 2024. Population 21,954, +4.3% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Obion",
+    "fips": "47131",
+    "seat": "Union City",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 30261,
+    "pop2020": 30775,
+    "growth": -1.7,
+    "trump": 10596,
+    "harris": 2221,
+    "trumpPct": 82.14,
+    "harrisPct": 17.22,
+    "other": 83,
+    "totalVotes": 12900,
+    "margin": 64.92,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Obion County (West Tennessee, Memphis market) voted Trump 82.1\u201317.2 in 2024. Population 30,261, -1.7% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Overton",
+    "fips": "47133",
+    "seat": "Livingston",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 23551,
+    "pop2020": 22587,
+    "growth": 4.3,
+    "trump": 9042,
+    "harris": 1931,
+    "trumpPct": 81.69,
+    "harrisPct": 17.45,
+    "other": 96,
+    "totalVotes": 11069,
+    "margin": 64.24,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Overton County (Middle Tennessee, Nashville market) voted Trump 81.7\u201317.4 in 2024. Population 23,551, +4.3% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Perry",
+    "fips": "47135",
+    "seat": "Linden",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 8987,
+    "pop2020": 8386,
+    "growth": 7.2,
+    "trump": 3139,
+    "harris": 558,
+    "trumpPct": 84.47,
+    "harrisPct": 15.02,
+    "other": 19,
+    "totalVotes": 3716,
+    "margin": 69.45,
+    "medianIncome": 43000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Perry County (Middle Tennessee, Nashville market) voted Trump 84.5\u201315.0 in 2024. Population 8,987, +7.2% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Pickett",
+    "fips": "47137",
+    "seat": "Byrdstown",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 5108,
+    "pop2020": 4999,
+    "growth": 2.2,
+    "trump": 2441,
+    "harris": 487,
+    "trumpPct": 82.63,
+    "harrisPct": 16.49,
+    "other": 26,
+    "totalVotes": 2954,
+    "margin": 66.14,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Pickett County (Middle Tennessee, Nashville market) voted Trump 82.6\u201316.5 in 2024. Population 5,108, +2.2% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Polk",
+    "fips": "47139",
+    "seat": "Benton",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 18338,
+    "pop2020": 17567,
+    "growth": 4.4,
+    "trump": 7302,
+    "harris": 1356,
+    "trumpPct": 83.67,
+    "harrisPct": 15.54,
+    "other": 69,
+    "totalVotes": 8727,
+    "margin": 68.13,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Polk County (East Tennessee, Chattanooga market) voted Trump 83.7\u201315.5 in 2024. Population 18,338, +4.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Putnam",
+    "fips": "47141",
+    "seat": "Cookeville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 84894,
+    "pop2020": 80078,
+    "growth": 6.0,
+    "trump": 25554,
+    "harris": 8991,
+    "trumpPct": 73.14,
+    "harrisPct": 25.73,
+    "other": 394,
+    "totalVotes": 34939,
+    "margin": 47.41,
+    "medianIncome": 52000,
+    "temp": 63,
+    "tempLabel": "hot",
+    "profile": "rural_e",
+    "issues": [
+      "Aug 6 local control",
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Cookeville local races moved."
+    },
+    "brief": {
+      "lede": "Cookeville local races moved. Putnam County (Middle Tennessee, Nashville market) voted Trump 73.1\u201325.7 in 2024. Population 84,894, +6.0% since 2020.",
+      "talking": [
+        "Aug 6 local control",
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation"
+      ],
+      "soWhat": "After-action the Aug 6 local losses. Identify every remaining local seat through 2028 and put a name on it."
+    }
+  },
+  {
+    "name": "Rhea",
+    "fips": "47143",
+    "seat": "Dayton",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 34759,
+    "pop2020": 33287,
+    "growth": 4.4,
+    "trump": 11974,
+    "harris": 2312,
+    "trumpPct": 82.9,
+    "harrisPct": 16.01,
+    "other": 158,
+    "totalVotes": 14444,
+    "margin": 66.89,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Rhea County (East Tennessee, Chattanooga market) voted Trump 82.9\u201316.0 in 2024. Population 34,759, +4.4% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Roane",
+    "fips": "47145",
+    "seat": "Kingston",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 56742,
+    "pop2020": 53664,
+    "growth": 5.7,
+    "trump": 21011,
+    "harris": 6073,
+    "trumpPct": 76.65,
+    "harrisPct": 22.15,
+    "other": 328,
+    "totalVotes": 27412,
+    "margin": 54.5,
+    "medianIncome": 56000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Roane County (East Tennessee, Knoxville market) voted Trump 76.7\u201322.1 in 2024. Population 56,742, +5.7% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Robertson",
+    "fips": "47147",
+    "seat": "Springfield",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 78459,
+    "pop2020": 72962,
+    "growth": 7.5,
+    "trump": 26260,
+    "harris": 8428,
+    "trumpPct": 74.88,
+    "harrisPct": 24.03,
+    "other": 382,
+    "totalVotes": 35070,
+    "margin": 50.85,
+    "medianIncome": 72000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "collar",
+    "issues": [
+      "School boards",
+      "Growth and traffic",
+      "Property taxes",
+      "Education culture"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Robertson County (Middle Tennessee, Nashville market) voted Trump 74.9\u201324.0 in 2024. Population 78,459, +7.5% since 2020.",
+      "talking": [
+        "School boards",
+        "Growth and traffic",
+        "Property taxes",
+        "Education culture"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Rutherford",
+    "fips": "47149",
+    "seat": "Murfreesboro",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 376996,
+    "pop2020": 343302,
+    "growth": 9.8,
+    "trump": 88811,
+    "harris": 56656,
+    "trumpPct": 60.15,
+    "harrisPct": 38.37,
+    "other": 2189,
+    "totalVotes": 147656,
+    "margin": 21.78,
+    "medianIncome": 82000,
+    "temp": 90,
+    "tempLabel": "critical",
+    "profile": "collar",
+    "issues": [
+      "Aug 6 local control",
+      "School boards",
+      "Growth and traffic",
+      "Property taxes"
+    ],
+    "aug6": {
+      "kind": "break",
+      "offices": [
+        "Rutherford County Commission"
+      ],
+      "note": "GOP lost its supermajority on the Rutherford County Commission."
+    },
+    "brief": {
+      "lede": "Murfreesboro / Smyrna is the growth machine and the place GOP lost its commission supermajority. Trump +22 with a younger, more diverse incoming electorate.",
+      "talking": [
+        "Commission supermajority broken Aug 6",
+        "MTSU + Nissan corridor",
+        "School capacity and property tax",
+        "In-migration from out of state"
+      ],
+      "soWhat": "Priority watch. Build a year-round precinct operation in the new subdivisions, not just a presidential GOTV push. School capacity is the door issue."
+    }
+  },
+  {
+    "name": "Scott",
+    "fips": "47151",
+    "seat": "Huntsville",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 22517,
+    "pop2020": 21876,
+    "growth": 2.9,
+    "trump": 8608,
+    "harris": 942,
+    "trumpPct": 89.62,
+    "harrisPct": 9.81,
+    "other": 55,
+    "totalVotes": 9605,
+    "margin": 79.81,
+    "medianIncome": 38000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Scott County (East Tennessee, Knoxville market) voted Trump 89.6\u20139.8 in 2024. Population 22,517, +2.9% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Sequatchie",
+    "fips": "47153",
+    "seat": "Dunlap",
+    "division": "East",
+    "market": "Chattanooga",
+    "pop": 17620,
+    "pop2020": 15847,
+    "growth": 11.2,
+    "trump": 6522,
+    "harris": 1292,
+    "trumpPct": 82.66,
+    "harrisPct": 16.38,
+    "other": 76,
+    "totalVotes": 7890,
+    "margin": 66.28,
+    "medianIncome": 45000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Sequatchie County (East Tennessee, Chattanooga market) voted Trump 82.7\u201316.4 in 2024. Population 17,620, +11.2% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Sevier",
+    "fips": "47155",
+    "seat": "Sevierville",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 100184,
+    "pop2020": 98865,
+    "growth": 1.3,
+    "trump": 35207,
+    "harris": 8322,
+    "trumpPct": 80.07,
+    "harrisPct": 18.93,
+    "other": 441,
+    "totalVotes": 43970,
+    "margin": 61.14,
+    "medianIncome": 56000,
+    "temp": 25,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Sevier County (East Tennessee, Knoxville market) voted Trump 80.1\u201318.9 in 2024. Population 100,184, +1.3% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Shelby",
+    "fips": "47157",
+    "seat": "Memphis",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 910530,
+    "pop2020": 929788,
+    "growth": -2.1,
+    "trump": 118917,
+    "harris": 201759,
+    "trumpPct": 36.42,
+    "harrisPct": 61.8,
+    "other": 5821,
+    "totalVotes": 326497,
+    "margin": -25.38,
+    "medianIncome": 55000,
+    "temp": 38,
+    "tempLabel": "steady",
+    "profile": "metro_d",
+    "issues": [
+      "Crime and public safety",
+      "School governance",
+      "Housing costs",
+      "Redistricting"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Memphis is the other Democratic pillar and the epicenter of the 2026 map fight. The new congressional lines dismantled the old Cohen district; local reaction is raw.",
+      "talking": [
+        "Congressional remap of majority-Black Memphis",
+        "Memphis crime and federal presence",
+        "School governance and youth violence",
+        "Whether the rural Black Belt still holds"
+      ],
+      "soWhat": "Own the public-safety contrast. Treat remap litigation and church networks as the real terrain \u2014 not X volume from Midtown."
+    }
+  },
+  {
+    "name": "Smith",
+    "fips": "47159",
+    "seat": "Carthage",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 20783,
+    "pop2020": 19966,
+    "growth": 4.1,
+    "trump": 7655,
+    "harris": 1595,
+    "trumpPct": 81.99,
+    "harrisPct": 17.08,
+    "other": 86,
+    "totalVotes": 9336,
+    "margin": 64.91,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Smith County (Middle Tennessee, Nashville market) voted Trump 82.0\u201317.1 in 2024. Population 20,783, +4.1% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Stewart",
+    "fips": "47161",
+    "seat": "Dover",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 14365,
+    "pop2020": 13709,
+    "growth": 4.8,
+    "trump": 5389,
+    "harris": 1160,
+    "trumpPct": 81.4,
+    "harrisPct": 17.52,
+    "other": 71,
+    "totalVotes": 6620,
+    "margin": 63.88,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Stewart County (Middle Tennessee, Nashville market) voted Trump 81.4\u201317.5 in 2024. Population 14,365, +4.8% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Sullivan",
+    "fips": "47163",
+    "seat": "Blountville",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 162703,
+    "pop2020": 158244,
+    "growth": 2.8,
+    "trump": 58154,
+    "harris": 16624,
+    "trumpPct": 76.98,
+    "harrisPct": 22.01,
+    "other": 763,
+    "totalVotes": 75541,
+    "margin": 54.97,
+    "medianIncome": 52000,
+    "temp": 25,
+    "tempLabel": "steady",
+    "profile": "midsize_r",
+    "issues": [
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement",
+      "Industrial recruiting"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Sullivan County (East Tennessee, Tri-Cities market) voted Trump 77.0\u201322.0 in 2024. Population 162,703, +2.8% since 2020.",
+      "talking": [
+        "Local commission control",
+        "Cost of living",
+        "Immigration enforcement",
+        "Industrial recruiting"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Sumner",
+    "fips": "47165",
+    "seat": "Gallatin",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 211721,
+    "pop2020": 197420,
+    "growth": 7.2,
+    "trump": 68767,
+    "harris": 27874,
+    "trumpPct": 70.34,
+    "harrisPct": 28.51,
+    "other": 1120,
+    "totalVotes": 97761,
+    "margin": 41.83,
+    "medianIncome": 80000,
+    "temp": 73,
+    "tempLabel": "hot",
+    "profile": "collar",
+    "issues": [
+      "Aug 6 local control",
+      "School boards",
+      "Growth and traffic",
+      "Property taxes"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Democrats flipped local seats in a Trump +42 county."
+    },
+    "brief": {
+      "lede": "Gallatin / Hendersonville, Trump +42, Democratic local pickups. This is how you lose a red county in slow motion \u2014 school board first.",
+      "talking": [
+        "Local flips in a +42 county",
+        "Hendersonville school politics",
+        "Hendersonville-to-Gallatin class split",
+        "Lake / recreation growth"
+      ],
+      "soWhat": "Audit every school-board and commission seat through 2028. A +42 presidential county that loses locals is an organization problem, not a message problem."
+    }
+  },
+  {
+    "name": "Tipton",
+    "fips": "47167",
+    "seat": "Covington",
+    "division": "West",
+    "market": "Memphis",
+    "pop": 62187,
+    "pop2020": 61047,
+    "growth": 1.9,
+    "trump": 20303,
+    "harris": 6178,
+    "trumpPct": 75.95,
+    "harrisPct": 23.11,
+    "other": 252,
+    "totalVotes": 26733,
+    "margin": 52.84,
+    "medianIncome": 68000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Tipton County (West Tennessee, Memphis market) voted Trump 76.0\u201323.1 in 2024. Population 62,187, +1.9% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Trousdale",
+    "fips": "47169",
+    "seat": "Hartsville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 12159,
+    "pop2020": 11634,
+    "growth": 4.5,
+    "trump": 3359,
+    "harris": 856,
+    "trumpPct": 79.02,
+    "harrisPct": 20.14,
+    "other": 36,
+    "totalVotes": 4251,
+    "margin": 58.88,
+    "medianIncome": 52000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Trousdale County (Middle Tennessee, Nashville market) voted Trump 79.0\u201320.1 in 2024. Population 12,159, +4.5% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Unicoi",
+    "fips": "47171",
+    "seat": "Erwin",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 17872,
+    "pop2020": 17873,
+    "growth": -0.0,
+    "trump": 6876,
+    "harris": 1578,
+    "trumpPct": 80.51,
+    "harrisPct": 18.48,
+    "other": 87,
+    "totalVotes": 8541,
+    "margin": 62.03,
+    "medianIncome": 45000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "tri",
+    "issues": [
+      "TVA / energy costs",
+      "Aging population",
+      "Manufacturing",
+      "School curriculum"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Unicoi County (East Tennessee, Tri-Cities market) voted Trump 80.5\u201318.5 in 2024. Population 17,872, -0.0% since 2020.",
+      "talking": [
+        "TVA / energy costs",
+        "Aging population",
+        "Manufacturing",
+        "School curriculum"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Union",
+    "fips": "47173",
+    "seat": "Maynardville",
+    "division": "East",
+    "market": "Knoxville",
+    "pop": 21064,
+    "pop2020": 19845,
+    "growth": 6.1,
+    "trump": 7384,
+    "harris": 1216,
+    "trumpPct": 85.18,
+    "harrisPct": 14.03,
+    "other": 69,
+    "totalVotes": 8669,
+    "margin": 71.15,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Union County (East Tennessee, Knoxville market) voted Trump 85.2\u201314.0 in 2024. Population 21,064, +6.1% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Van Buren",
+    "fips": "47175",
+    "seat": "Spencer",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 6686,
+    "pop2020": 6175,
+    "growth": 8.3,
+    "trump": 2718,
+    "harris": 524,
+    "trumpPct": 83.25,
+    "harrisPct": 16.05,
+    "other": 23,
+    "totalVotes": 3265,
+    "margin": 67.2,
+    "medianIncome": 42000,
+    "temp": 35,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Van Buren County (Middle Tennessee, Nashville market) voted Trump 83.2\u201316.1 in 2024. Population 6,686, +8.3% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Warren",
+    "fips": "47177",
+    "seat": "McMinnville",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 43619,
+    "pop2020": 41059,
+    "growth": 6.2,
+    "trump": 13192,
+    "harris": 3647,
+    "trumpPct": 77.53,
+    "harrisPct": 21.43,
+    "other": 176,
+    "totalVotes": 17015,
+    "margin": 56.1,
+    "medianIncome": 52000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Warren County (Middle Tennessee, Nashville market) voted Trump 77.5\u201321.4 in 2024. Population 43,619, +6.2% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Washington",
+    "fips": "47179",
+    "seat": "Jonesborough",
+    "division": "East",
+    "market": "Tri-Cities",
+    "pop": 139642,
+    "pop2020": 133225,
+    "growth": 4.8,
+    "trump": 42299,
+    "harris": 18131,
+    "trumpPct": 69.08,
+    "harrisPct": 29.61,
+    "other": 804,
+    "totalVotes": 61234,
+    "margin": 39.47,
+    "medianIncome": 58000,
+    "temp": 68,
+    "tempLabel": "hot",
+    "profile": "midsize_r",
+    "issues": [
+      "Aug 6 local control",
+      "Local commission control",
+      "Cost of living",
+      "Immigration enforcement"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "County Commission",
+        "Board of Education"
+      ],
+      "note": "Democrats flipped four seats on commission and school board. Dist. 13 commission race tied."
+    },
+    "brief": {
+      "lede": "Jonesborough / Johnson City. Four local seats flipped Aug 6; one commission race tied. ETSU town vs rural county is the split.",
+      "talking": [
+        "Four-seat flip + Dist. 13 tie",
+        "ETSU / Johnson City vs rural south county",
+        "How the tie gets broken",
+        "Tri-Cities media market"
+      ],
+      "soWhat": "Own the Dist. 13 process publicly. Do not let a tie become a party-over-people story. Rebuild the Johnson City precincts."
+    }
+  },
+  {
+    "name": "Wayne",
+    "fips": "47181",
+    "seat": "Waynesboro",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 15974,
+    "pop2020": 16225,
+    "growth": -1.5,
+    "trump": 6016,
+    "harris": 762,
+    "trumpPct": 88.07,
+    "harrisPct": 11.16,
+    "other": 53,
+    "totalVotes": 6831,
+    "margin": 76.91,
+    "medianIncome": 43000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Wayne County (Middle Tennessee, Nashville market) voted Trump 88.1\u201311.2 in 2024. Population 15,974, -1.5% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Weakley",
+    "fips": "47183",
+    "seat": "Dresden",
+    "division": "West",
+    "market": "Jackson",
+    "pop": 33162,
+    "pop2020": 32897,
+    "growth": 0.8,
+    "trump": 10541,
+    "harris": 2725,
+    "trumpPct": 78.7,
+    "harrisPct": 20.34,
+    "other": 128,
+    "totalVotes": 13394,
+    "margin": 58.36,
+    "medianIncome": 52000,
+    "temp": 20,
+    "tempLabel": "quiet",
+    "profile": "rural_w",
+    "issues": [
+      "Agriculture prices",
+      "Hospital closures",
+      "Memphis crime spillover",
+      "Immigration 2026"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "Weakley County (West Tennessee, Jackson market) voted Trump 78.7\u201320.3 in 2024. Population 33,162, +0.8% since 2020.",
+      "talking": [
+        "Agriculture prices",
+        "Hospital closures",
+        "Memphis crime spillover",
+        "Immigration 2026"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "White",
+    "fips": "47185",
+    "seat": "Sparta",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 29108,
+    "pop2020": 27446,
+    "growth": 6.1,
+    "trump": 10717,
+    "harris": 2105,
+    "trumpPct": 82.88,
+    "harrisPct": 16.28,
+    "other": 109,
+    "totalVotes": 12931,
+    "margin": 66.6,
+    "medianIncome": 45000,
+    "temp": 28,
+    "tempLabel": "steady",
+    "profile": "rural_e",
+    "issues": [
+      "Hospital access",
+      "Farm and timber",
+      "School consolidation",
+      "Opioids"
+    ],
+    "aug6": null,
+    "brief": {
+      "lede": "White County (Middle Tennessee, Nashville market) voted Trump 82.9\u201316.3 in 2024. Population 29,108, +6.1% since 2020.",
+      "talking": [
+        "Hospital access",
+        "Farm and timber",
+        "School consolidation",
+        "Opioids"
+      ],
+      "soWhat": "Maintain the county party bench, watch school board and commission calendars, and treat national noise as secondary to local official action."
+    }
+  },
+  {
+    "name": "Williamson",
+    "fips": "47187",
+    "seat": "Franklin",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 269136,
+    "pop2020": 249616,
+    "growth": 7.8,
+    "trump": 94562,
+    "harris": 47695,
+    "trumpPct": 65.36,
+    "harrisPct": 32.97,
+    "other": 2411,
+    "totalVotes": 144668,
+    "margin": 32.39,
+    "medianIncome": 130800,
+    "temp": 73,
+    "tempLabel": "hot",
+    "profile": "collar",
+    "issues": [
+      "Aug 6 local control",
+      "School boards",
+      "Growth and traffic",
+      "Property taxes"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Democrats flipped key local races in Williamson."
+    },
+    "brief": {
+      "lede": "Richest county in the state, Trump +32, and Democrats still flipped local races. Franklin / Brentwood / Spring Hill is where education-culture fights have donor-class volume.",
+      "talking": [
+        "Local Democratic pickups Aug 6",
+        "School board and library fights",
+        "Growth vs. rural south county",
+        "Blackburn home base \u2014 expect scrutiny"
+      ],
+      "soWhat": "Do not confuse donor enthusiasm with precinct math. Keep the south-county rural bench warm. Win the school narrative or lose the dinner-party set."
+    }
+  },
+  {
+    "name": "Wilson",
+    "fips": "47189",
+    "seat": "Lebanon",
+    "division": "Middle",
+    "market": "Nashville",
+    "pop": 169948,
+    "pop2020": 148651,
+    "growth": 14.3,
+    "trump": 56425,
+    "harris": 23855,
+    "trumpPct": 69.44,
+    "harrisPct": 29.36,
+    "other": 974,
+    "totalVotes": 81254,
+    "margin": 40.08,
+    "medianIncome": 89000,
+    "temp": 75,
+    "tempLabel": "critical",
+    "profile": "collar",
+    "issues": [
+      "Aug 6 local control",
+      "School boards",
+      "Growth and traffic",
+      "Property taxes"
+    ],
+    "aug6": {
+      "kind": "seats",
+      "offices": [
+        "local races"
+      ],
+      "note": "Democrats picked up local seats."
+    },
+    "brief": {
+      "lede": "Lebanon / Mt. Juliet is the eastern collar \u2014 Trump +40 and still leaking local seats. Fast growth, new voters who did not live here in 2016.",
+      "talking": [
+        "Local seat flips",
+        "I-40 corridor housing",
+        "School overcrowding",
+        "Who the new neighbors are"
+      ],
+      "soWhat": "Voter-file hygiene on new registrants. Door-knock the subdivisions that did not exist four years ago."
+    }
+  }
+]

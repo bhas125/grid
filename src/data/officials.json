@@ -1,0 +1,5240 @@
+{
+  "Anderson": [
+    {
+      "office": "County Mayor",
+      "name": "Theresa Frank"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Gary Long"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "John Alley Jr."
+    },
+    {
+      "office": "Sheriff",
+      "name": "Russell Barker"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Victoria Bowling"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Jeffrey Cole"
+    },
+    {
+      "office": "Trustee",
+      "name": "Regina Copeland"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Hal Cousins"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Rex Lynch"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Tim Shelton"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Mark Stephens"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Matt Tuck"
+    }
+  ],
+  "Bedford": [
+    {
+      "office": "County Mayor",
+      "name": "Chad Graham"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Mark Clanton"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Frank Bobo"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Diane Clanton"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Ronda Clanton"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Curt Cobb"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Kimberly Cook"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Albert Crosslin"
+    },
+    {
+      "office": "Trustee",
+      "name": "Tonya Davis"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "David Gordon"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Summer Leverette"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Robert McAnally"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Michelle Murray"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "John Reed"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Ricky Reed"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Charles Rich"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Brent Stacy"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Faye Sudberry"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Michael Sudberry"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Austin Swing"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Donna Thomas"
+    }
+  ],
+  "Benton": [
+    {
+      "office": "County Mayor",
+      "name": "Mark Ward"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Brian Hicks"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Carly Bayless"
+    },
+    {
+      "office": "Trustee",
+      "name": "Beverly Beal"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jeff Beasley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Kenneth Christopher"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Ryan Hall"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Wanda Malin"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Sam Rainwaters"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Sonya Volz"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "John Whitworth"
+    }
+  ],
+  "Bledsoe": [
+    {
+      "office": "County Mayor",
+      "name": "Gregg Ridley"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Tobe Smith"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Jeanine Boynton"
+    },
+    {
+      "office": "Trustee",
+      "name": "Tracey Cagle"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Tyler Debord"
+    },
+    {
+      "office": "Sheriff",
+      "name": "James Morris"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Zachary Olendorf"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Genese Sapp"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Michael Walker"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Lisa Wheeler"
+    }
+  ],
+  "Blount": [
+    {
+      "office": "County Mayor",
+      "name": "Ed Mitchell"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jeff Headrick"
+    },
+    {
+      "office": "Sheriff",
+      "name": "James Berrong"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "William Brewer Jr."
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Chris Cantrell"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Moe Click"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Phyllis Crisp"
+    },
+    {
+      "office": "Circuit Court Judge",
+      "name": "David Duggan"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Kenlyn Foster"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Mike Gallegos"
+    },
+    {
+      "office": "Trustee",
+      "name": "Scott Graves"
+    },
+    {
+      "office": "Circuit Court Judge",
+      "name": "Tammy Harrington"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Gaye Hasty"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Robert Headrick"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Stephen Ogle"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Todd Orr"
+    }
+  ],
+  "Bradley": [
+    {
+      "office": "County Mayor",
+      "name": "Gary Davis"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Tom Collins"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Fran Green"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Stephen Lawson"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Gayla Miller"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Sheridan Randolph"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Donna Simpson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Mike Smith"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Daniel Swafford"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Dina Swafford"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Holly Thompson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Stanley Thompson"
+    }
+  ],
+  "Campbell": [
+    {
+      "office": "County Mayor",
+      "name": "Jack Lynch"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ron Dilbeck"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Eddie Barton II"
+    },
+    {
+      "office": "Trustee",
+      "name": "Monty Bullock"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Brittany Foust"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Bill Jones"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Todd Nance"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Brandon G. Partin"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Dennis Potter"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Mallory Rosenfeld"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Bobby Vann"
+    }
+  ],
+  "Cannon": [
+    {
+      "office": "County Executive",
+      "name": "Greg Mitchell"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Earl Hancock"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Matthew Cowan"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Dana Davenport"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Edward Duke"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Katina George"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Sandy Hollandsworth"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Terry Horn"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lana Jones"
+    },
+    {
+      "office": "Trustee",
+      "name": "Norma Knox"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Roger Parker"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Angela Schwartz"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Matt Tepley"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jimmy Williams"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Darrell Young"
+    }
+  ],
+  "Carroll": [
+    {
+      "office": "County Mayor",
+      "name": "Joseph Butler"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ricky Scott"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ronnie Wade"
+    },
+    {
+      "office": "Trustee",
+      "name": "Paula Bolen"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Sarah Bradberry"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Anthony Dickson"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Peg Hamlett"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Rita Jones"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Michael King"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Darlene Kirk"
+    },
+    {
+      "office": "Finance/Budget Director",
+      "name": "Stacey McCaleb"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Natalie Porter"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kenneth Todd"
+    }
+  ],
+  "Carter": [
+    {
+      "office": "County Mayor",
+      "name": "Patty Woodby"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Shannon Burchett"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Johnny Blankenship"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Keith Bowers Jr."
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Jarrod Ellis"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Mike Fraley"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Mary Gouge"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Tracy Harris"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Andrew LaPorte"
+    },
+    {
+      "office": "Trustee",
+      "name": "Chad Lewis"
+    },
+    {
+      "office": "Chancery Court Judge",
+      "name": "John Rambo"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Nicholas Simerly"
+    }
+  ],
+  "Cheatham": [
+    {
+      "office": "County Mayor",
+      "name": "Kerry McCarver"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Robert Binkley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Tim Binkley"
+    },
+    {
+      "office": "Trustee",
+      "name": "Cindy Binkley Perry"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Cindy Burney"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Pam Frejosky"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Chrissy Henderson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Phillip Maxey"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Abby Short"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Rhonda Vaughn"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Holly Waller"
+    }
+  ],
+  "Chester": [
+    {
+      "office": "County Mayor",
+      "name": "Barry Hutcherson"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Todd Brown"
+    },
+    {
+      "office": "Trustee",
+      "name": "Lance Beshires"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Justin Emerson"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Doris Ethridge"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Keith Frye"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Mark Griffin"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Beverly Morton"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Angela Scott"
+    },
+    {
+      "office": "County Clerk",
+      "name": "William Smith"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Kathy Vest"
+    }
+  ],
+  "Claiborne": [
+    {
+      "office": "County Mayor",
+      "name": "Joe Brooks"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ronnie Pittman"
+    },
+    {
+      "office": "Trustee",
+      "name": "Denise Alexander"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Shane Breeding"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Robert Brooks"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Robert Estep"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Karen Hurst"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Kimberly Reece"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Aaron Reed"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jackie Rosenbalm"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Patricia Simmons"
+    }
+  ],
+  "Clay": [
+    {
+      "office": "County Mayor",
+      "name": "Dale Reagan"
+    },
+    {
+      "office": "Interim Hwy Chief Admin Off",
+      "name": "Ernest J. Garrison"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Brandon Boone"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Brenda Browning"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Monica Davis"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Rene Davis"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Angie Eads"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Diana Monroe"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Keshia Smith"
+    },
+    {
+      "office": "Trustee",
+      "name": "Angela Thompson"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Donna R Watson"
+    }
+  ],
+  "Cocke": [
+    {
+      "office": "County Mayor",
+      "name": "Rob Mathis"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Bullet McCallister"
+    },
+    {
+      "office": "Sheriff",
+      "name": "C.J. Ball"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Josh Blanchard"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Ronald Blazer"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Burnett Duncan"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Randy Dyke"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Mike Ellison"
+    },
+    {
+      "office": "Trustee",
+      "name": "Mitch Fine"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Robert Grooms Jr."
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Josh Hall"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Kenneth Hall"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jerry Holt Jr."
+    },
+    {
+      "office": "County Clerk",
+      "name": "Shalee McClure"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Mark McGaha"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kristy Nease"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Clayton Presnell"
+    },
+    {
+      "office": "General Sessions Court Clerk",
+      "name": "Brenda Ramsey"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Macie Reed"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jackie Smith"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Chuck Smithpeters"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Eugene Teague"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Craig Wild"
+    }
+  ],
+  "Coffee": [
+    {
+      "office": "County Mayor",
+      "name": "Dennis Hunt"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Benton Bartlett"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jenny Anthony"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jeff Bush"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Carolyn Duke"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Raymond Duke"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Gerald Ewell Jr."
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Andy Farrar"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Elissa Fletcher"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Richard Harris"
+    },
+    {
+      "office": "Trustee",
+      "name": "John Marchesoni"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Teresa McFadden"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Chad Partin"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Greg Perry"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sheila Proffitt"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Clayton Qualls"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Donna Toney"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "James Weaver"
+    }
+  ],
+  "Crockett": [
+    {
+      "office": "County Mayor",
+      "name": "Gary Reasons"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Milton Legions"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Lanny Beaird"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Dana Branch"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Alan Castellaw"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Paul Conley III"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Andy Edwards"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Daniel Hazlewood"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kim Kail"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Troy Klyce"
+    },
+    {
+      "office": "Trustee",
+      "name": "Gary Spraggins"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "James Stephenson"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Laney Tucker"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Walter Yearwood"
+    }
+  ],
+  "Cumberland": [
+    {
+      "office": "County Mayor",
+      "name": "Allen Foster"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Stanley Hall"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Julius Bryson"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Kelli Buchannon"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jessica Burgess"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Casey Cox"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jill Davis"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Trey Kerley"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Benjamin Tollett"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Amanda Worley"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kim Wyatt"
+    }
+  ],
+  "Davidson": [
+    {
+      "office": "Metro Mayor",
+      "name": "Freddie O'Connell"
+    },
+    {
+      "office": "Interim Hwy Chief Admin Off",
+      "name": "Phillip Jones"
+    },
+    {
+      "office": "Vice Mayor",
+      "name": "Angie Henderson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Rachel Bell"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Melissa Blackburn"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Sam Coleman"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Joseph Day"
+    },
+    {
+      "office": "Public Defender",
+      "name": "Dawn Deaner"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ana Escobar"
+    },
+    {
+      "office": "Criminal Court Clerk",
+      "name": "Howard Gentry"
+    },
+    {
+      "office": "Trustee",
+      "name": "Erica Gilmore"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Daron Hall"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "William Edward Higgins"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "John Aaron Holt"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Karen Johnson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Lynda Jones"
+    },
+    {
+      "office": "Juvenile Court Clerk",
+      "name": "Lonnell Matthews Jr."
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Michael Mondelli"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "John D. Richardson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Gale Robinson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Maria Salas"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Dianne Turner"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Allegra Walker"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Vivian Wilhoite"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Brenda Wynn"
+    }
+  ],
+  "DeKalb": [
+    {
+      "office": "County Mayor",
+      "name": "Matt Adcock"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Danny Hale"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Shannon Cantrell"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Bratten Hale Cook II"
+    },
+    {
+      "office": "Trustee",
+      "name": "Sean Driver"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Susan Martin"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Jimmy Poss"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Patrick Ray"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Daniel Seber"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Dennis Stanley"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Nicole Wright"
+    }
+  ],
+  "Decatur": [
+    {
+      "office": "County Mayor",
+      "name": "Michael Creasy"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Robert Montgomery"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Teresa Bedingfield"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Melinda Broadway"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Elizabeth Carpenter"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Paul Allen England"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kelly Harden"
+    },
+    {
+      "office": "Trustee",
+      "name": "Beth Hays"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Walter Higdon"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Dale King"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Regina Tillman"
+    }
+  ],
+  "Dickson": [
+    {
+      "office": "County Mayor",
+      "name": "Bob Rial"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jackie Hodges"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Lynn Collins"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Jared Creasy"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Tim Eads"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Luanne Greer"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Jenny Heath Martin"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Pamela Lewis"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Liz Littleton"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Craig Monsue"
+    },
+    {
+      "office": "Trustee",
+      "name": "Glynda Pendergrass"
+    },
+    {
+      "office": "General Sessions Court Clerk",
+      "name": "Leslie Shelton"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Shelly Yates"
+    }
+  ],
+  "Dyer": [
+    {
+      "office": "County Mayor",
+      "name": "David Quick"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jeff Jones"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jeff Box"
+    },
+    {
+      "office": "Trustee",
+      "name": "Nancy Broadstone"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Anita Fowlkes"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "John Fowlkes"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Sheila Holmes"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jason Hudson"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "T.J. Jones"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Diane Moore"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Cindy Rose"
+    }
+  ],
+  "Fayette": [
+    {
+      "office": "County Mayor",
+      "name": "Skip Taylor"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Wayne Dowdy"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Amy Anderson"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Shana Burch"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "David Douglas"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Hank Franck"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "James Gallagher"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "John Matthews IV"
+    },
+    {
+      "office": "Trustee",
+      "name": "Charles McNab"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Ricky McQueen"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Eddie Pattat"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Ed Pulliam"
+    },
+    {
+      "office": "Sheriff",
+      "name": "James Riles"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Josh Tapp"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Robert Turpen"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Mark Ward"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Russell Wicker"
+    }
+  ],
+  "Fentress": [
+    {
+      "office": "County Executive",
+      "name": "Jimmy Johnson"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ryan Reed"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Todd Burnett"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Hunter Fowler"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Amanda Hicks"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Gina Mullinix"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Patricia Slaven"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Linda Smith"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Melynda Sullivan"
+    },
+    {
+      "office": "Trustee",
+      "name": "Angie Sweet"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Joey Williams"
+    }
+  ],
+  "Franklin": [
+    {
+      "office": "County Mayor",
+      "name": "Chris Guess"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Luke McCurry"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Robert Baggett Jr."
+    },
+    {
+      "office": "Trustee",
+      "name": "Kristie Bell"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Bobby Clark"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Tim Fuller"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Donnie Hill"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Johnny Hughes"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Katelyn Isbell"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Monica Jeffers"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Denise Marshall"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Margaret Ottley"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Tina Sanders"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "David Stewart"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Charles Tipps"
+    }
+  ],
+  "Gibson": [
+    {
+      "office": "County Mayor",
+      "name": "Nelson Cunningham"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Joel Simmons"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Amanda Brown"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Emily Brown"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Joyce Brown"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Barbara Davidson"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Cindy Flowers"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jearod Flowers"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Roger Hanks"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "James Hopkins"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Andy Johnson"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Mark Johnson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Katelyn Orgain"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Alicia Owens"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Bradley Owens"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Buddy Sorrells"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Paul Thomas"
+    },
+    {
+      "office": "Trustee",
+      "name": "Melissa Workman"
+    }
+  ],
+  "Giles": [
+    {
+      "office": "County Executive",
+      "name": "Graham Stowe"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Gene Barnickle"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Zena Dickey"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Crystal Gibson Greene"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Tammy Helton"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Tommy Hyatt"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Natalie Oakley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Joe Purvis"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Chip Richardson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Tony Risner"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Carol Wade"
+    }
+  ],
+  "Grainger": [
+    {
+      "office": "County Mayor",
+      "name": "Mike Byrd"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Charles McAnally"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Sherry Clifton"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Ricky Diamond"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Vickie Greenlee"
+    },
+    {
+      "office": "Trustee",
+      "name": "Rena Greer"
+    },
+    {
+      "office": "Sheriff",
+      "name": "James Harville"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Gina Hipsher"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Angie Lamb"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Donna Shelton"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Lane Wolfenbarger"
+    }
+  ],
+  "Greene": [
+    {
+      "office": "County Mayor",
+      "name": "Kevin Morrison"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Kevin Swatsell"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Kenneth Bailey Jr."
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lori Bryant"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Donna Burgner"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Whitney Collins"
+    },
+    {
+      "office": "Trustee",
+      "name": "Nathan Holt"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Wesley Holt"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Chuck Jeffers"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Bland Justis"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Karen Ottinger"
+    }
+  ],
+  "Grundy": [
+    {
+      "office": "County Mayor",
+      "name": "Michael Brady"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Johnny Fults"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "William Anderson III"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Daniel Crabtree"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Heath Gunter"
+    },
+    {
+      "office": "Trustee",
+      "name": "Tyler McCullough"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Garry Miller"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Megan Rollins"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Tammy Sholey"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Penny Sons"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Gayle Vanhooser"
+    }
+  ],
+  "Hamblen": [
+    {
+      "office": "County Mayor",
+      "name": "Chris Cutshaw"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jeff Wisecarver"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Charles Anderson"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Dannie Bell"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Terry Britt"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Teresa Carey"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Larry Carter"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Jim Clawson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Wayne Collins"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Keith Ely"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jeff Gardner"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Dennis Greene"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Peggy Henderson"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Tom Hyde"
+    },
+    {
+      "office": "Trustee",
+      "name": "Scotty Long"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Chad Mullins"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Delbert Nix"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "David Rich"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Blake Sempkowski"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Teresa West"
+    }
+  ],
+  "Hamilton": [
+    {
+      "office": "County Mayor",
+      "name": "Weston Wamp"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Brandon Mauracher"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "David Bales"
+    },
+    {
+      "office": "Juvenile Court Clerk",
+      "name": "Gary Behler"
+    },
+    {
+      "office": "Criminal Court Clerk",
+      "name": "Vince Dean"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Austin Garrett"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Marc Gravitt"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Marty Haynes"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Larry Henry"
+    },
+    {
+      "office": "Trustee",
+      "name": "Bill Hullander"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Rachael Kapperman"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Bill Knowles"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Robert Philyaw"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Christie Sell"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Clarence Shattuck Jr."
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Gary Starnes"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Lila Statom"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Kerry Steelman"
+    }
+  ],
+  "Hancock": [
+    {
+      "office": "County Mayor",
+      "name": "Thomas Harrison V"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Laymon Burke"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Bradley Brewer"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Sue Greer"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Rhonda Hurd"
+    },
+    {
+      "office": "Trustee",
+      "name": "Leslie Johnson Jr."
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Janie Lamb"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Floyd Rhea"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Jessie Royston"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Judith H. Trent"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Micah Wallen"
+    }
+  ],
+  "Hardeman": [
+    {
+      "office": "County Mayor",
+      "name": "Todd Pulse"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Casey Swift"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Lily Barnes"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Danny Davila"
+    },
+    {
+      "office": "Sheriff",
+      "name": "John Doolen"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Tonet Griggs"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Eunice Gudger"
+    },
+    {
+      "office": "Trustee",
+      "name": "Sandy Hammons"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Mark McCrory"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "John Mitchell"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Amber Moore"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kim Paras"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Josh Pulse"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Harriet Thompson"
+    }
+  ],
+  "Hardin": [
+    {
+      "office": "County Mayor",
+      "name": "Kevin Davis"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Wesley Jerrolds"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Julie Adkisson"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Johnny Alexander"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Jennifer Fielder"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Hugh Gresham"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Billy Grooms"
+    },
+    {
+      "office": "Trustee",
+      "name": "Jeanie Hopper"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Carter Horton"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jamie Johnson"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Ryan Johnson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Mary Martin"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Kim Melson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Daniel Smith"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Kathy Smith"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Tammie Wolfe"
+    }
+  ],
+  "Hawkins": [
+    {
+      "office": "County Mayor",
+      "name": "Mark Dewitte"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Danny Jones"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Daniel Boyd"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Randy Collier"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Nancy Davis"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Michael Gillespie"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Judy Kirkpatrick"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Ronald Lawson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Brent Price"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Crystal Rogers"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "J. Todd Ross"
+    },
+    {
+      "office": "Trustee",
+      "name": "James Shanks"
+    }
+  ],
+  "Haywood": [
+    {
+      "office": "County Mayor",
+      "name": "David Livingston"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Vernon Mann"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Felicia Bond"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Milton Booth"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "James Boyd"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Sonya Castellaw"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Robert English"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "George Floyd"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Billy Garrett Jr."
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Chuck Lonon"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Mary Lonon"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jenny Scott"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Andrea Smothers"
+    },
+    {
+      "office": "Trustee",
+      "name": "Tammie Staggs"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Gwen Watson"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Duke Williams"
+    }
+  ],
+  "Henderson": [
+    {
+      "office": "County Mayor",
+      "name": "Robbie McCready"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Steve Vineyard"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Douglas Bartholomew"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Steve Beal"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Tasha Carver"
+    },
+    {
+      "office": "Trustee",
+      "name": "John Cavness"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Brian Duke"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Beverly Dunaway"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Leigh Milam"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Gary Pope"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Robin Powers"
+    }
+  ],
+  "Henry": [
+    {
+      "office": "County Mayor",
+      "name": "Randy Geiger"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Richie Chilcutt"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Donna Craig"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Matthew Craig"
+    },
+    {
+      "office": "Trustee",
+      "name": "Randi French"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Josh Frey"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "DeLaina Green"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Roy Henry"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Pamela Martin"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Bobby Milam"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Scott Morrison"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Kyle Norwood"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Michael Parker"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Mike Shinault"
+    },
+    {
+      "office": "General Sessions Court & Juvenile Court Judge",
+      "name": "Vicki Snyder"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Albert Wade"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Mike Wilson"
+    }
+  ],
+  "Hickman": [
+    {
+      "office": "County Mayor",
+      "name": "Jim Bates"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ronald Coates"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jason Craft"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Sammy Creech"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Casey Dorton"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Brittany Duke"
+    },
+    {
+      "office": "Trustee",
+      "name": "Lisa Hellmann"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Dicky Hinson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Randy Jenkins"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Angie Luckett"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Johnny Martin"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Thomas Morrow"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Dana Nicholson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Amy Puckett"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "David Redden"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Loren Roberts"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Carl Sullivan"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Leroy Tidwell"
+    }
+  ],
+  "Houston": [
+    {
+      "office": "County Mayor",
+      "name": "Joey Brake"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Teresa Wolfe"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Phil Averitt"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Patsy Brooks"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Robert Brown"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "George Clark"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Joy Hooper"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Linda Lambarth"
+    },
+    {
+      "office": "Trustee",
+      "name": "Jimmy Lowery"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Annette Pulley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Kevin Sugg"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Larry Sykes"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Donna Vincent"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "William Vinson III"
+    }
+  ],
+  "Humphreys": [
+    {
+      "office": "County Executive",
+      "name": "Mike Pogreba"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Randy Woods"
+    },
+    {
+      "office": "Finance Director",
+      "name": "Tiana Austin"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Haylee Bradley-Maples"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "JoAnn Bullion"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Michael Bullion"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Chris Davis"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Stephanie Gunn"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "LeeAnn Plant"
+    },
+    {
+      "office": "Probate/Juvenile Judge",
+      "name": "Anthony Sanders"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Edith Stainforth"
+    },
+    {
+      "office": "Trustee",
+      "name": "Leigh Stanfield"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Cindy Wilson"
+    }
+  ],
+  "Jackson": [
+    {
+      "office": "Interim County Mayor",
+      "name": "Jim Morgan"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Daniel Garrison"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Kaleb Allen"
+    },
+    {
+      "office": "Trustee",
+      "name": "Anthony Flatt"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Tiffany Gentry Gipson"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jeff Hardy"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Marty Hinson"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Michelle Hix"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Drew McMillan"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sherrie Pippin-Loftis"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Brandon Stafford"
+    },
+    {
+      "office": "County Commissioner",
+      "name": "Richard Head"
+    }
+  ],
+  "Jefferson": [
+    {
+      "office": "County Mayor",
+      "name": "Mark Potts"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Joe Patterson"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jeffrey Coffey"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Matthew Courtney"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "A. Wayne Elmore"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Barry Fain"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Susan Gass"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Charles Gibson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Jennifer Hall"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Frank Herndon"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Aaron Loy"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Brenda Morgan"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Joe Patterson"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kevin Poe"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Dennis “Will” Roach II"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Joel Smith"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Max Stiner Jr."
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "John Turner"
+    }
+  ],
+  "Johnson": [
+    {
+      "office": "County Mayor",
+      "name": "Larry Potter"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jeff Wagner"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Julie Canter"
+    },
+    {
+      "office": "Trustee",
+      "name": "Lisa Crowder"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sherrie Fenner"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Tammie Fenner"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Melissa Hollaway"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Matthew Lewis"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Cheri Lipford"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jeffery Lowe"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Freida May"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Clifton Worley"
+    }
+  ],
+  "Knox": [
+    {
+      "office": "County Mayor",
+      "name": "Glenn Jacobs"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jim Snowden"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Phil Ballard"
+    },
+    {
+      "office": "Trustee",
+      "name": "Justin Biggs"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Charles Cerny Jr."
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Chris Davis"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Geoffrey Emery"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "J. Scott Griswold"
+    },
+    {
+      "office": "Criminal Court Clerk",
+      "name": "Mike Hammond"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Timothy Irwin"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Andrew Jackson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Patricia Long"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Nick McBride"
+    },
+    {
+      "office": "Procurement Director",
+      "name": "Matt Myers"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Tom Spangler"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Tony Stansberry"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Charlie Susano"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Sherry Witt"
+    }
+  ],
+  "Lake": [
+    {
+      "office": "County Mayor",
+      "name": "Danny Cook"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Stephen Baker"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Bryan Avery"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jessica Avery"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Emily Bargery"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Cliff Berry Jr."
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Cliff Berry Sr."
+    },
+    {
+      "office": "Trustee",
+      "name": "Mallory Berry"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Andrew Cook"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Johnny Dean"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Doug Gant"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "James Hyde"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Darlene Jones"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Jimmy Leake"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Amber Mooring"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Michelle Morgan"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Jaxon Neil"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Thomas Watts"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Bethany B. York"
+    }
+  ],
+  "Lauderdale": [
+    {
+      "office": "County Mayor",
+      "name": "Maurice Gaines Jr."
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Derek Kissell"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Jason Chrestman"
+    },
+    {
+      "office": "Trustee",
+      "name": "Judy Conrad"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jodie Edwards"
+    },
+    {
+      "office": "Probate/Juvenile Judge",
+      "name": "Rachel Jackson"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Brian Kelley"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Scott Lovelace"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Minnie Stowe"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Greg Summar"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Cinda Tillman"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lea Turnbow"
+    }
+  ],
+  "Lawrence": [
+    {
+      "office": "County Executive",
+      "name": "David Morgan"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ryan Krick"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Russ Brewer"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Terra Dickey"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kristy Gang"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Brady Hutton"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Tommy Lee Kidd"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Patricia McGuire"
+    },
+    {
+      "office": "Sheriff",
+      "name": "John Myers"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kiley Weathers"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Tanya White"
+    }
+  ],
+  "Lewis": [
+    {
+      "office": "County Mayor",
+      "name": "Jonah Keltner"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Kerry Cagle"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kaitlin Bates"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Sandra Clayton"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Barbara Jo Hinson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Michael Hinson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Travis Hinson"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Rusty Isbell"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Cheryl Staggs"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Matt TIller"
+    },
+    {
+      "office": "Trustee",
+      "name": "Mike Webb"
+    }
+  ],
+  "Lincoln": [
+    {
+      "office": "County Mayor",
+      "name": "Bill Newman"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Tim Gill"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Sheila Allen"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Rebecca Bartlett Carpenter"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Phyllis Counts"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Randy Delap"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Tull Malone"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Andy Myrick"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Tammy Painter"
+    },
+    {
+      "office": "Trustee",
+      "name": "Mary Jane Porter"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Lisa Simmons"
+    }
+  ],
+  "Loudon": [
+    {
+      "office": "County Mayor",
+      "name": "Rollen Bradshaw II"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Billy Pickel"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Mike Campbell"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Rex Dale"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jimmy Davis"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Tammy Gallaher"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Steve Harrelson"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Susan Harrison"
+    },
+    {
+      "office": "Trustee",
+      "name": "Chip Miller"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Lisa Niles"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Riley Wampler"
+    }
+  ],
+  "Macon": [
+    {
+      "office": "County Mayor",
+      "name": "Steve Jones"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ben Cook"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Connie Blackwell"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Barry Doss"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Rick Gann"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Cynthia Jones"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kimberly Parks"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kristin Reid"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Rickey Shoulders"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Joey Wilburn"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ken Witcher Jr."
+    }
+  ],
+  "Madison": [
+    {
+      "office": "County Mayor",
+      "name": "A.J. Massey"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Bart Walls"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Fred Birmingham"
+    },
+    {
+      "office": "Trustee",
+      "name": "Billy Burkhead"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Angie Byers"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Hugh Harvey Jr."
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Frances Hunley"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Christy Little"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Lori Lott"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Gail Mooney"
+    },
+    {
+      "office": "Administrative Assistant",
+      "name": "Regetta Nelson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sharon Perry-Brown"
+    },
+    {
+      "office": "Juvenile Court Clerk",
+      "name": "James Swift"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Julian Wiser"
+    }
+  ],
+  "Marion": [
+    {
+      "office": "County Mayor",
+      "name": "David Jackson Jr."
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Cory Pickett"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Ronnie Blevins II"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Ronnie Burnett"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Lonna Henderson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Paige Mashburn"
+    },
+    {
+      "office": "Trustee",
+      "name": "Diane B. Massengale"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Darrell Pittman"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Debbie Pittman"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Marshall Raines Jr."
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "David Riley"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Joanie Spangler"
+    }
+  ],
+  "Marshall": [
+    {
+      "office": "County Mayor",
+      "name": "Mike Keny"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jerry Williams"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Lee Bussart"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Daphne Fagan-Girts"
+    },
+    {
+      "office": "Register Of Deeds",
+      "name": "Curtis Johnson"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Billy Lamb"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Jennifer Neill"
+    },
+    {
+      "office": "Trustee",
+      "name": "Scottie Poarch"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Andrew Robertson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Cecilia Spivy"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Mike Wiles"
+    }
+  ],
+  "Maury": [
+    {
+      "office": "County Mayor",
+      "name": "Sheila Butt"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Kenneth McKee"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Joey Allen"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Bobby Daniels"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "John Fleming"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Chris Mackinlay"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Sandy McLain"
+    },
+    {
+      "office": "Trustee",
+      "name": "Randy McNeece Jr."
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Larry Roe Sr."
+    },
+    {
+      "office": "Sheriff",
+      "name": "Bucky Rowland"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Bobby Sands"
+    }
+  ],
+  "McMinn": [
+    {
+      "office": "County Mayor",
+      "name": "John Gentry"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Dan Evans"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Rhonda Cooley"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Patty Gaines"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Joe Guy"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Cheryl Ingram"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Melinda King"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Keith Price"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Bridgett Prichard"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Wylie Richardson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Phil Tuggle"
+    }
+  ],
+  "McNairy": [
+    {
+      "office": "County Mayor",
+      "name": "Larry Smith"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Harvey Neal Smith"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kimberly Boals"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Guy Buck"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Joanie Collins"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Brian Dickey"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Ashley Hollingsworth"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Van McMahan"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Ross McNatt"
+    },
+    {
+      "office": "Trustee",
+      "name": "Stanley Mitchell"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Brandon Moore"
+    }
+  ],
+  "Meigs": [
+    {
+      "office": "County Mayor",
+      "name": "Eddie Jewell"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jimmy Nelson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Billy Breeden"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Madison Carden"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Darrell Davis"
+    },
+    {
+      "office": "Trustee",
+      "name": "Stacie Hyde"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Judy McAllister"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jackie Melton"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Donna Moore"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Janie Myers"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Casey Stokes, M.Ed., J.D."
+    }
+  ],
+  "Monroe": [
+    {
+      "office": "County Mayor",
+      "name": "Mitch Ingram"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Steve Teague"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Kimberly Bivens"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "James Brown"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Teresa Choate"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "J. Reed Dixon"
+    },
+    {
+      "office": "Trustee",
+      "name": "Marna Hull"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Tommy Jones"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Dewayna Martin"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Marsha Raper"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Larry Sloan"
+    }
+  ],
+  "Montgomery": [
+    {
+      "office": "County Mayor",
+      "name": "Wes Golden"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Tim Barnes"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jeffery Bryant"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Teresa Cottrell"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Wendy Davis"
+    },
+    {
+      "office": "Sheriff",
+      "name": "John Fuson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ken Goble"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Erinne Hester"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Amanda Joslin"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Sharon Massey-Grimes"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Heather Moore"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Julie Runyon"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Wayne Shelton"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kimberly Wiggins"
+    }
+  ],
+  "Moore": [
+    {
+      "office": "Metro Executive",
+      "name": "Sloan Stewart"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Shannon Cauble"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Terry Gregory"
+    },
+    {
+      "office": "Trustee",
+      "name": "Lynn Harrison"
+    },
+    {
+      "office": "Sheriff",
+      "name": "J Hatfield"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lacy Ivey"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Tammy Roberts"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jim Sanders"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Shaun Sherrill"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Pam Wells"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Linda Wolaver"
+    }
+  ],
+  "Morgan": [
+    {
+      "office": "County Executive",
+      "name": "Brian Langley"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Joe Miller"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Angela Anderson"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Cheryl Collins"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Sandy Dalton"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Michael Davis"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "Gina Ellis"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Rick Hamby"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Marla Hines"
+    },
+    {
+      "office": "Trustee",
+      "name": "Cindi Jones"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Tim Sweat"
+    }
+  ],
+  "Obion": [
+    {
+      "office": "County Mayor",
+      "name": "Steve Carr"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Kevin Dunn"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Crystal Crain"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Emily Hall"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Karl Jackson"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Sam Nailling Jr."
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Cheryl Reddin"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Leigh Schlager"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jimmy Smith"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Judy Smith"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Denise Taylor"
+    },
+    {
+      "office": "Trustee",
+      "name": "Tracey Westbrooks"
+    }
+  ],
+  "Overton": [
+    {
+      "office": "County Executive",
+      "name": "Steven Barlow"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Tim Kennedy"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Cara Boone"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Daryl Colson"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Jimmy Conner"
+    },
+    {
+      "office": "Sheriff",
+      "name": "John Garrett"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Lori Hammock"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Victoria Looper"
+    },
+    {
+      "office": "Clerk & Master and Juvenile Clerk",
+      "name": "Julie Raines"
+    },
+    {
+      "office": "Trustee",
+      "name": "Peggy Smith"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Craig Story"
+    }
+  ],
+  "Perry": [
+    {
+      "office": "County Mayor",
+      "name": "John Carroll"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Robert Dedrick"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Joy Breeding"
+    },
+    {
+      "office": "Trustee",
+      "name": "Shane Copeland"
+    },
+    {
+      "office": "County Attorney",
+      "name": "Tommy Doyle"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Charlene Duplessis"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Terry Hill"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Glenda Leegan"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Katerina Moore"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Brett Skelton"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Gaye Treadwell"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Nick Weems"
+    }
+  ],
+  "Pickett": [
+    {
+      "office": "County Executive",
+      "name": "Stephen Bilbrey"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jimmy Cope"
+    },
+    {
+      "office": "Trustee",
+      "name": "Jennifer Anderson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "James Brown"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Tim Clark"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Dana Dowdy"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Danny Huddleston"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Charlie Lee"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Kim Logan"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Letha McCurdy"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Leana Neal"
+    }
+  ],
+  "Polk": [
+    {
+      "office": "County Executive",
+      "name": "Robby Hatcher"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Roy Thomason Jr."
+    },
+    {
+      "office": "Trustee",
+      "name": "Gina Hicks-Burchfiel"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Nathan Hitson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Kimberly Ingram"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Melissa Jenkins"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Jason Pankey"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Jackie Rogers"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Steve Ross"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Kile Swafford"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Brooklyn Townsend"
+    }
+  ],
+  "Putnam": [
+    {
+      "office": "County Mayor",
+      "name": "Randy Porter"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Randy Jones"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Brandi Ashburn"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Eddie Farris"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jennifer Murphy"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Wayne Nabors"
+    },
+    {
+      "office": "Trustee",
+      "name": "Freddie Nelson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Steve Pierce"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Steve Qualls"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Steven Randolph"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "John Sanders"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jennifer Wilkerson"
+    }
+  ],
+  "Rhea": [
+    {
+      "office": "County Executive",
+      "name": "Jim Vincent"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Rick Wilkey"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Debbie Byrd"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Bonnie Doss"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Shannon Garrison"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Felicia Goodman"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jamie Holloway"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Teresa J. Hulgan"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Michael Neal"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Linda Shaver"
+    },
+    {
+      "office": "Trustee",
+      "name": "Neva Webb"
+    }
+  ],
+  "Roane": [
+    {
+      "office": "County Executive",
+      "name": "Wade Creswell"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Dennis Ferguson"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Sharon Brackett"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Ann Goldston"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Molly Hartup"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Charles Holiway"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Dennis Humphrey"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Beth Johnson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Chris Mason"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Pam May"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jackie Stockton"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jeff Wicks"
+    }
+  ],
+  "Robertson": [
+    {
+      "office": "County Mayor",
+      "name": "William Vogle"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Troy Adkins"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Steven Armstrong"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kristy Chowning"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Charlie Cook"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Jon Graves"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Angie Groves"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Cathy Hamsley"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Mark Hand"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Ralph Head"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kendra Shelton"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Chris Traughber"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Michael Van Dyke"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "John West"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Paul Creasy Jr."
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Alvin Fowler"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Prince Green"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Donnie Martin"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "George Peach"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Ralph White"
+    }
+  ],
+  "Rutherford": [
+    {
+      "office": "County Mayor",
+      "name": "Joe Carr"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Gregory Brooks"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Michael Anderson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Teb Batey"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Keith Bratcher"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Heather Dawbarn"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Adam Dodd"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lisa Duke Crowell"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Keith Elrod"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Alan Farley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Mike Fitzhugh"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Melissa Harrell"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Mark Lee"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Rob Mitchell"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Michael Shirley"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "David \"Rabbit\" Victory"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Elaine Williams"
+    }
+  ],
+  "Scott": [
+    {
+      "office": "County Mayor",
+      "name": "Jerried Jeffers"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Kelvin King"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Felicia Bilbrey"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "James Cotton Jr."
+    },
+    {
+      "office": "Trustee",
+      "name": "Rena Erwin"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Tiffany Jeffers"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Brian Keeton"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Gabe Lowe Krahn"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Donald Phillips"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Michael Potter"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Ashley N. Riseden"
+    }
+  ],
+  "Sequatchie": [
+    {
+      "office": "County Executive",
+      "name": "Keith Cartwright"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Eric Higgins"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Tommy Austin"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Kendra Boyd"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sherry Brock"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "James Condra"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jerrie Holland"
+    },
+    {
+      "office": "Trustee",
+      "name": "Larry Lockhart"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Karen Millsaps"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Bill Phillips"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lana Waters"
+    }
+  ],
+  "Sevier": [
+    {
+      "office": "County Mayor",
+      "name": "James Waters"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Donnie Adams"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Karen Atchley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Michael Hodges Jr."
+    },
+    {
+      "office": "General Sessions Court Clerk",
+      "name": "Penny Johnson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Thomas King"
+    },
+    {
+      "office": "Trustee",
+      "name": "Faye Loveday"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Rylee Munson"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Cyndi Pickel"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jeff Rader"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Adra Rowland"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Dwight Stokes"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Nathan Whaley"
+    }
+  ],
+  "Shelby": [
+    {
+      "office": "County Mayor",
+      "name": "Lee Harris"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Darren Sanders"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Floyd Bonner"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Willie Brooks Jr."
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Melvin Burgess"
+    },
+    {
+      "office": "Probate Court Judge",
+      "name": "Kathleen Gomes"
+    },
+    {
+      "office": "Juvenile Court Clerk",
+      "name": "Janeen Gordon"
+    },
+    {
+      "office": "Correction Center Supervisor",
+      "name": "Donald Gregory"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Wanda Halbert"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Aaron Hall"
+    },
+    {
+      "office": "Probate Court Clerk",
+      "name": "Eddie Jones"
+    },
+    {
+      "office": "Criminal Court Clerk",
+      "name": "Heidi Kuhn"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Dan Michael"
+    },
+    {
+      "office": "Trustee",
+      "name": "Regina Newman"
+    },
+    {
+      "office": "Public Works Director",
+      "name": "Ciff Norville"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Linda Phillips"
+    },
+    {
+      "office": "General Sessions Court Clerk",
+      "name": "Tamara Sawyer"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Jamita Swearengen"
+    },
+    {
+      "office": "Probate Court Judge",
+      "name": "Karen Webster"
+    }
+  ],
+  "Smith": [
+    {
+      "office": "County Mayor",
+      "name": "Jeff Mason"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Mickey Barrett"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Branden Bellor"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Terry Collins"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Yvonne Gibbs"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Jessie Goad"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Steve Hopper"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Clifa Norris"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Thomas Turner"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Jerri Vaden-Malone"
+    },
+    {
+      "office": "Trustee",
+      "name": "Julie Wright"
+    }
+  ],
+  "Stewart": [
+    {
+      "office": "County Mayor",
+      "name": "Robert Beecham"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Ronnie Sumner"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "G. Andrew Brigham"
+    },
+    {
+      "office": "Trustee",
+      "name": "Laura Crain"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Derek Earhart"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Charles Gray"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Ethan Gray"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Natalie Hardison"
+    },
+    {
+      "office": "County Attorney",
+      "name": "Charles Parks"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Daniel Perigo"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "April Turner"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Martha Wallace"
+    }
+  ],
+  "Sullivan": [
+    {
+      "office": "County Mayor",
+      "name": "Richard Venable"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Scottie Murray"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Jason Booher"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jeff Cassidy"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ray Conkin"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Teresa Jacobs"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Katharine Jennell"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Randy Kennedy"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Teresa Nelson"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Bobby Russell"
+    },
+    {
+      "office": "Trustee",
+      "name": "Angela Taylor"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Sheena Tinsley"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Mark Toohey"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Doug Vance"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "William. Watson"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Donna Whitaker"
+    }
+  ],
+  "Sumner": [
+    {
+      "office": "County Executive",
+      "name": "John Isbell"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Toby Ellis"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Lori Atchley"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Barry Brown"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ne'Keisha Bryant-Mccormick"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Eric Craddock"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Holly Hemmrich"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "David Howard"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "James Hunter"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "John Hurt"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Mark Smith"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kathryn Strong"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Carolyn Templeton"
+    },
+    {
+      "office": "Trustee",
+      "name": "Cindy Williams"
+    }
+  ],
+  "Tipton": [
+    {
+      "office": "County Executive",
+      "name": "William Huffman"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Shannon Reed"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Shannon Beasley"
+    },
+    {
+      "office": "Assessor Of Property",
+      "name": "William Carter"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Milfred Eckel"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Mike Forbess"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Mary Gaither"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kristie Maxwell"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Claudia Peeler"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "William Peeler"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Cindy Pinner"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Gina Smith"
+    }
+  ],
+  "Trousdale": [
+    {
+      "office": "County Mayor",
+      "name": "Jack McCall"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Bill Scruggs"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Shelly Brawner"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Rita Crowder"
+    },
+    {
+      "office": "Trustee",
+      "name": "Cindy Gregory"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Candice Hall"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Kenny Linville"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Steve Paxton"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Michael Potts"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Ray Russell"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Kimberly Taylor"
+    }
+  ],
+  "Unicoi": [
+    {
+      "office": "County Mayor",
+      "name": "Garland Evely"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Terry Haynes"
+    },
+    {
+      "office": "Trustee",
+      "name": "Katie Bennett"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Sarah J. Fain"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Michael Hensley"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Teresa Kinsler"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "R. Mitchell Manuel"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Darren Shelton"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Teresa Simerly"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Debbie Tittle"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Patty Treadway"
+    }
+  ],
+  "Union": [
+    {
+      "office": "County Mayor",
+      "name": "Jason Bailey"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "David Cox"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Pamela Ailor"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Harold Brantley"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Wade Brantley"
+    },
+    {
+      "office": "Sheriff",
+      "name": "William Breeding II"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Carson Chesney"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Allen Collins"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "James Devault Sr."
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Darrell Dyer"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Darryl Edmondson"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sandra Edmondson"
+    },
+    {
+      "office": "Trustee",
+      "name": "Gina Gilbert"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Paul Hill"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Elmer Munsey"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Johnny Raley"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Ann Russell"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Randy Turner"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Deborah Viles"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Barbara Williams"
+    }
+  ],
+  "Warren": [
+    {
+      "office": "County Executive",
+      "name": "Terry Bell"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Levie Glenn"
+    },
+    {
+      "office": "Trustee",
+      "name": "Darlene Bryant"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Cassidy Cantrell"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Susie Davenport"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Myra Mara"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Beth Martin"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jackie Matheny Jr."
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ryan Moore"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lesa Scott"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Wes Williams"
+    }
+  ],
+  "Washington": [
+    {
+      "office": "County Mayor",
+      "name": "Joe Grandy III"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Doug Jones"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Teresa Bowman"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Brenda Downes"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "Sharon Green"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Janet Hardin"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Dana Jones"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Sarah Lawson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Robert Lincoln"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Robbie McGuire"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Johnathan Minga"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Keith Sexton"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Cheryl Storey"
+    },
+    {
+      "office": "Trustee",
+      "name": "Rick Storey"
+    }
+  ],
+  "Wayne": [
+    {
+      "office": "County Mayor",
+      "name": "Jim Mangubat"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Chuck Moser"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Lillie Ruth Brewer"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Shane Fisher"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Stan Horton"
+    },
+    {
+      "office": "Trustee",
+      "name": "Sheila Rich"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "James Ross Sr."
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Tyler Strait"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Carol Warren"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Dustin White"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Jamie Ann White"
+    }
+  ],
+  "Weakley": [
+    {
+      "office": "County Mayor",
+      "name": "Dale Hutcherson"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jeff Cosby"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Toya Bell"
+    },
+    {
+      "office": "Juvenile Court Judge",
+      "name": "James Bradberry"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Alex Britt"
+    },
+    {
+      "office": "Trustee",
+      "name": "Marci Floyd"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Kim Hughey"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "April Jones"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Terry McDade"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Thomas Moore Jr."
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Lisa Odle"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Regina VanCleave"
+    }
+  ],
+  "White": [
+    {
+      "office": "County Executive",
+      "name": "Denny Robinson"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Jerry Sawyer"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kathryn Adcock"
+    },
+    {
+      "office": "County Attorney",
+      "name": "Sam Benningfield"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Gena Brock"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Beverly Jolley"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Junior Jones"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Lori Jones"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Dorcas Marcum"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Steve Page"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Sasha Wilson"
+    }
+  ],
+  "Williamson": [
+    {
+      "office": "County Mayor",
+      "name": "Rogers Anderson"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Eddie Hood Jr."
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Sherry Anderson"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "E. Denise Andre"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Debbie Barrett"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Brad Coleman"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "David Coleman"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Wayne Davis"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Chad Gray"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Jeff Hughes"
+    },
+    {
+      "office": "Juvenile Court Clerk",
+      "name": "Margaret Mahew"
+    },
+    {
+      "office": "Trustee",
+      "name": "Karen Paris"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Jakob Schwendimann"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Tom Taylor"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Stan Tyson"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Jeff Whidby"
+    },
+    {
+      "office": "Highway Commissioner",
+      "name": "Charles Wilson"
+    }
+  ],
+  "Wilson": [
+    {
+      "office": "County Mayor",
+      "name": "Randall Hutto"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Steve Murphy"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Robert Bryan"
+    },
+    {
+      "office": "County Clerk",
+      "name": "James Goodall"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Stephen Goodall"
+    },
+    {
+      "office": "Trustee",
+      "name": "Kenneth Hackett"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Ensley Hagan Jr."
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Jimmy Lea"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Deborah Moss"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "Jackie Murphy"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Millie Sloan"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Tammy Smith"
+    },
+    {
+      "office": "General Sessions Court Judge",
+      "name": "Barry Tatum"
+    }
+  ],
+  "Van Buren": [
+    {
+      "office": "County Mayor",
+      "name": "David Sullivan"
+    },
+    {
+      "office": "Hwy Chief Admin Off",
+      "name": "Randy Oakes"
+    },
+    {
+      "office": "Sheriff",
+      "name": "Michael Brock"
+    },
+    {
+      "office": "Assessor of Property",
+      "name": "Darlene Hale"
+    },
+    {
+      "office": "County Clerk",
+      "name": "Lisa Rigsby"
+    },
+    {
+      "office": "Register of Deeds",
+      "name": "April Shockley"
+    },
+    {
+      "office": "Clerk & Master",
+      "name": "Tina Shockley"
+    },
+    {
+      "office": "Trustee",
+      "name": "Beth Simmons"
+    },
+    {
+      "office": "Circuit Court Clerk",
+      "name": "Lavetta Simmons"
+    },
+    {
+      "office": "Administrator of Elections",
+      "name": "Wayne Simons"
+    }
+  ]
+}

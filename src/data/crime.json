@@ -1,0 +1,38 @@
+{
+  "Shelby": {
+    "pulse": 5,
+    "note": "Highest volume in the state. Memphis PD + SCSO. Snapshot, not live CAD."
+  },
+  "Davidson": {
+    "pulse": 4,
+    "note": "MNPD volume is the metro story. Snapshot, not live CAD."
+  },
+  "Madison": {
+    "pulse": 3,
+    "note": "Jackson carries most of West TN’s mid-size load."
+  },
+  "Hamilton": {
+    "pulse": 3,
+    "note": "Chattanooga-centered. Typical mid-size metro pulse."
+  },
+  "Knox": {
+    "pulse": 3,
+    "note": "Knoxville metro. Not Memphis. Not a village either."
+  },
+  "Montgomery": {
+    "pulse": 2,
+    "note": "Clarksville / Fort Campbell traffic more than street crime."
+  },
+  "Rutherford": {
+    "pulse": 2,
+    "note": "Fast growth, suburban pattern."
+  },
+  "Sevier": {
+    "pulse": 2,
+    "note": "Tourist-season volume, not a year-round crime story."
+  },
+  "Williamson": {
+    "pulse": 1,
+    "note": "Among the lowest violent-crime rates in the state."
+  }
+}

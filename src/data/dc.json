@@ -1,0 +1,17 @@
+{
+  "Shelby": {
+    "op": 2,
+    "prop": 1,
+    "note": "xAI Colossus 1 & 2 (Memphis). Power and air are the local fight."
+  },
+  "Sumner": {
+    "op": 1,
+    "prop": 1,
+    "note": "Meta Gallatin campus, more buildings in the pipeline."
+  },
+  "Davidson": {
+    "op": 1,
+    "prop": 0,
+    "note": "Smaller colos / Nashville I. Not a Shelby-scale story."
+  }
+}
