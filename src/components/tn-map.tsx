@@ -23,6 +23,7 @@ import type {
 } from "@/data/types";
 import { prefetchNews } from "@/lib/news-cache";
 import { fetchCrimeNames, readCrimeNames } from "@/lib/crime-names";
+import { CamPlayer } from "./cam-player";
 import {
   FULL_VIEW,
   MAP_H,
@@ -801,8 +802,8 @@ export function TnMap({
       className="absolute inset-0"
       style={{ contain: "layout paint" }}
       onPointerDown={(e) => {
-        if (!selected || interactiveTarget(e.target)) return;
-        if (e.button !== 0) return;
+        if (interactiveTarget(e.target)) return;
+        if (!selected || e.button !== 0) return;
         pan.current = { x: e.clientX, y: e.clientY, vx: viewRef.current.x, vy: viewRef.current.y, moved: false };
         e.currentTarget.setPointerCapture(e.pointerId);
       }}
@@ -827,6 +828,11 @@ export function TnMap({
         );
       }}
       onPointerUp={(e) => {
+        if (interactiveTarget(e.target)) {
+          pan.current = null;
+          setBusy(false);
+          return;
+        }
         const start = pan.current;
         pan.current = null;
         setBusy(false);
@@ -1208,9 +1214,12 @@ export function TnMap({
           data-map-card
           className={
             selected
-              ? "absolute bottom-2 left-14 z-20 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
-              : "absolute top-2 left-2 z-20 w-[min(22rem,calc(100%-1rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+              ? "pointer-events-auto absolute bottom-2 left-14 z-30 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+              : "pointer-events-auto absolute top-2 left-2 z-30 w-[min(22rem,calc(100%-1rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
           }
+          onPointerDown={(e) => e.stopPropagation()}
+          onPointerUp={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start gap-2">
             <div className="min-w-0 flex-1">
@@ -1232,14 +1241,18 @@ export function TnMap({
               <X className="size-3.5" />
             </button>
           </div>
-          <a
-            href={camHref(pickedCam.id)}
-            target="_blank"
-            rel="noreferrer"
+          <CamPlayer stream={pickedCam.stream} snap={pickedCam.snap} title={pickedCam.title} />
+          <button
+            type="button"
             className="mt-2 inline-flex h-8 items-center border border-grid/40 bg-grid/10 px-2 font-mono text-[10px] tracking-widest text-grid uppercase hover:bg-grid/20"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open(camHref(pickedCam.id), "_blank", "noopener,noreferrer");
+            }}
           >
             Watch live
-          </a>
+          </button>
         </div>
       ) : null}
     </div>

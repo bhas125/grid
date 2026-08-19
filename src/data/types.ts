@@ -139,6 +139,7 @@ export type TrafficCam = {
   lat: number;
   lon: number;
   stream?: string;
+  snap?: string;
 };
 
 export type Site = {
