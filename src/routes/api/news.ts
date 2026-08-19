@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { outletsFor } from "@/data/local-outlets";
 import type { NewsItem } from "@/data/types";
 
-const UA = "GridTN/1.0 (tennessee situation monitor)";
+const UA = "GridTN/1.0 (tennessee situation monitor; grid.blakehassler.com)";
+const TTL_MS = 90_000;
 
 const OFF_STATE = [
   "kentucky",
@@ -32,6 +34,9 @@ const TN_HINTS = [
   "johnson city",
   "jackson, t",
 ];
+
+type Cached = { at: number; items: NewsItem[] };
+const cache = new Map<string, Cached>();
 
 function slug(s: string) {
   return s
@@ -77,22 +82,56 @@ function parseRss(xml: string, county?: string): NewsItem[] {
   return items;
 }
 
-function keep(item: NewsItem, county?: string, seat?: string) {
+function keep(item: NewsItem, county?: string, seat?: string, sites?: string[]) {
   const blob = `${item.headline} ${item.href} ${item.source}`.toLowerCase();
+  if (
+    blob.includes("obituary") ||
+    blob.includes("obit (") ||
+    blob.includes("funeral home") ||
+    blob.includes("in memoriam")
+  ) {
+    return false;
+  }
   const off = OFF_STATE.some((x) => blob.includes(x));
-  const tn =
-    TN_HINTS.some((x) => blob.includes(x)) ||
+  const localSite = sites?.some((s) => blob.includes(s.toLowerCase())) ?? false;
+  const named =
     (county && blob.includes(county.toLowerCase())) ||
     (seat && blob.includes(seat.toLowerCase()));
+  const tn = TN_HINTS.some((x) => blob.includes(x)) || named || localSite;
+  if (county) {
+    if (off && !named && !localSite) return false;
+    return Boolean(named || localSite);
+  }
   if (off && !tn) return false;
   return true;
 }
 
-async function fetchRss(q: string) {
+async function fetchRss(q: string): Promise<string> {
   const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-US&gl=US&ceid=US:en`;
-  const res = await fetch(url, { headers: { "User-Agent": UA } });
+  const res = await fetch(url, {
+    headers: { "User-Agent": UA },
+    signal: AbortSignal.timeout(2800),
+  });
   if (!res.ok) throw new Error(`news ${res.status}`);
   return res.text();
+}
+
+function ageMs(published: string) {
+  const t = Date.parse(published);
+  return Number.isFinite(t) ? Date.now() - t : 1e15;
+}
+
+function merge(rows: NewsItem[]) {
+  const seen = new Set<string>();
+  const out: NewsItem[] = [];
+  for (const it of rows) {
+    const k = it.headline.toLowerCase();
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(it);
+  }
+  out.sort((a, b) => ageMs(a.published) - ageMs(b.published));
+  return out;
 }
 
 export const Route = createFileRoute("/api/news")({
@@ -102,15 +141,42 @@ export const Route = createFileRoute("/api/news")({
         const u = new URL(request.url);
         const county = u.searchParams.get("county") ?? undefined;
         const seat = u.searchParams.get("seat") ?? undefined;
-        const q = county
-          ? `"${county} County" OR ${seat ?? county} Tennessee when:7d`
-          : "Tennessee when:2d";
+        const key = `${county ?? ""}|${seat ?? ""}`;
+        const hit = cache.get(key);
+        if (hit && Date.now() - hit.at < TTL_MS) {
+          return Response.json(
+            { items: hit.items },
+            { headers: { "Cache-Control": "public, s-maxage=90, stale-while-revalidate=300" } },
+          );
+        }
+
+        const outlets = outletsFor(county);
+        const sites = outlets.map((o) => o.site);
+        const siteQ = sites.map((s) => `site:${s}`).join(" OR ");
+        const stateSites =
+          "site:tennesseelookout.com OR site:wkrn.com OR site:newschannel5.com OR site:tennessean.com OR site:knoxnews.com OR site:timesfreepress.com";
+        const queries = county
+          ? [
+              `"${county} County" OR "${seat ?? county}" Tennessee when:3d`,
+              `("${county} County" OR "${seat ?? county}") (${siteQ}) when:7d`,
+            ]
+          : ["Tennessee when:2d", `(${stateSites}) Tennessee when:2d`];
+
         try {
-          const xml = await fetchRss(q);
-          const items = parseRss(xml, county).filter((it) => keep(it, county, seat)).slice(0, 40);
-          return Response.json({ items });
+          const xmls = await Promise.allSettled(queries.map(fetchRss));
+          const parsed: NewsItem[] = [];
+          for (const r of xmls) {
+            if (r.status !== "fulfilled") continue;
+            parsed.push(...parseRss(r.value, county));
+          }
+          const items = merge(parsed.filter((it) => keep(it, county, seat, sites))).slice(0, 40);
+          cache.set(key, { at: Date.now(), items });
+          return Response.json(
+            { items },
+            { headers: { "Cache-Control": "public, s-maxage=90, stale-while-revalidate=300" } },
+          );
         } catch {
-          return Response.json({ items: [] }, { status: 200 });
+          return Response.json({ items: hit?.items ?? [] }, { status: 200 });
         }
       },
     },

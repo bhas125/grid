@@ -4,6 +4,7 @@ import { countyIntel, sitProfile, sitShape } from "@/data/intel";
 import officialsJson from "@/data/officials.json";
 import type { Alert, County, CrimeIncident, NewsItem, Precinct, Race, TabId } from "@/data/types";
 import { cn, fmtAge, fmtMargin, fmtNum, fmtPct } from "@/lib/utils";
+import { newsCacheKey, readNewsCache, writeNewsCache } from "@/lib/news-cache";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "news", label: "News" },
@@ -66,7 +67,14 @@ function NewsFeed({
 
   useEffect(() => {
     let live = true;
-    setStatus("load");
+    const key = newsCacheKey(county, seat);
+    const cached = readNewsCache(key);
+    if (cached?.length) {
+      setItems(cached);
+      setStatus("ok");
+    } else {
+      setStatus("load");
+    }
     setShown(PAGE);
     const q = county
       ? `?county=${encodeURIComponent(county)}${seat ? `&seat=${encodeURIComponent(seat)}` : ""}`
@@ -75,11 +83,13 @@ function NewsFeed({
       .then((r) => r.json())
       .then((d: { items?: NewsItem[] }) => {
         if (!live) return;
-        setItems(d.items ?? []);
+        const next = d.items ?? [];
+        writeNewsCache(key, next);
+        setItems(next);
         setStatus("ok");
       })
       .catch(() => {
-        if (live) setStatus("err");
+        if (live && !cached?.length) setStatus("err");
       });
     return () => {
       live = false;
@@ -113,7 +123,7 @@ function NewsFeed({
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
-      {status === "load" ? (
+      {status === "load" && !visible.length ? (
         <p className="px-4 py-3 font-mono text-xs tracking-widest text-faint uppercase">
           Loading feed
         </p>

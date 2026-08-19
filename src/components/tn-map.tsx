@@ -86,16 +86,15 @@ function crimeStack(type: string) {
   return 0;
 }
 
-function crimeFill(type: string) {
-  if (type === "Homicide") return "var(--color-hot)";
-  if (type === "Armed robbery") return "var(--color-steel)";
-  return "var(--color-watch)";
-}
-
-function crimeRadius(type: string, viewW: number, countyView: boolean) {
-  const hom = type === "Homicide";
-  if (!countyView) return hom ? 4.2 : 3.1;
-  return (hom ? 0.017 : 0.012) * viewW;
+function thinCrime(rows: CrimeIncident[]) {
+  const hot: CrimeIncident[] = [];
+  const rest: CrimeIncident[] = [];
+  for (const c of rows) {
+    if (c.type === "Homicide" || c.type === "Armed robbery") hot.push(c);
+    else rest.push(c);
+  }
+  rest.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  return [...hot, ...rest.slice(0, 260)];
 }
 
 function fmtCrimeDate(iso: string | null) {
@@ -178,6 +177,8 @@ export function TnMap({
   showCrime: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [tip, setTip] = useState<Tip | null>(null);
   const [alpr, setAlpr] = useState<AlprPoint[]>([]);
   const [precincts, setPrecincts] = useState<Precinct[]>([]);
@@ -187,8 +188,10 @@ export function TnMap({
   viewRef.current = view;
   const fitRef = useRef<ViewBox>(FULL_VIEW);
   const raf = useRef<number | null>(null);
+  const drawRaf = useRef<number | null>(null);
   const pan = useRef<{ x: number; y: number; vx: number; vy: number } | null>(null);
   const [panning, setPanning] = useState(false);
+  const crimeHits = useRef<{ c: CrimeIncident; x: number; y: number; r: number }[]>([]);
 
   const project = useMemo(() => (geo ? makeProject(geo, MAP_W, MAP_H) : null), [geo]);
 
@@ -249,19 +252,92 @@ export function TnMap({
     });
   }
 
+  const crimePts = useMemo(() => {
+    if (!project || !showCrime) return [];
+    const rows = selected ? crime.filter((c) => c.county === selected.name) : crime;
+    const ranked = selected
+      ? [...rows].sort((a, b) => crimeStack(a.type) - crimeStack(b.type))
+      : thinCrime(rows);
+    return ranked.map((c) => ({ ...c, ...project(c.lon, c.lat) }));
+  }, [project, crime, selected, showCrime]);
+  const crimePtsRef = useRef(crimePts);
+  crimePtsRef.current = crimePts;
+
+  useEffect(() => {
+    drawCrime();
+  }, [crimePts, showCrime, selected]);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => drawCrime());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  function paintView(next: ViewBox, commit = false) {
+    viewRef.current = next;
+    svgRef.current?.setAttribute("viewBox", `${next.x} ${next.y} ${next.w} ${next.h}`);
+    if (drawRaf.current) cancelAnimationFrame(drawRaf.current);
+    drawRaf.current = requestAnimationFrame(drawCrime);
+    if (commit) setView(next);
+  }
+
+  function drawCrime() {
+    const canvas = canvasRef.current;
+    const box = root.current?.getBoundingClientRect();
+    const pts = crimePtsRef.current;
+    crimeHits.current = [];
+    if (!canvas || !box) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = Math.max(1, Math.round(box.width));
+    const h = Math.max(1, Math.round(box.height));
+    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+    }
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    if (!showCrime || !pts.length) return;
+    const cur = viewRef.current;
+    const { s, ox, oy } = viewScale(box, cur);
+    const zoomedNow = !!selected;
+    const pad = 12;
+    for (const c of pts) {
+      const sx = (c.x - cur.x) * s + ox;
+      const sy = (c.y - cur.y) * s + oy;
+      if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+      const hom = c.type === "Homicide";
+      const r = zoomedNow ? (hom ? 5.5 : 4.2) : hom ? 3.6 : 2.6;
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.fillStyle = hom ? "#ff4d4d" : c.type === "Armed robbery" ? "#8ec8e0" : "#ffb347";
+      ctx.globalAlpha = hom ? 0.95 : 0.78;
+      ctx.fill();
+      crimeHits.current.push({ c, x: sx, y: sy, r: r + 4 });
+    }
+    ctx.globalAlpha = 1;
+  }
+
   function animateTo(next: ViewBox) {
     if (raf.current) cancelAnimationFrame(raf.current);
     const from = viewRef.current;
     const start = performance.now();
     const step = (now: number) => {
-      const t = easeOutCubic(Math.min(1, (now - start) / 420));
-      setView({
+      const t = easeOutCubic(Math.min(1, (now - start) / 280));
+      paintView({
         x: from.x + (next.x - from.x) * t,
         y: from.y + (next.y - from.y) * t,
         w: from.w + (next.w - from.w) * t,
         h: from.h + (next.h - from.h) * t,
       });
       if (t < 1) raf.current = requestAnimationFrame(step);
+      else {
+        raf.current = null;
+        paintView(next, true);
+      }
     };
     raf.current = requestAnimationFrame(step);
   }
@@ -284,24 +360,25 @@ export function TnMap({
   function applyView(next: ViewBox, animate = true) {
     const clamped = selected ? clampView(next, fitRef.current) : next;
     if (animate) animateTo(clamped);
-    else setView(clamped);
+    else paintView(clamped);
   }
 
-  function zoomBy(factor: number, cx?: number, cy?: number) {
+  function zoomBy(factor: number, cx?: number, cy?: number, animate = false) {
     if (!selected) return;
     const cur = viewRef.current;
-    const fit = fitRef.current;
     const px = cx ?? cur.x + cur.w / 2;
     const py = cy ?? cur.y + cur.h / 2;
     const rx = (px - cur.x) / cur.w;
     const ry = (py - cur.y) / cur.h;
-    applyView({
-      w: cur.w * factor,
-      h: cur.h * factor,
-      x: px - cur.w * factor * rx,
-      y: py - cur.h * factor * ry,
-    });
-    void fit;
+    applyView(
+      {
+        w: cur.w * factor,
+        h: cur.h * factor,
+        x: px - cur.w * factor * rx,
+        y: py - cur.h * factor * ry,
+      },
+      animate,
+    );
   }
 
   function clientToView(clientX: number, clientY: number) {
@@ -323,7 +400,7 @@ export function TnMap({
       e.preventDefault();
       const pt = clientToView(e.clientX, e.clientY);
       const factor = e.deltaY > 0 ? ZOOM_OUT : ZOOM_IN;
-      zoomBy(factor, pt?.x, pt?.y);
+      zoomBy(factor, pt?.x, pt?.y, false);
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
@@ -381,7 +458,9 @@ export function TnMap({
   const alprPts = useMemo(() => {
     if (!project) return [];
     let pts = alpr;
-    if (selected) {
+    if (!selected) {
+      pts = alpr.filter((_, i) => i % 6 === 0);
+    } else {
       const feat = paths.find((p) => p.fips === selected.fips);
       if (feat) {
         const geom = feat.feature.geometry;
@@ -406,13 +485,6 @@ export function TnMap({
     }
     return pts.map((p) => ({ ...p, ...project(p.lon, p.lat) }));
   }, [project, alpr, selected, paths]);
-
-  const crimePts = useMemo(() => {
-    if (!project || !showCrime) return [];
-    const rows = selected ? crime.filter((c) => c.county === selected.name) : crime;
-    const ranked = [...rows].sort((a, b) => crimeStack(a.type) - crimeStack(b.type));
-    return ranked.map((c) => ({ ...c, ...project(c.lon, c.lat) }));
-  }, [project, crime, selected, showCrime]);
 
   function interactiveTarget(el: EventTarget | null) {
     if (!(el instanceof Element)) return false;
@@ -453,17 +525,39 @@ export function TnMap({
       onPointerUp={() => {
         pan.current = null;
         setPanning(false);
+        paintView(viewRef.current, true);
       }}
       onPointerCancel={() => {
         pan.current = null;
         setPanning(false);
+        paintView(viewRef.current, true);
+      }}
+      onMouseMove={(e) => {
+        if (pan.current || !showCrime || !selected) return;
+        if (interactiveTarget(e.target)) return;
+        const box = root.current?.getBoundingClientRect();
+        if (!box) return;
+        const mx = e.clientX - box.left;
+        const my = e.clientY - box.top;
+        let best: { c: CrimeIncident; d: number } | null = null;
+        for (const h of crimeHits.current) {
+          const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
+          if (d <= h.r * h.r && (!best || d < best.d)) best = { c: h.c, d };
+        }
+        if (!best) return;
+        showTip(e, best.c.type, crimeTipLines(best.c));
+      }}
+      onMouseLeave={() => {
+        if (!pan.current) setTip(null);
       }}
     >
       {!paths.length || !project ? (
         <div className="absolute inset-0 animate-pulse bg-elevated/40" />
       ) : (
+        <>
         <svg
-          viewBox={`${view.x} ${view.y} ${view.w} ${view.h}`}
+          ref={svgRef}
+          viewBox={`${viewRef.current.x} ${viewRef.current.y} ${viewRef.current.w} ${viewRef.current.h}`}
           className={cn(
             "absolute inset-0 h-full w-full",
             selected ? (panning ? "cursor-grabbing" : "cursor-grab") : undefined,
@@ -523,7 +617,7 @@ export function TnMap({
                 fill={fillColor(county?.pop ?? 8000, isSel, dim, wx)}
                 stroke={isSel ? "var(--color-fg)" : dim ? "transparent" : "var(--color-grid)"}
                 strokeWidth={isSel ? (zoomed ? 0.85 : 1.35) : zoomed ? 0 : 0.55}
-                filter={dim ? undefined : isSel ? "url(#line-glow-hot)" : "url(#line-glow)"}
+                filter={dim ? undefined : isSel ? "url(#line-glow-hot)" : zoomed ? undefined : "url(#line-glow)"}
                 className={dim ? "pointer-events-none" : zoomed ? undefined : "cursor-pointer"}
                 pointerEvents={dim ? "none" : "auto"}
                 onMouseEnter={(e) => {
@@ -695,40 +789,13 @@ export function TnMap({
                 </g>
               ))
             : null}
-          {showCrime
-            ? crimePts.map((c) => {
-                const r = crimeRadius(c.type, view.w, zoomed);
-                const lines = crimeTipLines(c);
-                return (
-                  <g
-                    key={c.id}
-                    data-crime={c.id}
-                    className="cursor-pointer"
-                    onMouseEnter={(e) => showTip(e, c.type, lines)}
-                    onMouseMove={(e) => showTip(e, c.type, lines)}
-                    onMouseLeave={() => setTip(null)}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!zoomed) {
-                        const next = COUNTIES.find((row) => row.name === c.county);
-                        if (next) onSelect(next);
-                      }
-                    }}
-                  >
-                    <circle cx={c.x} cy={c.y} r={r * 1.7} fill="transparent" />
-                    <circle
-                      cx={c.x}
-                      cy={c.y}
-                      r={r}
-                      fill={crimeFill(c.type)}
-                      opacity={c.type === "Homicide" ? 0.95 : 0.78}
-                      filter={c.type === "Homicide" ? "url(#line-glow-hot)" : undefined}
-                    />
-                  </g>
-                );
-              })
-            : null}
         </svg>
+        <canvas
+          ref={canvasRef}
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          aria-hidden
+        />
+        </>
       )}
       {zoomed ? (
         <div className="absolute bottom-2 left-2 z-10 flex flex-col border border-line bg-elevated/95">

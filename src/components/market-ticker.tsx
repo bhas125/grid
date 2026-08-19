@@ -11,8 +11,14 @@ export function MarketTicker() {
   const paused = useRef(false);
   const drag = useRef<{ y: number; off: number } | null>(null);
   const offRef = useRef(0);
+  const tapeRef = useRef<HTMLUListElement>(null);
   const resume = useRef<number | null>(null);
   offRef.current = off;
+
+  function applyOff(n: number) {
+    offRef.current = n;
+    if (tapeRef.current) tapeRef.current.style.transform = `translateY(${-n}px)`;
+  }
 
   function hold() {
     paused.current = true;
@@ -53,10 +59,9 @@ export function MarketTicker() {
       last = now;
       if (!paused.current) {
         const loop = quotes.length * ROW;
-        setOff((v) => {
-          const n = v + dt * 0.016;
-          return n >= loop ? n - loop : n;
-        });
+        let n = offRef.current + dt * 0.016;
+        if (n >= loop) n -= loop;
+        applyOff(n);
       }
       raf = requestAnimationFrame(tick);
     };
@@ -85,7 +90,7 @@ export function MarketTicker() {
         if (!drag.current) return;
         let next = drag.current.off - (e.clientY - drag.current.y);
         next = ((next % loop) + loop) % loop;
-        setOff(next);
+        applyOff(next);
       }}
       onPointerUp={() => {
         drag.current = null;
@@ -98,15 +103,15 @@ export function MarketTicker() {
       onWheel={(e) => {
         e.preventDefault();
         hold();
-        setOff((v) => {
-          let n = v + e.deltaY * 0.4;
+        applyOff((() => {
+          let n = offRef.current + e.deltaY * 0.4;
           n = ((n % loop) + loop) % loop;
           return n;
-        });
+        })());
         release();
       }}
     >
-      <ul style={{ transform: `translateY(-${off}px)` }}>
+      <ul ref={tapeRef} style={{ transform: `translateY(-${off}px)` }}>
         {tape.map((q, i) => {
           const up = q.change >= 0;
           return (
