@@ -1,0 +1,31 @@
+name: Daily crime refresh
+
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Merge new incidents into crime-tn.json
+        run: node scripts/crime-daily.mjs
+      - name: Commit if changed
+        run: |
+          git config user.name "grid-bot"
+          git config user.email "blake@blakehassler.com"
+          git add public/crime-tn.json
+          if git diff --cached --quiet; then
+            echo "no crime changes"
+          else
+            git commit -m "Daily crime incidents"
+            git push
+          fi

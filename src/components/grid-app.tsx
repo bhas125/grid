@@ -88,28 +88,46 @@ export function GridApp() {
   }, []);
 
   useEffect(() => {
-    if (crime.length) return;
     let live = true;
-    const start = () => {
+    const merge = (next: CrimeIncident[]) => {
+      if (!live || !next.length) return;
+      setCrime((prev) => {
+        if (!prev.length) return next;
+        const have = new Set(prev.map((r) => r.id));
+        const extra = next.filter((r) => !have.has(r.id));
+        return extra.length ? prev.concat(extra) : prev;
+      });
+    };
+    const loadStatic = () => {
       fetch("/crime-tn.json")
         .then((r) => r.json())
         .then((d: CrimeIncident[]) => {
-          if (live) setCrime(Array.isArray(d) ? d : []);
+          if (live) merge(Array.isArray(d) ? d : []);
         })
         .catch(() => undefined);
     };
-    if (tab === "crime") {
-      start();
-      return () => {
-        live = false;
-      };
-    }
-    const id = window.setTimeout(start, 500);
+    const loadLive = () => {
+      fetch("/api/crime-live")
+        .then((r) => r.json())
+        .then((d: { incidents?: CrimeIncident[] }) => {
+          if (live) merge(d.incidents ?? []);
+        })
+        .catch(() => undefined);
+    };
+    const wait = window.setTimeout(
+      () => {
+        loadStatic();
+        loadLive();
+      },
+      tab === "crime" ? 0 : 500,
+    );
+    const poll = window.setInterval(loadLive, 15 * 60_000);
     return () => {
       live = false;
-      window.clearTimeout(id);
+      window.clearTimeout(wait);
+      window.clearInterval(poll);
     };
-  }, [tab, crime.length]);
+  }, [tab]);
 
   useEffect(() => {
     let live = true;

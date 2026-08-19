@@ -3,8 +3,7 @@ import { dedicatedCounty, outletsFor, STATE_OUTLETS } from "@/data/local-outlets
 import type { NewsItem } from "@/data/types";
 
 const UA = "GridTN/1.0 (tennessee situation monitor; grid.blakehassler.com)";
-const FRESH_MS = 20_000;
-const STALE_MS = 8 * 60_000;
+const FRESH_MS = 15_000;
 const FETCH_MS = 1300;
 
 const OFF_STATE = [
@@ -186,7 +185,7 @@ function jsonNews(items: NewsItem[], extra?: Record<string, string>) {
     { items },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=20, stale-while-revalidate=300",
+        "Cache-Control": "public, s-maxage=15, stale-while-revalidate=60",
         ...extra,
       },
     },
@@ -206,7 +205,6 @@ export const Route = createFileRoute("/api/news")({
         const hit = cache.get(key);
         const age = hit ? Date.now() - hit.at : Infinity;
         if (hit && age < FRESH_MS && !fresh) return jsonNews(hit.items, { "X-Grid-News": "cache" });
-        if (hit && age < STALE_MS && !fresh) return jsonNews(hit.items, { "X-Grid-News": "stale" });
 
         const outlets = outletsFor(county, market ?? undefined);
         const sites = outlets.map((o) => o.site);

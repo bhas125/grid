@@ -63,11 +63,13 @@ function NewsFeed({
   seat,
   market,
   extra,
+  active,
 }: {
   county: string | null;
   seat?: string;
   market?: string;
   extra: NewsItem[];
+  active: boolean;
 }) {
   const [items, setItems] = useState<NewsItem[]>([]);
   const [shown, setShown] = useState(PAGE);
@@ -100,6 +102,25 @@ function NewsFeed({
       live = false;
     };
   }, [county, seat, market]);
+
+  useEffect(() => {
+    if (!active) return;
+    let live = true;
+    const tick = window.setInterval(() => {
+      if (document.visibilityState === "hidden") return;
+      fetchNews(county, seat, market, true)
+        .then((next) => {
+          if (!live) return;
+          setItems(next);
+          setStatus("ok");
+        })
+        .catch(() => undefined);
+    }, 30_000);
+    return () => {
+      live = false;
+      window.clearInterval(tick);
+    };
+  }, [active, county, seat, market]);
 
   const merged = useMemo(() => {
     const all = [...extra, ...items];
@@ -502,6 +523,7 @@ export function FeedPanel({
           seat={county?.seat}
           market={county?.market}
           extra={extra}
+          active={tab === "news"}
         />
       </div>
       <div className={tab === "crime" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
