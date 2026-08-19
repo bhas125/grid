@@ -4,6 +4,8 @@ import type {
   Alert,
   County,
   CrimeIncident,
+  CrimeKind,
+  CrimeLayers,
   GeoFeature,
   LayerId,
   Layers,
@@ -21,13 +23,14 @@ import { TnMap } from "./tn-map";
 
 const DEFAULT_LAYERS: Layers = {
   interstates: true,
-  roads: false,
   weather: false,
   sites: false,
   flock: false,
   p24: false,
   p26: false,
 };
+
+const DEFAULT_CRIME: CrimeLayers = { hom: true, sht: true, rob: false };
 
 const FALLBACK_WX: WxNow = { temp: 87, code: 2, label: "MEM · BNA · TYS", live: false };
 
@@ -53,6 +56,7 @@ export function GridApp() {
   const [races, setRaces] = useState<Race[] | undefined>(undefined);
   const [briefs, setBriefs] = useState<Record<string, string>>({});
   const [crime, setCrime] = useState<CrimeIncident[]>([]);
+  const [crimeLayers, setCrimeLayers] = useState<CrimeLayers>(DEFAULT_CRIME);
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
@@ -148,6 +152,15 @@ export function GridApp() {
     setTab("vote");
   }
 
+  function handleTab(t: TabId) {
+    if (t === "crime") setCrimeLayers(DEFAULT_CRIME);
+    setTab(t);
+  }
+
+  function toggleCrime(kind: CrimeKind) {
+    setCrimeLayers((prev) => ({ ...prev, [kind]: !prev[kind] }));
+  }
+
   function toggle(id: LayerId) {
     setLayers((prev) => ({ ...prev, [id]: !prev[id] }));
   }
@@ -222,6 +235,8 @@ export function GridApp() {
           alerts={alerts}
           crime={crime}
           showCrime={tab === "crime"}
+          crimeLayers={crimeLayers}
+          onToggleCrime={toggleCrime}
         />
         <div
           className={
@@ -236,7 +251,7 @@ export function GridApp() {
       <FeedPanel
         county={selected}
         tab={tab}
-        onTab={setTab}
+        onTab={handleTab}
         alerts={alerts}
         precinct={precinct}
         races={races}
@@ -244,6 +259,8 @@ export function GridApp() {
         expanded={expanded}
         onToggleExpand={toggleFeed}
         crime={crime}
+        crimeLayers={crimeLayers}
+        onToggleCrime={toggleCrime}
       />
     </div>
   );

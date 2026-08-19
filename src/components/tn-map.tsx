@@ -9,6 +9,8 @@ import type {
   AlprPoint,
   County,
   CrimeIncident,
+  CrimeKind,
+  CrimeLayers,
   GeoFeature,
   Layers,
   Precinct,
@@ -85,22 +87,35 @@ function fillColor(pop: number, selected: boolean, dim: boolean, alert: boolean)
   return `color-mix(in oklab, var(--color-grid) ${Math.round(a * 100)}%, #020308)`;
 }
 
-function crimeRank(type: string) {
-  if (type === "Homicide") return 3;
-  if (type === "Armed robbery") return 2;
-  if (type.toLowerCase().includes("shooting") || type.toLowerCase().includes("aggravated")) return 1;
-  return 0;
+function isHomicide(type: string) {
+  return type === "Homicide";
 }
 
-function thinCrime(rows: CrimeIncident[]) {
-  const hot: CrimeIncident[] = [];
-  const rest: CrimeIncident[] = [];
+function isRobbery(type: string) {
+  return type === "Armed robbery";
+}
+
+function isShooting(type: string) {
+  const t = type.toLowerCase();
+  return t.includes("shooting") || t.includes("aggravated");
+}
+
+function kindOf(type: string): CrimeKind | null {
+  if (isHomicide(type)) return "hom";
+  if (isRobbery(type)) return "rob";
+  if (isShooting(type)) return "sht";
+  return null;
+}
+
+function thinShootings(rows: CrimeIncident[]) {
+  const keep: CrimeIncident[] = [];
+  const sht: CrimeIncident[] = [];
   for (const c of rows) {
-    if (c.type === "Homicide" || c.type === "Armed robbery") hot.push(c);
-    else rest.push(c);
+    if (isHomicide(c.type) || isRobbery(c.type)) keep.push(c);
+    else sht.push(c);
   }
-  rest.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
-  return [...hot, ...rest.slice(0, 220)];
+  sht.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  return [...keep, ...sht.slice(0, 220)];
 }
 
 function fmtCrimeDate(iso: string | null) {
@@ -193,6 +208,8 @@ export function TnMap({
   alerts,
   crime,
   showCrime,
+  crimeLayers,
+  onToggleCrime,
 }: {
   geo: GeoFeature[] | null;
   selected: County | null;
@@ -203,6 +220,8 @@ export function TnMap({
   alerts: Alert[];
   crime: CrimeIncident[];
   showCrime: boolean;
+  crimeLayers: CrimeLayers;
+  onToggleCrime: (kind: CrimeKind) => void;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -292,13 +311,18 @@ export function TnMap({
 
   const crimePts = useMemo(() => {
     if (!project || !showCrime) return [] as CrimePt[];
-    const rows = selected ? crime.filter((c) => c.county === selected.name) : thinCrime(crime);
-    const ranked = selected ? [...rows].sort((a, b) => crimeRank(a.type) - crimeRank(b.type)) : rows;
-    return ranked.map((c) => {
+    if (!crimeLayers.hom && !crimeLayers.sht && !crimeLayers.rob) return [] as CrimePt[];
+    let rows = selected ? crime.filter((c) => c.county === selected.name) : crime;
+    rows = rows.filter((c) => {
+      const k = kindOf(c.type);
+      return k ? crimeLayers[k] : false;
+    });
+    if (!selected && crimeLayers.sht) rows = thinShootings(rows);
+    return rows.map((c) => {
       const p = project(c.lon, c.lat);
       return { ...c, x: p.x, y: p.y };
     });
-  }, [project, crime, selected, showCrime]);
+  }, [project, crime, selected, showCrime, crimeLayers]);
   const crimePtsRef = useRef(crimePts);
   crimePtsRef.current = crimePts;
 
@@ -333,6 +357,8 @@ export function TnMap({
   }, [project, alpr, selected, paths, layers.flock]);
   const alprPtsRef = useRef(alprPts);
   alprPtsRef.current = alprPts;
+  const crimeKindRef = useRef(crimeLayers);
+  crimeKindRef.current = crimeLayers;
   const showCrimeRef = useRef(showCrime);
   showCrimeRef.current = showCrime;
   const flockRef = useRef(layers.flock);
@@ -429,41 +455,62 @@ export function TnMap({
     }
 
     if (crimeOn && pts.length) {
-      const batches: { rank: number; color: string; r: number; a: number; rows: CrimePt[] }[] = [
-        { rank: 1, color: "#ffb347", r: zoomedNow ? 4.2 : 2.6, a: 0.78, rows: [] },
-        { rank: 2, color: "#8ec8e0", r: zoomedNow ? 4.2 : 2.6, a: 0.82, rows: [] },
-        { rank: 3, color: "#ff4d4d", r: zoomedNow ? 5.5 : 3.6, a: 0.95, rows: [] },
-      ];
+      const kinds = crimeKindRef.current;
+      const sht: CrimePt[] = [];
+      const rob: CrimePt[] = [];
+      const hom: CrimePt[] = [];
       for (const c of pts) {
-        const rank = crimeRank(c.type);
-        const b = batches[rank === 3 ? 2 : rank === 2 ? 1 : 0];
-        b.rows.push(c);
+        const k = kindOf(c.type);
+        if (k === "hom") hom.push(c);
+        else if (k === "rob") rob.push(c);
+        else if (k === "sht") sht.push(c);
       }
-      let drawn = 0;
-      for (const b of batches) {
-        ctx.fillStyle = b.color;
-        ctx.globalAlpha = b.a;
+
+      const drawBatch = (rows: CrimePt[], color: string, r: number, a: number, cap: number, skip: boolean) => {
+        if (!rows.length) return;
+        ctx.fillStyle = color;
+        ctx.globalAlpha = a;
         ctx.beginPath();
-        for (const c of b.rows) {
+        let n = 0;
+        for (const c of rows) {
           const sx = (c.x - cur.x) * s + ox;
           const sy = (c.y - cur.y) * s + oy;
           if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
-          if (!stamp(sx, sy, b.rank === 3)) continue;
-          ctx.moveTo(sx + b.r, sy);
-          ctx.arc(sx, sy, b.r, 0, Math.PI * 2);
+          if (!stamp(sx, sy, !skip)) continue;
+          ctx.moveTo(sx + r, sy);
+          ctx.arc(sx, sy, r, 0, Math.PI * 2);
           if (record) {
-            hits.current.push({
-              title: c.type,
-              lines: crimeTipLines(c),
-              x: sx,
-              y: sy,
-              r: b.r + 4,
-            });
+            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 5 });
           }
-          if (++drawn >= CRIME_CAP) break;
+          if (++n >= cap) break;
         }
         ctx.fill();
-        if (drawn >= CRIME_CAP) break;
+      };
+
+      if (kinds.sht) drawBatch(sht, "#ffb347", zoomedNow ? 4.2 : 2.6, 0.72, CRIME_CAP, true);
+      if (kinds.rob) drawBatch(rob, "#8ec8e0", zoomedNow ? 4.4 : 2.8, 0.78, 400, true);
+
+      if (kinds.hom && hom.length) {
+        const r = zoomedNow ? 8 : 5.4;
+        ctx.fillStyle = "#ff4d4d";
+        ctx.strokeStyle = "#ff9a9a";
+        ctx.lineWidth = 1.1;
+        ctx.globalAlpha = 0.62;
+        ctx.beginPath();
+        for (const c of hom) {
+          const sx = (c.x - cur.x) * s + ox;
+          const sy = (c.y - cur.y) * s + oy;
+          if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+          stamp(sx, sy, true);
+          ctx.moveTo(sx + r, sy);
+          ctx.arc(sx, sy, r, 0, Math.PI * 2);
+          if (record) {
+            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 6 });
+          }
+        }
+        ctx.fill();
+        ctx.globalAlpha = 0.9;
+        ctx.stroke();
       }
     }
     ctx.globalAlpha = 1;
@@ -471,7 +518,7 @@ export function TnMap({
 
   useEffect(() => {
     drawDots();
-  }, [crimePts, alprPts, showCrime, selected, layers.flock]);
+  }, [crimePts, alprPts, showCrime, selected, layers.flock, crimeLayers]);
 
   useEffect(() => {
     const el = root.current;
@@ -780,11 +827,10 @@ export function TnMap({
                   );
                 })
               : null}
-            {layers.interstates || layers.roads
+            {layers.interstates
               ? visibleRoads
-                  .filter((r) => (r.kind === "interstate" ? layers.interstates : layers.roads))
+                  .filter((r) => r.kind === "interstate")
                   .map((r) => {
-                    const interstate = r.kind === "interstate";
                     return (
                       <g key={r.id}>
                         <path
@@ -794,26 +840,20 @@ export function TnMap({
                           strokeWidth={zoomed ? 1.6 : 3}
                           className="cursor-pointer"
                           onMouseEnter={(e) =>
-                            showTip(e, r.id, [
-                              interstate ? "Interstate" : "US / state route",
-                              "Corridor trace — not live traffic",
-                            ])
+                            showTip(e, r.id, ["Interstate", "Corridor trace — not live traffic"])
                           }
                           onMouseMove={(e) =>
-                            showTip(e, r.id, [
-                              interstate ? "Interstate" : "US / state route",
-                              "Corridor trace — not live traffic",
-                            ])
+                            showTip(e, r.id, ["Interstate", "Corridor trace — not live traffic"])
                           }
                           onMouseLeave={() => setTip(null)}
                         />
                         <path
                           d={pathFromPts(r.pts, project)}
                           fill="none"
-                          stroke={interstate ? "var(--color-flow)" : "var(--color-steel)"}
-                          strokeWidth={zoomed ? (interstate ? 0.28 : 0.16) : interstate ? 0.38 : 0.22}
-                          className={interstate ? "traffic-flow" : "road-flow"}
-                          opacity={interstate ? 0.85 : 0.5}
+                          stroke="var(--color-flow)"
+                          strokeWidth={zoomed ? 0.28 : 0.38}
+                          className="traffic-flow"
+                          opacity={0.85}
                           pointerEvents="none"
                         />
                       </g>
@@ -885,19 +925,32 @@ export function TnMap({
         </div>
       ) : null}
       {showCrime ? (
-        <div className="pointer-events-none absolute top-2 left-2 z-10 border border-line bg-elevated/90 px-2 py-1.5">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-muted uppercase">
-            <span className="size-1.5 shrink-0 bg-hot" />
-            Homicide
-          </div>
-          <div className="mt-0.5 flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-muted uppercase">
-            <span className="size-1.5 shrink-0 bg-watch" />
-            Shooting
-          </div>
-          <div className="mt-0.5 flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-muted uppercase">
-            <span className="size-1.5 shrink-0 bg-steel" />
-            Armed rob
-          </div>
+        <div className="absolute top-2 left-2 z-10 border border-line bg-elevated/90">
+          {(
+            [
+              { id: "hom" as const, label: "Homicide", swatch: "bg-hot" },
+              { id: "sht" as const, label: "Shooting", swatch: "bg-watch" },
+              { id: "rob" as const, label: "Armed rob", swatch: "bg-steel" },
+            ] as const
+          ).map((item, i) => {
+            const on = crimeLayers[item.id];
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onToggleCrime(item.id)}
+                aria-pressed={on}
+                className={cn(
+                  "flex h-7 w-full items-center gap-1.5 px-2 font-mono text-[10px] tracking-widest uppercase",
+                  i ? "border-t border-line" : undefined,
+                  on ? "text-muted" : "text-faint/70",
+                )}
+              >
+                <span className={cn("size-1.5 shrink-0", item.swatch, on ? "opacity-100" : "opacity-25")} />
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       ) : null}
       {tip ? (

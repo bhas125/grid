@@ -106,7 +106,6 @@ export type WxNow = {
 
 export type LayerId =
   | "interstates"
-  | "roads"
   | "weather"
   | "sites"
   | "flock"
@@ -114,6 +113,9 @@ export type LayerId =
   | "p26";
 
 export type Layers = Record<LayerId, boolean>;
+
+export type CrimeKind = "hom" | "sht" | "rob";
+export type CrimeLayers = Record<CrimeKind, boolean>;
 
 export type TabId = "news" | "sit" | "vote" | "gov" | "crime";
 

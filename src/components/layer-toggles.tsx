@@ -3,7 +3,6 @@ import type { LayerId, Layers } from "@/data/types";
 
 const ITEMS: { id: LayerId; label: string; countyOnly?: boolean }[] = [
   { id: "interstates", label: "Int" },
-  { id: "roads", label: "Roads" },
   { id: "weather", label: "Wx" },
   { id: "sites", label: "Sites" },
   { id: "flock", label: "Flock" },

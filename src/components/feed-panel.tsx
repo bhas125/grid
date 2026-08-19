@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronUp, Radio } from "lucide-react";
 import { countyIntel, sitProfile, sitShape } from "@/data/intel";
 import officialsJson from "@/data/officials.json";
-import type { Alert, County, CrimeIncident, NewsItem, Precinct, Race, TabId } from "@/data/types";
+import type { Alert, County, CrimeIncident, CrimeKind, CrimeLayers, NewsItem, Precinct, Race, TabId } from "@/data/types";
 import { cn, fmtAge, fmtMargin, fmtNum, fmtPct } from "@/lib/utils";
 import { newsCacheAge, newsCacheKey, fetchNews, readNewsCache } from "@/lib/news-cache";
 
@@ -38,8 +38,20 @@ function isHomicide(type: string) {
   return type === "Homicide";
 }
 
+function isRobbery(type: string) {
+  return type === "Armed robbery";
+}
+
 function isShooting(type: string) {
-  return type === "Shooting" || type.toLowerCase().includes("shooting") || type.toLowerCase().includes("aggravated");
+  const t = type.toLowerCase();
+  return t.includes("shooting") || t.includes("aggravated");
+}
+
+function kindOf(type: string): CrimeKind | null {
+  if (isHomicide(type)) return "hom";
+  if (isRobbery(type)) return "rob";
+  if (isShooting(type)) return "sht";
+  return null;
 }
 
 function Stat({ k, v }: { k: string; v: string }) {
@@ -159,16 +171,25 @@ function NewsFeed({
 function CrimeFeed({
   county,
   incidents,
+  crimeLayers,
 }: {
   county: County | null;
   incidents: CrimeIncident[];
+  crimeLayers: CrimeLayers;
 }) {
   const [shown, setShown] = useState(PAGE);
   const sentinel = useRef<HTMLDivElement>(null);
   const intel = county ? countyIntel(county.name) : null;
 
+  const scoped = useMemo(() => {
+    return county ? incidents.filter((i) => i.county === county.name) : incidents;
+  }, [incidents, county]);
+
   const list = useMemo(() => {
-    const rows = county ? incidents.filter((i) => i.county === county.name) : incidents;
+    const rows = scoped.filter((i) => {
+      const k = kindOf(i.type);
+      return k ? crimeLayers[k] : false;
+    });
     return [...rows].sort((a, b) => {
       const da = a.date ?? "";
       const db = b.date ?? "";
@@ -177,19 +198,19 @@ function CrimeFeed({
       const hb = isHomicide(b.type) ? 0 : 1;
       return ha - hb;
     });
-  }, [incidents, county]);
+  }, [scoped, crimeLayers]);
 
   const stats = useMemo(() => {
     let hom = 0;
     let sht = 0;
     let rob = 0;
-    for (const i of list) {
+    for (const i of scoped) {
       if (isHomicide(i.type)) hom += 1;
-      else if (i.type === "Armed robbery") rob += 1;
+      else if (isRobbery(i.type)) rob += 1;
       else if (isShooting(i.type)) sht += 1;
     }
-    return { hom, sht, rob, n: list.length };
-  }, [list]);
+    return { hom, sht, rob, n: scoped.length };
+  }, [scoped]);
 
   useEffect(() => {
     setShown(PAGE);
@@ -320,6 +341,8 @@ export function FeedPanel({
   expanded,
   onToggleExpand,
   crime,
+  crimeLayers,
+  onToggleCrime,
 }: {
   county: County | null;
   tab: TabId;
@@ -331,6 +354,8 @@ export function FeedPanel({
   expanded: boolean;
   onToggleExpand: () => void;
   crime: CrimeIncident[];
+  crimeLayers: CrimeLayers;
+  onToggleCrime: (kind: CrimeKind) => void;
 }) {
   const intel = county ? countyIntel(county.name) : null;
   const extra: NewsItem[] = (county ? alerts.filter((a) => a.counties.includes(county.name)) : alerts).map(
@@ -383,6 +408,33 @@ export function FeedPanel({
           {expanded ? <ChevronDown className="size-3.5" /> : <ChevronUp className="size-3.5" />}
         </button>
       </div>
+      {tab === "crime" ? (
+        <div className="flex items-center gap-1 px-3 pb-1">
+          {(
+            [
+              { id: "hom" as const, label: "Hom" },
+              { id: "sht" as const, label: "Sht" },
+              { id: "rob" as const, label: "Rob" },
+            ] as const
+          ).map((item) => {
+            const on = crimeLayers[item.id];
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onToggleCrime(item.id)}
+                aria-pressed={on}
+                className={cn(
+                  "h-6 border px-2 font-mono text-[10px] tracking-widest uppercase",
+                  on ? "border-grid bg-grid/15 text-grid" : "border-line text-faint hover:text-muted",
+                )}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
       <div className={tab === "news" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
         <NewsFeed
           county={county?.name ?? null}
@@ -392,7 +444,7 @@ export function FeedPanel({
         />
       </div>
       <div className={tab === "crime" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
-        <CrimeFeed county={county} incidents={crime} />
+        <CrimeFeed county={county} incidents={crime} crimeLayers={crimeLayers} />
       </div>
       {tab === "sit" && county && intel ? (
         <div className="space-y-2 overflow-y-auto px-4 pb-3">
