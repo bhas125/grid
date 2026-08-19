@@ -19,6 +19,7 @@ import { prefetchNews } from "@/lib/news-cache";
 import { CrimeShare, FeedPanel } from "./feed-panel";
 import { LayerToggles } from "./layer-toggles";
 import { MarketTicker } from "./market-ticker";
+import { DebtClock } from "./debt-clock";
 import { TnMap } from "./tn-map";
 
 const DEFAULT_LAYERS: Layers = {
@@ -258,6 +259,7 @@ export function GridApp() {
             <div className="h-10 w-16 animate-pulse bg-elevated/80" />
           )}
           <MarketTicker />
+          {!selected ? <DebtClock /> : null}
         </div>
       </header>
       <div className="relative min-h-0 flex-1">
