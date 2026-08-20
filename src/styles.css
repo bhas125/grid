@@ -21,6 +21,9 @@
   --color-gop: #c46a5a;
   --color-dem: #5a7eab;
   --color-flow: #5cffc0;
+  --color-earth: #c4894a;
+  --color-race-white: #efe8d8;
+  --color-race-brown: #7a431c;
 }
 
 @layer base {

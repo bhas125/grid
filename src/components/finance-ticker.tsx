@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FinanceHeadline } from "@/data/types";
 
-const ROW = 42;
+const ROW = 32;
 const VISIBLE = 1;
 const SPEED = 0.0048;
 
@@ -74,7 +74,7 @@ export function FinanceTicker({ active = true }: { active?: boolean }) {
   }, [items.length, active]);
 
   if (!items.length) {
-    return <div className="mt-1.5 h-10 w-full animate-pulse bg-elevated/80" />;
+    return <div className="mt-1 h-8 w-full animate-pulse bg-elevated/80" />;
   }
 
   const loop = items.length * ROW;
@@ -82,7 +82,7 @@ export function FinanceTicker({ active = true }: { active?: boolean }) {
 
   return (
     <div
-      className="mt-1.5 w-full cursor-grab touch-none select-none overflow-hidden text-right active:cursor-grabbing"
+      className="mt-1 w-full cursor-grab touch-none select-none overflow-hidden text-right active:cursor-grabbing"
       style={{ height: ROW * VISIBLE }}
       title="Financial headlines — drag or scroll to pause"
       onPointerDown={(e) => {
@@ -122,10 +122,10 @@ export function FinanceTicker({ active = true }: { active?: boolean }) {
               href={it.href}
               target="_blank"
               rel="noreferrer"
-              className="block h-full overflow-hidden pt-0.5 font-mono text-[10px] leading-[1.3] text-muted hover:text-fg"
+              className="block h-full overflow-hidden pt-px font-mono text-[10px] leading-snug text-muted hover:text-fg"
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="line-clamp-3 text-right">
+              <span className="line-clamp-2 text-right">
                 <span className="text-faint uppercase">{it.source} </span>
                 {it.headline}
               </span>

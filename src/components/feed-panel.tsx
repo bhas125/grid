@@ -12,11 +12,16 @@ import type {
   NewsItem,
   Precinct,
   Race,
+  RaceLayers,
+  RaceSlice,
   SorPerson,
   TabId,
+  ZipRace,
 } from "@/data/types";
+import { RACE_META } from "@/data/types";
 import { cn, fmtAge, fmtMargin, fmtNum, fmtPct } from "@/lib/utils";
 import { newsCacheAge, newsCacheKey, fetchNews, readNewsCache } from "@/lib/news-cache";
+import { zipTone } from "@/lib/race-tone";
 import { AboutPanel } from "./about-panel";
 
 const TABS: { id: TabId; label: string }[] = [
@@ -29,6 +34,7 @@ const TABS: { id: TabId; label: string }[] = [
 
 const OFFICIALS = officialsJson as Record<string, { office: string; name: string }[]>;
 const PAGE = 12;
+
 
 const SOURCE_LABEL: Record<string, string> = {
   Memphis_MPD: "Memphis MPD",
@@ -271,17 +277,6 @@ function CrimeFeed({
         <Stat k="2026" v={`${fmtNum(stats.n)} pts`} />
         <Stat k="Hom" v={fmtNum(stats.hom)} />
         <Stat k="Sht" v={fmtNum(stats.sht)} />
-        {intel?.scanner ? (
-          <a
-            href={intel.scanner.href}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-7 items-center gap-1.5 border border-line px-2 font-mono text-xs tracking-wide text-grid uppercase"
-          >
-            <Radio className="size-3" />
-            Scanner
-          </a>
-        ) : null}
       </div>
       <p className="px-4 pb-2 font-mono text-xs leading-relaxed tracking-wide text-muted">
         {county
@@ -532,29 +527,143 @@ export function CrimeShare({
   if (!incidents.length || share.den === 0) return null;
 
   const big = share.pct >= 10 ? share.pct.toFixed(0) : share.pct.toFixed(1);
-  const bar = share.useHom && !share.useSht ? "bg-hot" : share.useSht && !share.useHom ? "bg-watch" : "bg-hot";
 
   return (
-    <div className="shrink-0 border-t border-line bg-elevated px-4 py-2.5">
-      <div className="flex items-end justify-between gap-3">
-        <div>
-          <div className={cn("font-display text-3xl leading-none tabular", share.useHom ? "text-hot" : "text-watch")}>
-            {big}%
-          </div>
-          <div className="mt-1 font-mono text-[10px] tracking-widest text-muted uppercase">
-            of Tennessee {share.label}
-          </div>
-        </div>
-        <div className="text-right font-mono text-[10px] tracking-widest text-faint uppercase">
-          {county.name}
-          <div className="mt-0.5 text-muted">
-            {fmtNum(share.num)} of {fmtNum(share.den)} · 2026
-          </div>
-        </div>
-      </div>
-      <div className="mt-2 h-1 overflow-hidden bg-bg">
-        <div className={cn("h-full", bar)} style={{ width: `${Math.min(100, share.pct)}%` }} />
-      </div>
+    <p className="shrink-0 px-3 py-0.5 text-center font-mono text-[10px] leading-tight tracking-wide text-hot uppercase">
+      {county.name} · {big}% of Tennessee {share.label} · {fmtNum(share.num)} of {fmtNum(share.den)}
+    </p>
+  );
+}
+
+function raceCount(z: ZipRace, slice: RaceSlice | null) {
+  if (!slice) return z.t;
+  return z[slice];
+}
+
+function RaceFeed({
+  zips,
+  raceLayers,
+  pickedZip,
+  onPickZip,
+}: {
+  zips: ZipRace[] | null;
+  raceLayers: RaceLayers;
+  pickedZip: string | null;
+  onPickZip: (z: ZipRace) => void;
+}) {
+  const [shown, setShown] = useState(PAGE);
+  const sentinel = useRef<HTMLDivElement>(null);
+  const slices = RACE_META.filter((s) => raceLayers[s.id]);
+
+  const list = useMemo(() => {
+    const rows = [...(zips ?? [])];
+    const active = RACE_META.filter((s) => raceLayers[s.id]);
+    if (active.length === 1) {
+      const slice = active[0].id;
+      rows.sort((a, b) => {
+        const sa = a.t ? a[slice] / a.t : 0;
+        const sb = b.t ? b[slice] / b.t : 0;
+        if (sb !== sa) return sb - sa;
+        return b[slice] - a[slice];
+      });
+    } else if (active.length > 1) {
+      rows.sort((a, b) => {
+        const sa = active.reduce((n, s) => n + a[s.id], 0);
+        const sb = active.reduce((n, s) => n + b[s.id], 0);
+        return sb - sa;
+      });
+    } else {
+      rows.sort((a, b) => a.z.localeCompare(b.z));
+    }
+    return rows;
+  }, [zips, raceLayers]);
+
+  useEffect(() => {
+    setShown(PAGE);
+  }, [zips, raceLayers]);
+
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0]?.isIntersecting) setShown((n) => Math.min(list.length, n + PAGE));
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [list.length]);
+
+  const visible = list.slice(0, shown);
+  const one = slices.length === 1 ? slices[0] : null;
+
+  return (
+    <div>
+      <p className="px-4 pb-2 font-mono text-xs leading-relaxed tracking-wide text-muted">
+        {slices.some((s) => s.id === "w") && slices.some((s) => s.id === "b" || s.id === "h")
+          ? "White frost vs brown. Deeper = bigger majority. Near clear = parity. ACS 2024 5-year."
+          : one
+            ? `ZIP share ${one.label}. Deeper = denser. ACS 2024 5-year.`
+            : "County ZIP outlines. White vs Black/Hisp majority. ACS 2024 5-year."}
+      </p>
+      {zips === null ? (
+        <p className="px-4 py-3 font-mono text-xs tracking-widest text-faint uppercase">Loading ZIP race</p>
+      ) : null}
+      {zips && !zips.length ? (
+        <p className="px-4 py-3 font-mono text-xs tracking-widest text-faint uppercase">No ZIP race for this county</p>
+      ) : null}
+      <ul>
+        {visible.map((z) => {
+          const on = pickedZip === z.z;
+          const n = one ? raceCount(z, one.id) : slices.reduce((sum, s) => sum + z[s.id], 0);
+          const share = z.t ? (n / z.t) * 100 : 0;
+          const tone = zipTone(z, raceLayers);
+          return (
+            <li key={z.z} className="border-t border-line">
+              <button
+                type="button"
+                onClick={() => onPickZip(z)}
+                className={cn("w-full px-4 py-2.5 text-left hover:bg-grid/10", on ? "bg-grid/10" : undefined)}
+              >
+                <div className="flex items-center gap-2 font-mono text-xs tracking-wide uppercase">
+                  <span className={on ? "text-grid" : "text-muted"}>ZIP {z.z}</span>
+                  <span className="ml-auto text-faint">{fmtNum(z.t)} people</span>
+                </div>
+                {one ? (
+                  <div className="mt-0.5 text-sm leading-snug">
+                    {fmtNum(n)} · {fmtPct(share)} {one.label}
+                  </div>
+                ) : (
+                  <>
+                    <div className="mt-1 flex h-1.5 overflow-hidden bg-bg">
+                      <div
+                        className="h-full"
+                        style={{
+                          width: `${tone.whitePct * 100}%`,
+                          background: "var(--color-race-white)",
+                          opacity: 0.35 + tone.whitePct * 0.65,
+                        }}
+                      />
+                      <div className="h-full flex-1" />
+                      <div
+                        className="h-full"
+                        style={{
+                          width: `${tone.brownPct * 100}%`,
+                          background: "var(--color-race-brown)",
+                          opacity: 0.35 + tone.brownPct * 0.65,
+                        }}
+                      />
+                    </div>
+                    <div className="mt-0.5 font-mono text-[10px] tracking-wide text-faint uppercase">
+                      W {fmtPct(tone.whitePct * 100)} · B/H {fmtPct(tone.brownPct * 100)}
+                      {tone.tone === "none" ? " · parity" : tone.tone === "white" ? " · white maj." : " · B/H maj."}
+                    </div>
+                  </>
+                )}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      <div ref={sentinel} className="h-4" />
     </div>
   );
 }
@@ -569,12 +678,17 @@ export function FeedPanel({
   briefs,
   expanded,
   onToggleExpand,
+  onHide,
   crime,
   crimeLayers,
-  onToggleCrime,
   onPickCrime,
   electYear,
   onElectYear,
+  raceOn,
+  raceLayers,
+  zips,
+  pickedZip,
+  onPickZip,
 }: {
   county: County | null;
   tab: TabId;
@@ -585,12 +699,17 @@ export function FeedPanel({
   briefs: Record<string, string>;
   expanded: boolean;
   onToggleExpand: () => void;
+  onHide: () => void;
   crime: CrimeIncident[];
   crimeLayers: CrimeLayers;
-  onToggleCrime: (kind: CrimeKind) => void;
   onPickCrime?: (c: CrimeIncident) => void;
   electYear: ElectYear;
   onElectYear: (y: ElectYear) => void;
+  raceOn: boolean;
+  raceLayers: RaceLayers;
+  zips: ZipRace[] | null;
+  pickedZip: string | null;
+  onPickZip: (z: ZipRace) => void;
 }) {
   const extra: NewsItem[] = (county ? alerts.filter((a) => a.counties.includes(county.name)) : alerts).map(
     (a) => ({
@@ -606,6 +725,7 @@ export function FeedPanel({
   );
   const roster = county ? (OFFICIALS[county.name] ?? []) : [];
   const brief = county ? briefs[county.name] : undefined;
+  const scanner = county ? countyIntel(county.name).scanner : undefined;
 
   return (
     <section
@@ -638,38 +758,35 @@ export function FeedPanel({
           aria-label={expanded ? "Minimize news" : "Enlarge news"}
           title={expanded ? "Minimize" : "Enlarge"}
           className={cn(
-            "ml-auto grid size-9 place-items-center border border-line bg-elevated text-grid hover:border-grid",
+            "ml-auto grid size-8 place-items-center text-grid hover:text-fg",
             expanded ? "invisible pointer-events-none" : undefined,
           )}
         >
           {expanded ? <ChevronDown className="size-3.5" /> : <ChevronUp className="size-3.5" />}
         </button>
+        {expanded ? null : (
+          <button
+            type="button"
+            onClick={onHide}
+            aria-label="Hide panel"
+            title="Hide panel"
+            className="grid size-8 place-items-center text-faint hover:text-grid"
+          >
+            <ChevronDown className="size-3.5" />
+          </button>
+        )}
       </div>
-      {tab === "crime" ? (
-        <div className="flex items-center gap-1 px-3 pb-1">
-          {(
-            [
-              { id: "hom" as const, label: "Hom" },
-              { id: "sht" as const, label: "Sht" },
-              { id: "reg" as const, label: "Registry" },
-            ] as const
-          ).map((item) => {
-            const on = crimeLayers[item.id];
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => onToggleCrime(item.id)}
-                aria-pressed={on}
-                className={cn(
-                  "h-6 border px-2 font-mono text-[10px] tracking-widest uppercase",
-                  on ? "border-grid bg-grid/15 text-grid" : "border-line text-faint hover:text-muted",
-                )}
-              >
-                {item.label}
-              </button>
-            );
-          })}
+      {tab === "crime" && scanner ? (
+        <div className="flex items-center gap-1 overflow-x-auto px-3 pb-1">
+          <a
+            href={scanner.href}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-6 shrink-0 items-center gap-1 border border-line px-2 font-mono text-[10px] tracking-widest text-grid uppercase hover:border-grid"
+          >
+            <Radio className="size-3" />
+            Scanner
+          </a>
         </div>
       ) : null}
       {tab === "vote" ? (
@@ -713,8 +830,18 @@ export function FeedPanel({
           </p>
         ) : null}
       </div>
-      <div className={tab === "sit" && county ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
-        {county ? <AboutPanel county={county} brief={brief} active={tab === "sit"} /> : null}
+      <div className={tab === "sit" && county ? "flex min-h-0 flex-1 flex-col overflow-y-auto" : "hidden"}>
+        {county ? (
+          <>
+            <AboutPanel county={county} brief={brief} active={tab === "sit"} />
+            {raceOn ? (
+              <div className="border-t border-line pt-2">
+                <div className="px-4 pb-1 font-mono text-[10px] tracking-widest text-grid uppercase">ZIP race</div>
+                <RaceFeed zips={zips} raceLayers={raceLayers} pickedZip={pickedZip} onPickZip={onPickZip} />
+              </div>
+            ) : null}
+          </>
+        ) : null}
       </div>
       {tab === "vote" && county ? (
         electYear === "2026" ? (

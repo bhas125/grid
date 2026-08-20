@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, Layers as LayersIcon } from "lucide-react";
 import countiesJson from "@/data/counties.json";
 import type {
   Alert,
@@ -13,12 +13,16 @@ import type {
   Layers,
   Precinct,
   Race,
+  RaceLayers,
+  RaceSlice,
   TabId,
   WxNow,
+  ZipRace,
 } from "@/data/types";
 import { COUNTY_XY } from "@/lib/county-xy";
 import { centroid, countyFipsAt, geomLonLatBBox, nearestCountyName, type MapPin } from "@/lib/geo";
 import { prefetchNews } from "@/lib/news-cache";
+import { cn } from "@/lib/utils";
 import { AddressSearch } from "./address-search";
 import { CrimeShare, FeedPanel } from "./feed-panel";
 import { LayerToggles } from "./layer-toggles";
@@ -38,9 +42,16 @@ const DEFAULT_LAYERS: Layers = {
   cameras: false,
   p24: false,
   p26: false,
+  race: false,
+  crime: false,
 };
 
 const DEFAULT_CRIME: CrimeLayers = { hom: true, sht: true, reg: false };
+const DEFAULT_RACE: RaceLayers = { w: true, b: true, h: true, a: true, o: true };
+
+type FeedSize = "hidden" | "dock" | "open";
+
+const zipMem = new Map<string, ZipRace[]>();
 
 const FALLBACK_WX: WxNow = { temp: 87, code: 2, label: "MEM · BNA · TYS", live: false };
 
@@ -67,11 +78,16 @@ export function GridApp() {
   const [briefs, setBriefs] = useState<Record<string, string>>({});
   const [crime, setCrime] = useState<CrimeIncident[]>([]);
   const [crimeLayers, setCrimeLayers] = useState<CrimeLayers>(DEFAULT_CRIME);
-  const [expanded, setExpanded] = useState(false);
+  const [feedSize, setFeedSize] = useState<FeedSize>("dock");
+  const [layersOpen, setLayersOpen] = useState(true);
   const [pin, setPin] = useState<MapPin | null>(null);
   const [focusTick, setFocusTick] = useState(0);
   const [focusCrimeId, setFocusCrimeId] = useState<string | null>(null);
   const [electYear, setElectYear] = useState<ElectYear>("2024");
+  const [raceLayers, setRaceLayers] = useState<RaceLayers>(DEFAULT_RACE);
+  const [zips, setZips] = useState<ZipRace[] | null>(null);
+  const [pickedZip, setPickedZip] = useState<string | null>(null);
+  const [zipFocus, setZipFocus] = useState<{ lon: number; lat: number } | null>(null);
   const crimeLoaded = useRef(false);
 
   useEffect(() => {
@@ -88,7 +104,11 @@ export function GridApp() {
       .then((d: Record<string, string>) => setBriefs(d))
       .catch(() => undefined);
     try {
-      setExpanded(sessionStorage.getItem("grid-feed-expanded") === "1");
+      const size = sessionStorage.getItem("grid-feed-size");
+      if (size === "hidden" || size === "dock" || size === "open") setFeedSize(size);
+      else if (sessionStorage.getItem("grid-feed-expanded") === "1") setFeedSize("open");
+      const layers = sessionStorage.getItem("grid-layers-open");
+      if (layers === "0") setLayersOpen(false);
     } catch {
       /* ignore */
     }
@@ -99,7 +119,7 @@ export function GridApp() {
   }, []);
 
   useEffect(() => {
-    if (tab !== "crime") return;
+    if (tab !== "crime" && !layers.crime) return;
     let live = true;
     const merge = (next: CrimeIncident[]) => {
       if (!live || !next.length) return;
@@ -167,7 +187,34 @@ export function GridApp() {
       window.clearInterval(poll);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, [tab]);
+  }, [tab, layers.crime]);
+
+  useEffect(() => {
+    if (!selected || !layers.race) {
+      setZips(null);
+      return;
+    }
+    const hit = zipMem.get(selected.fips);
+    if (hit) {
+      setZips(hit);
+      return;
+    }
+    let live = true;
+    setZips(null);
+    fetch(`/zips/${selected.fips}.json`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d: ZipRace[]) => {
+        const rows = Array.isArray(d) ? d : [];
+        zipMem.set(selected.fips, rows);
+        if (live) setZips(rows);
+      })
+      .catch(() => {
+        if (live) setZips([]);
+      });
+    return () => {
+      live = false;
+    };
+  }, [selected, layers.race]);
 
   useEffect(() => {
     let live = true;
@@ -227,6 +274,8 @@ export function GridApp() {
         setSelected(c);
         setPrecinct(null);
         setRaces(undefined);
+        setPickedZip(null);
+        setZipFocus(null);
         setFocusTick((n) => n + 1);
         prefetchNews(c.name, c.seat, c.market);
         return;
@@ -237,6 +286,8 @@ export function GridApp() {
     setTab((t) => (t === "crime" || t === "sit" || t === "vote" || t === "gov" ? t : "news"));
     setPrecinct(null);
     setRaces(undefined);
+    setPickedZip(null);
+    setZipFocus(null);
     prefetchNews(c.name, c.seat, c.market);
   }
 
@@ -248,6 +299,8 @@ export function GridApp() {
       setSelected(county);
       setPrecinct(null);
       setRaces(undefined);
+      setPickedZip(null);
+      setZipFocus(null);
       prefetchNews(county.name, county.seat, county.market);
     }
   }
@@ -268,6 +321,8 @@ export function GridApp() {
     setPin(null);
     setPrecinct(null);
     setRaces(undefined);
+    setPickedZip(null);
+    setZipFocus(null);
     setTab((t) => (t === "crime" ? "crime" : "news"));
   }
 
@@ -286,15 +341,35 @@ export function GridApp() {
   }
 
   function handleTab(t: TabId) {
-    if (t === "crime") setCrimeLayers(DEFAULT_CRIME);
-    setLayers((prev) => {
-      if (t === "vote") {
-        return { ...prev, p24: electYear === "2024", p26: electYear === "2026" };
-      }
-      if (prev.p24 || prev.p26) return { ...prev, p24: false, p26: false };
-      return prev;
-    });
+    if (t === "crime") {
+      setCrimeLayers(DEFAULT_CRIME);
+      setLayers((prev) => ({
+        ...prev,
+        crime: true,
+        p24: false,
+        p26: false,
+      }));
+    } else {
+      setLayers((prev) => {
+        if (t === "vote") {
+          return { ...prev, p24: electYear === "2024", p26: electYear === "2026" };
+        }
+        if (prev.p24 || prev.p26) return { ...prev, p24: false, p26: false };
+        return prev;
+      });
+    }
     setTab(t);
+  }
+
+  function pickZip(z: ZipRace) {
+    const c = centroid({
+      type: "Feature",
+      properties: { name: z.z, fips: "", area: 0 },
+      geometry: z.g,
+    });
+    setPickedZip(z.z);
+    setZipFocus({ lon: c.lon, lat: c.lat });
+    setFocusTick((n) => n + 1);
   }
 
   function handleElectYear(y: ElectYear) {
@@ -311,19 +386,41 @@ export function GridApp() {
   }
 
   function toggle(id: LayerId) {
+    if (id === "race" && layers.race) {
+      setPickedZip(null);
+      setZipFocus(null);
+    }
+    if (id === "crime" && !layers.crime) setTab("crime");
     setLayers((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  function toggleFeed() {
-    setExpanded((v) => {
-      const next = !v;
+  function toggleRace(id: RaceSlice) {
+    setRaceLayers((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  function setFeed(next: FeedSize) {
+    setFeedSize(next);
+    try {
+      sessionStorage.setItem("grid-feed-size", next);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function toggleLayersOpen(next?: boolean) {
+    setLayersOpen((v) => {
+      const on = next ?? !v;
       try {
-        sessionStorage.setItem("grid-feed-expanded", next ? "1" : "0");
+        sessionStorage.setItem("grid-layers-open", on ? "1" : "0");
       } catch {
         /* ignore */
       }
-      return next;
+      return on;
     });
+  }
+
+  function toggleFeed() {
+    setFeed(feedSize === "open" ? "dock" : "open");
   }
 
   return (
@@ -359,6 +456,22 @@ export function GridApp() {
           <p className="font-mono text-xs tracking-widest text-faint uppercase">
             {selected ? `${selected.seat} · ${selected.division}` : "Tennessee"}
           </p>
+          <div className="relative mt-1 flex flex-col items-start">
+            <AddressSearch pin={pin} onGo={goToPlace} onClear={clearPin} />
+            <button
+              type="button"
+              onClick={() => toggleLayersOpen()}
+              aria-pressed={layersOpen}
+              aria-label={layersOpen ? "Collapse layers" : "Show layers"}
+              title="Layers"
+              className={cn(
+                "grid size-8 place-items-center hover:text-fg",
+                layersOpen ? "text-grid" : "text-faint hover:text-grid",
+              )}
+            >
+              <LayersIcon className="size-3.5" />
+            </button>
+          </div>
         </div>
         <div className="ml-auto flex shrink-0 flex-col items-end text-right">
           {wx ? (
@@ -371,19 +484,16 @@ export function GridApp() {
           ) : (
             <div className="h-10 w-16 animate-pulse bg-elevated/80" />
           )}
-          <div className={selected ? "hidden w-[15.5rem]" : "w-[15.5rem]"}>
+          <div className={selected ? "hidden w-48" : "w-48"}>
             <MarketTicker active={!selected} />
             <DebtClock />
             <FinanceTicker active={!selected} />
           </div>
         </div>
         </div>
-        <div className="mt-2">
-          <AddressSearch pin={pin} onGo={goToPlace} onClear={clearPin} />
-        </div>
       </header>
-      <div className="shrink-0 px-2 pb-1 sm:px-3">
-        {expanded ? (
+      <div className={layersOpen || feedSize === "open" ? "shrink-0 px-2 pb-1 sm:px-3" : "hidden"}>
+        {feedSize === "open" ? (
           <div className="flex justify-end">
             <button
               type="button"
@@ -391,13 +501,22 @@ export function GridApp() {
               aria-expanded="true"
               aria-label="Minimize panel"
               title="Minimize"
-              className="grid size-11 place-items-center border border-line bg-elevated text-grid hover:border-grid"
+              className="grid size-8 place-items-center text-grid hover:text-fg"
             >
               <ChevronDown className="size-4" />
             </button>
           </div>
         ) : null}
-        <LayerToggles layers={layers} onToggle={toggle} />
+        {layersOpen ? (
+          <LayerToggles
+            layers={layers}
+            onToggle={toggle}
+            raceLayers={raceLayers}
+            onToggleRace={toggleRace}
+            crimeLayers={crimeLayers}
+            onToggleCrime={toggleCrime}
+          />
+        ) : null}
       </div>
       <div className="relative min-h-0 flex-1">
         <TnMap
@@ -409,19 +528,37 @@ export function GridApp() {
           layers={layers}
           alerts={alerts}
           crime={crime}
-          showCrime={tab === "crime"}
+          showCrime={layers.crime}
           crimeLayers={crimeLayers}
-          onToggleCrime={toggleCrime}
-          showSor={tab === "crime" && crimeLayers.reg}
+          showSor={layers.crime && crimeLayers.reg}
           pin={pin}
           onClearPin={clearPin}
           focusTick={focusTick}
           focusCrimeId={focusCrimeId}
+          showZips={!!selected && layers.race}
+          zips={zips ?? []}
+          raceLayers={raceLayers}
+          pickedZip={pickedZip}
+          onPickZip={pickZip}
+          focusZip={zipFocus}
+          feedHidden={feedSize === "hidden"}
         />
+        {feedSize === "hidden" ? (
+          <button
+            type="button"
+            onClick={() => setFeed("dock")}
+            aria-label="Show panel"
+            title="Show panel"
+            className="absolute bottom-2 left-1/2 z-30 grid size-8 -translate-x-1/2 place-items-center border border-line bg-elevated/90 text-grid hover:border-grid"
+          >
+            <ChevronUp className="size-3.5" />
+          </button>
+        ) : null}
       </div>
-      {selected && tab === "crime" ? (
+      {selected && layers.crime && feedSize !== "hidden" ? (
         <CrimeShare county={selected} incidents={crime} layers={crimeLayers} />
       ) : null}
+      {feedSize === "hidden" ? null : (
       <FeedPanel
         county={selected}
         tab={tab}
@@ -430,15 +567,21 @@ export function GridApp() {
         precinct={precinct}
         races={races}
         briefs={briefs}
-        expanded={expanded}
+        expanded={feedSize === "open"}
         onToggleExpand={toggleFeed}
+        onHide={() => setFeed("hidden")}
         crime={crime}
         crimeLayers={crimeLayers}
-        onToggleCrime={toggleCrime}
         onPickCrime={goToIncident}
         electYear={electYear}
         onElectYear={handleElectYear}
+        raceOn={layers.race}
+        raceLayers={raceLayers}
+        zips={zips}
+        pickedZip={pickedZip}
+        onPickZip={pickZip}
       />
+      )}
     </div>
   );
 }

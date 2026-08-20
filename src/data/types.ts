@@ -126,16 +126,47 @@ export type LayerId =
   | "flock"
   | "cameras"
   | "p24"
-  | "p26";
+  | "p26"
+  | "race"
+  | "crime";
 
 export type Layers = Record<LayerId, boolean>;
 
 export type CrimeKind = "hom" | "sht" | "reg";
 export type CrimeLayers = Record<CrimeKind, boolean>;
 
+export const CRIME_META: { id: CrimeKind; label: string; chip: string }[] = [
+  { id: "hom", label: "Hom", chip: "border-hot bg-hot/15 text-hot" },
+  { id: "sht", label: "Sht", chip: "border-watch bg-watch/15 text-watch" },
+  { id: "reg", label: "Registry", chip: "border-steel bg-steel/15 text-steel" },
+];
+
 export type TabId = "news" | "sit" | "vote" | "gov" | "crime";
 
 export type ElectYear = "2024" | "2026";
+
+export type RaceSlice = "w" | "b" | "h" | "a" | "o";
+export type RaceLayers = Record<RaceSlice, boolean>;
+
+export const RACE_META: { id: RaceSlice; label: string; css: string; chip: string }[] = [
+  { id: "w", label: "White", css: "var(--color-race-white)", chip: "border-fg/50 bg-fg/10 text-fg" },
+  { id: "b", label: "Black", css: "var(--color-race-brown)", chip: "border-earth bg-earth/20 text-earth" },
+  { id: "h", label: "Hispanic", css: "var(--color-race-brown)", chip: "border-earth bg-earth/20 text-earth" },
+  { id: "a", label: "Asian", css: "var(--color-grid)", chip: "border-grid bg-grid/15 text-grid" },
+  { id: "o", label: "Other", css: "var(--color-muted)", chip: "border-muted bg-muted/15 text-muted" },
+];
+
+export type ZipRace = {
+  z: string;
+  t: number;
+  w: number;
+  b: number;
+  h: number;
+  a: number;
+  o: number;
+  g: GeoFeature["geometry"];
+};
+
 
 export type AboutSection = {
   id: string;

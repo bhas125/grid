@@ -95,7 +95,7 @@ export function AddressSearch({
         type="button"
         aria-label={pin ? `Search · ${pin.label.split(",")[0]}` : "Search address"}
         onClick={() => setExpanded(true)}
-        className="grid size-11 place-items-center border border-line bg-elevated text-grid hover:border-grid"
+        className="grid size-8 place-items-center text-grid hover:text-fg"
       >
         <Search className="size-4" />
       </button>
@@ -105,7 +105,7 @@ export function AddressSearch({
   return (
     <form
       ref={box}
-      className="relative w-[min(100%,20rem)]"
+      className="relative z-40 w-[min(90vw,18rem)]"
       onSubmit={(e) => {
         e.preventDefault();
         void run(q);

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Minus, Plus, X } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Minus, Plus, X } from "lucide-react";
 import countiesJson from "@/data/counties.json";
 import roadsJson from "@/data/roads.json";
 import sitesJson from "@/data/sites.json";
@@ -17,12 +17,16 @@ import type {
   Layers,
   Precinct,
   Race,
+  RaceLayers,
+  RaceSlice,
   Road,
   Site,
   SorPerson,
   SorPoint,
   TrafficCam,
+  ZipRace,
 } from "@/data/types";
+import { RACE_META } from "@/data/types";
 import { prefetchNews } from "@/lib/news-cache";
 import { fetchCrimeNames, readCrimeNames } from "@/lib/crime-names";
 import { CamPlayer } from "./cam-player";
@@ -45,6 +49,7 @@ import {
   type ViewBox,
 } from "@/lib/geo";
 import { tilesForView } from "@/lib/map-tiles";
+import { zipTone } from "@/lib/race-tone";
 import { cn } from "@/lib/utils";
 
 const COUNTIES = countiesJson as County[];
@@ -122,6 +127,18 @@ function fillColor(pop: number, selected: boolean, dim: boolean, alert: boolean,
   return `color-mix(in oklab, var(--color-grid) ${Math.round(a * 100)}%, #020308)`;
 }
 
+function zipHud(z: ZipRace, layers: RaceLayers) {
+  const short: Record<RaceSlice, string> = { w: "W", b: "B", h: "H", a: "A", o: "O" };
+  const bits = RACE_META.filter((s) => layers[s.id]).map((s) => {
+    const pct = z.t ? Math.round((z[s.id] / z.t) * 100) : 0;
+    return `${short[s.id]} ${pct}%`;
+  });
+  return {
+    a: `ZIP ${z.z} · ${z.t.toLocaleString()} people`,
+    b: bits.join(" · ") || "No groups on",
+  };
+}
+
 function isHomicide(type: string) {
   return type === "Homicide";
 }
@@ -189,6 +206,16 @@ function crimeTipLines(c: CrimeIncident) {
   const zip = crimeZip(c);
   if (zip) lines.push(`ZIP ${zip}`);
   return lines;
+}
+
+function crimeHud(c: CrimeIncident) {
+  const when = fmtCrimeDate(c.date);
+  const where = c.address || [c.city, c.county ? `${c.county} County` : ""].filter(Boolean).join(", ");
+  const zip = crimeZip(c);
+  return {
+    a: `${c.type}${when ? ` · ${when}` : ""}`,
+    b: zip ? `${where} · ${zip}` : where,
+  };
 }
 
 function camHref(id: number) {
@@ -279,12 +306,18 @@ export function TnMap({
   crime,
   showCrime,
   crimeLayers,
-  onToggleCrime,
   showSor,
   pin,
   onClearPin,
   focusTick,
   focusCrimeId,
+  showZips = false,
+  zips = [],
+  raceLayers,
+  pickedZip = null,
+  onPickZip,
+  focusZip = null,
+  feedHidden = false,
 }: {
   geo: GeoFeature[] | null;
   selected: County | null;
@@ -296,12 +329,18 @@ export function TnMap({
   crime: CrimeIncident[];
   showCrime: boolean;
   crimeLayers: CrimeLayers;
-  onToggleCrime: (kind: CrimeKind) => void;
   showSor: boolean;
   pin: MapPin | null;
   onClearPin?: () => void;
   focusTick: number;
   focusCrimeId: string | null;
+  showZips?: boolean;
+  zips?: ZipRace[];
+  raceLayers?: RaceLayers;
+  pickedZip?: string | null;
+  onPickZip?: (z: ZipRace) => void;
+  focusZip?: { lon: number; lat: number } | null;
+  feedHidden?: boolean;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -309,6 +348,8 @@ export function TnMap({
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const sizeRef = useRef({ w: 1, h: 1 });
   const [tip, setTip] = useState<Tip | null>(null);
+  const [hoverZip, setHoverZip] = useState<{ a: string; b: string } | null>(null);
+  const [hoverCrime, setHoverCrime] = useState<{ a: string; b: string } | null>(null);
   const [picked, setPicked] = useState<{
     crime: CrimeIncident;
     names: CrimeNames | null | undefined;
@@ -317,6 +358,7 @@ export function TnMap({
   const [pickedSor, setPickedSor] = useState<{ point: SorPoint; person: SorPerson | null | undefined } | null>(null);
   const [sor, setSor] = useState<SorPoint[]>([]);
   const skipSelect = useRef(false);
+  const stealClick = useRef(false);
   const pan = useRef<{ x: number; y: number; vx: number; vy: number; moved: boolean } | null>(null);
   const [alpr, setAlpr] = useState<AlprPoint[]>([]);
   const [cams, setCams] = useState<TrafficCam[]>([]);
@@ -438,6 +480,14 @@ export function TnMap({
       d: pathFromGeom(f.geometry, project),
     }));
   }, [geo, project]);
+
+  const zipPaths = useMemo(() => {
+    if (!showZips || !project || !zips.length) return [];
+    return zips.map((z) => ({
+      zip: z,
+      d: pathFromGeom(z.g, project),
+    }));
+  }, [showZips, project, zips]);
 
   function showTip(e: React.MouseEvent, title: string, lines: string[]) {
     const box = root.current?.getBoundingClientRect();
@@ -790,7 +840,7 @@ export function TnMap({
           ctx.moveTo(sx + r, sy);
           ctx.arc(sx, sy, r, 0, Math.PI * 2);
           if (record) {
-            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 5, crime: c });
+            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 10, crime: c });
           }
           if (++n >= cap) break;
         }
@@ -814,7 +864,7 @@ export function TnMap({
           ctx.moveTo(sx + r, sy);
           ctx.arc(sx, sy, r, 0, Math.PI * 2);
           if (record) {
-            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 6, crime: c });
+            hits.current.push({ title: c.type, lines: crimeTipLines(c), x: sx, y: sy, r: r + 12, crime: c });
           }
         }
         ctx.fill();
@@ -880,8 +930,8 @@ export function TnMap({
   }, [focusCrimeId, focusTick]);
 
   useEffect(() => {
-    if (!layers.cameras) setPickedCam(null);
-  }, [layers.cameras]);
+    if (!showCrime) setHoverCrime(null);
+  }, [showCrime]);
 
   useEffect(() => {
     if (!showSor) setPickedSor(null);
@@ -945,11 +995,14 @@ export function TnMap({
     if (mark) {
       const target = clampView(viewAround(mark.lon, mark.lat, project), fit);
       animateTo(target);
+    } else if (focusZip) {
+      const target = clampView(viewAround(focusZip.lon, focusZip.lat, project, 0.04), fit);
+      animateTo(target);
     } else {
       animateTo(fit);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected, pin, project, geo, focusTick]);
+  }, [selected, pin, project, geo, focusTick, focusZip]);
 
   function applyView(next: ViewBox, animate = true) {
     const clamped = selected ? clampView(next, fitRef.current) : next;
@@ -972,6 +1025,19 @@ export function TnMap({
         y: py - cur.h * factor * ry,
       },
       animate,
+    );
+  }
+
+  function panBy(nx: number, ny: number) {
+    if (!selected) return;
+    const cur = viewRef.current;
+    applyView(
+      {
+        ...cur,
+        x: cur.x + nx * cur.w,
+        y: cur.y + ny * cur.h,
+      },
+      true,
     );
   }
 
@@ -1005,6 +1071,7 @@ export function TnMap({
   const zoomRatio = zoomed ? fitRef.current.w / view.w : 1;
   const canIn = zoomed && zoomRatio < MAX_ZOOM - 0.05;
   const canOut = zoomed && zoomRatio > 1.05;
+  const extraZoom = zoomed && zoomRatio > 1.12;
 
   const alertsByCounty = useMemo(() => {
     const m = new Map<string, Alert[]>();
@@ -1020,12 +1087,12 @@ export function TnMap({
 
   function interactiveTarget(el: EventTarget | null) {
     if (!(el instanceof Element)) return false;
-    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-precinct]") || el.closest("[data-map-card]"));
+    return Boolean(el.closest("button") || el.closest("a") || el.closest("[data-map-card]"));
   }
 
-  function pickDotAt(clientX: number, clientY: number) {
+  function hitAt(clientX: number, clientY: number) {
     const box = root.current?.getBoundingClientRect();
-    if (!box) return;
+    if (!box) return null;
     const mx = clientX - box.left;
     const my = clientY - box.top;
     let best: { h: Hit; d: number } | null = null;
@@ -1034,17 +1101,26 @@ export function TnMap({
       const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
       if (d <= h.r * h.r && (!best || d < best.d)) best = { h, d };
     }
-    if (best?.h.cam) {
+    return best?.h ?? null;
+  }
+
+  function pickDotAt(clientX: number, clientY: number) {
+    const h = hitAt(clientX, clientY);
+    if (h?.cam) {
+      stealClick.current = true;
       setTip(null);
+      setHoverCrime(null);
       setPicked(null);
       setPickedSor(null);
-      setPickedCam(best.h.cam);
+      setPickedCam(h.cam);
       skipSelect.current = true;
-      return;
+      return true;
     }
-    if (best?.h.sor) {
-      const point = best.h.sor;
+    if (h?.sor) {
+      stealClick.current = true;
+      const point = h.sor;
       setTip(null);
+      setHoverCrime(null);
       setPicked(null);
       setPickedCam(null);
       setPickedSor({ point, person: undefined });
@@ -1059,26 +1135,28 @@ export function TnMap({
         .catch(() => {
           setPickedSor((cur) => (cur?.point.id === point.id ? { point, person: null } : cur));
         });
-      return;
+      return true;
     }
-    if (!best) {
+    if (!h?.crime) {
       setPickedCam(null);
       setPickedSor(null);
-      if (!selected) return;
-      setPicked(null);
-      return;
+      if (selected) setPicked(null);
+      return false;
     }
-    const c = best.h.crime;
-    if (!c) return;
+    stealClick.current = true;
     setTip(null);
+    setHoverCrime(null);
     setPickedCam(null);
     setPickedSor(null);
+    const c = h.crime;
     const cached = readCrimeNames(c.id);
     setPicked({ crime: c, names: cached });
-    if (cached !== undefined) return;
-    void fetchCrimeNames(c).then((names) => {
-      setPicked((cur) => (cur?.crime.id === c.id ? { crime: c, names } : cur));
-    });
+    if (cached === undefined) {
+      void fetchCrimeNames(c).then((names) => {
+        setPicked((cur) => (cur?.crime.id === c.id ? { crime: c, names } : cur));
+      });
+    }
+    return true;
   }
 
   function setBusy(on: boolean) {
@@ -1093,7 +1171,9 @@ export function TnMap({
       style={{ contain: "layout paint" }}
       onPointerDown={(e) => {
         if (interactiveTarget(e.target)) return;
-        if (!selected || e.button !== 0) return;
+        if (e.button !== 0) return;
+        if (hitAt(e.clientX, e.clientY)) return;
+        if (!selected) return;
         pan.current = { x: e.clientX, y: e.clientY, vx: viewRef.current.x, vy: viewRef.current.y, moved: false };
         e.currentTarget.setPointerCapture(e.pointerId);
       }}
@@ -1127,7 +1207,8 @@ export function TnMap({
         pan.current = null;
         setBusy(false);
         paintView(viewRef.current, true);
-        if (!start?.moved && (showCrime || showSorRef.current || camsOnRef.current)) pickDotAt(e.clientX, e.clientY);
+        if (start?.moved) return;
+        pickDotAt(e.clientX, e.clientY);
       }}
       onPointerCancel={() => {
         pan.current = null;
@@ -1136,22 +1217,24 @@ export function TnMap({
       }}
       onMouseMove={(e) => {
         if (pan.current) return;
-        if (interactiveTarget(e.target)) return;
-        if (!hits.current.length) return;
-        const box = root.current?.getBoundingClientRect();
-        if (!box) return;
-        const mx = e.clientX - box.left;
-        const my = e.clientY - box.top;
-        let best: { h: Hit; d: number } | null = null;
-        for (const h of hits.current) {
-          const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
-          if (d <= h.r * h.r && (!best || d < best.d)) best = { h, d };
+        if (interactiveTarget(e.target)) {
+          setHoverCrime(null);
+          return;
         }
-        if (!best) return;
-        showTip(e, best.h.title, best.h.lines);
+        const h = hitAt(e.clientX, e.clientY);
+        if (h?.crime) {
+          setTip(null);
+          setHoverCrime(crimeHud(h.crime));
+          return;
+        }
+        setHoverCrime(null);
+        if (h) showTip(e, h.title, h.lines);
       }}
       onMouseLeave={() => {
-        if (!pan.current) setTip(null);
+        if (!pan.current) {
+          setTip(null);
+          setHoverCrime(null);
+        }
       }}
     >
       {!paths.length || !project ? (
@@ -1189,6 +1272,16 @@ export function TnMap({
                   <path key={p.fips} d={p.d} />
                 ))}
               </clipPath>
+              {selected ? (
+                <mask id="zip-mask" maskUnits="userSpaceOnUse" x="0" y="0" width={MAP_W} height={MAP_H}>
+                  <rect x="0" y="0" width={MAP_W} height={MAP_H} fill="black" />
+                  {paths
+                    .filter((p) => p.fips === selected.fips)
+                    .map((p) => (
+                      <path key={p.fips} d={p.d} fill="white" />
+                    ))}
+                </mask>
+              ) : null}
             </defs>
             {paths.map((p) => {
               const county = BY_FIPS.get(p.fips);
@@ -1201,7 +1294,11 @@ export function TnMap({
                   key={p.fips}
                   d={p.d}
                   data-name={county?.name}
-                  fill={fillColor(county?.pop ?? 8000, isSel, dim, wx, streets && isSel)}
+                  fill={
+                    showZips && isSel
+                      ? "color-mix(in oklab, var(--color-grid) 5%, #020308)"
+                      : fillColor(county?.pop ?? 8000, isSel, dim, wx, streets && isSel)
+                  }
                   stroke={isSel ? "var(--color-fg)" : dim ? "transparent" : "var(--color-grid)"}
                   strokeWidth={isSel ? (streets ? 0.08 : zoomed ? 0.85 : 1.35) : zoomed ? 0 : 0.55}
                   filter={isSel && !streets ? "url(#line-glow-hot)" : undefined}
@@ -1246,7 +1343,58 @@ export function TnMap({
                 </g>
               </g>
             )}
-            {zoomed && layers.p24 && project
+            {zoomed && showZips ? (
+              <g mask="url(#zip-mask)">
+                {zipPaths.map(({ zip: z, d }) => {
+                  const picked = pickedZip === z.z;
+                  const dim = Boolean(pickedZip && !picked);
+                  const layersOn = raceLayers ?? { w: false, b: false, h: false, a: false, o: false };
+                  const tone = zipTone(z, layersOn);
+                  const fill =
+                    tone.tone === "white"
+                      ? "var(--color-race-white)"
+                      : tone.tone === "brown"
+                        ? "var(--color-race-brown)"
+                        : "transparent";
+                  const hud = zipHud(z, layersOn);
+                  const stroke =
+                    picked
+                      ? "var(--color-fg)"
+                      : tone.tone === "white"
+                        ? "var(--color-race-white)"
+                        : tone.tone === "brown"
+                          ? "var(--color-race-brown)"
+                          : "var(--color-line)";
+                  return (
+                    <path
+                      key={z.z}
+                      d={d}
+                      data-zip={z.z}
+                      data-tone={tone.tone}
+                      fill={fill}
+                      fillOpacity={dim ? tone.opacity * 0.4 : picked ? Math.min(0.92, tone.opacity + 0.08) : tone.opacity}
+                      fillRule="evenodd"
+                      stroke={stroke}
+                      strokeWidth={picked ? 0.45 : 0.22}
+                      strokeOpacity={tone.tone === "none" ? 0.45 : 0.7}
+                      className="cursor-pointer"
+                      onMouseEnter={() => setHoverZip(hud)}
+                      onMouseMove={() => setHoverZip(hud)}
+                      onMouseLeave={() => setHoverZip(null)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (stealClick.current) {
+                          stealClick.current = false;
+                          return;
+                        }
+                        onPickZip?.(z);
+                      }}
+                    />
+                  );
+                })}
+              </g>
+            ) : null}
+            {zoomed && layers.p24 && !showZips
               ? precincts.map((pr) => {
                   const tot = pr.t || 1;
                   const other = Math.max(0, pr.t - pr.d - pr.r);
@@ -1279,6 +1427,10 @@ export function TnMap({
                       onMouseLeave={() => setTip(null)}
                       onClick={(e) => {
                         e.stopPropagation();
+                        if (stealClick.current) {
+                          stealClick.current = false;
+                          return;
+                        }
                         if (layers.p24) onPickPrecinct(pr, races[pr.id]);
                       }}
                     />
@@ -1297,7 +1449,8 @@ export function TnMap({
                           fill="none"
                           stroke="transparent"
                           strokeWidth={zoomed ? 1.6 : 3}
-                          className="cursor-pointer"
+                          className={showZips ? undefined : "cursor-pointer"}
+                          pointerEvents={showZips ? "none" : "auto"}
                           onMouseEnter={(e) =>
                             showTip(e, r.id, [arterial ? "Arterial" : "Interstate", "Corridor trace — not live traffic"])
                           }
@@ -1367,7 +1520,12 @@ export function TnMap({
             ) : null}
           </div>
           {streets ? (
-            <div className="pointer-events-none absolute right-2 bottom-2 z-10 font-mono text-[9px] tracking-widest text-faint/80 uppercase">
+            <div
+              className={cn(
+                "pointer-events-none absolute z-10 font-mono text-[9px] tracking-widest text-faint/80 uppercase",
+                extraZoom ? "right-2 bottom-28" : "right-2 bottom-2",
+              )}
+            >
               OSM · CARTO
             </div>
           ) : null}
@@ -1380,54 +1538,102 @@ export function TnMap({
             onClick={() => zoomBy(ZOOM_IN, undefined, undefined, true)}
             disabled={!canIn}
             aria-label="Zoom in"
-            className="grid size-11 place-items-center text-grid hover:bg-grid/15 disabled:text-faint disabled:hover:bg-transparent"
+            className="grid size-8 place-items-center text-grid hover:bg-grid/15 disabled:text-faint disabled:hover:bg-transparent"
           >
-            <Plus className="size-4" />
+            <Plus className="size-3.5" />
           </button>
           <button
             type="button"
             onClick={() => zoomBy(ZOOM_OUT, undefined, undefined, true)}
             disabled={!canOut}
             aria-label="Zoom out"
-            className="grid size-11 place-items-center border-t border-line text-grid hover:bg-grid/15 disabled:text-faint disabled:hover:bg-transparent"
+            className="grid size-8 place-items-center border-t border-line text-grid hover:bg-grid/15 disabled:text-faint disabled:hover:bg-transparent"
           >
-            <Minus className="size-4" />
+            <Minus className="size-3.5" />
           </button>
         </div>
       ) : null}
-      {zoomed && layers.p26 ? (
+      {zoomed && extraZoom ? (
+        <div className="absolute right-2 bottom-2 z-10 grid grid-cols-3 border border-line bg-elevated/95">
+          <span />
+          <button
+            type="button"
+            onClick={() => panBy(0, -0.28)}
+            aria-label="Pan up"
+            className="grid size-8 place-items-center text-grid hover:bg-grid/15"
+          >
+            <ChevronUp className="size-3.5" />
+          </button>
+          <span />
+          <button
+            type="button"
+            onClick={() => panBy(-0.28, 0)}
+            aria-label="Pan left"
+            className="grid size-8 place-items-center text-grid hover:bg-grid/15"
+          >
+            <ChevronLeft className="size-3.5" />
+          </button>
+          <span className="size-8" />
+          <button
+            type="button"
+            onClick={() => panBy(0.28, 0)}
+            aria-label="Pan right"
+            className="grid size-8 place-items-center text-grid hover:bg-grid/15"
+          >
+            <ChevronRight className="size-3.5" />
+          </button>
+          <span />
+          <button
+            type="button"
+            onClick={() => panBy(0, 0.28)}
+            aria-label="Pan down"
+            className="grid size-8 place-items-center text-grid hover:bg-grid/15"
+          >
+            <ChevronDown className="size-3.5" />
+          </button>
+          <span />
+        </div>
+      ) : null}
+      {zoomed && layers.p26 && !showZips ? (
         <div className="pointer-events-none absolute top-2 left-1/2 z-10 w-[min(92%,22rem)] -translate-x-1/2 text-center font-mono text-xs tracking-wide text-muted">
           2026 precinct GIS is not published. Nov 3 general has not been run. Aug 6 was local races
           only.
         </div>
       ) : null}
-      {showCrime ? (
-        <div className="absolute top-2 left-2 z-10 border border-line bg-elevated/90">
-          {(
-            [
-              { id: "hom" as const, label: "Homicide", swatch: "bg-hot" },
-              { id: "sht" as const, label: "Shooting", swatch: "bg-watch" },
-              { id: "reg" as const, label: "Registry", swatch: "bg-steel" },
-            ] as const
-          ).map((item, i) => {
-            const on = crimeLayers[item.id];
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => onToggleCrime(item.id)}
-                aria-pressed={on}
-                className={cn(
-                  "flex h-7 w-full items-center gap-1.5 px-2 font-mono text-[10px] tracking-widest uppercase",
-                  i ? "border-t border-line" : undefined,
-                  on ? "text-muted" : "text-faint/70",
-                )}
-              >
-                <span className={cn("size-1.5 shrink-0", item.swatch, on ? "opacity-100" : "opacity-25")} />
-                {item.label}
-              </button>
-            );
-          })}
+      {zoomed && showZips ? (
+        <div className="pointer-events-none absolute top-1 left-1/2 z-10 w-[min(92%,18rem)] -translate-x-1/2 text-center">
+          {hoverZip ? (
+            <div className="mb-1 font-mono text-[10px] leading-tight tracking-wide text-hot uppercase">
+              <div>{hoverZip.a}</div>
+              <div>{hoverZip.b}</div>
+            </div>
+          ) : null}
+          <div className="mx-auto w-28">
+            <div
+              className="h-1 w-full"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--color-race-white), transparent 50%, var(--color-race-brown))",
+              }}
+            />
+            <div className="mt-0.5 flex justify-between font-mono text-[9px] tracking-widest text-faint uppercase">
+              <span>White</span>
+              <span>Parity</span>
+              <span>B/H</span>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {hoverCrime ? (
+        <div
+          data-crime-hud
+          className={cn(
+            "pointer-events-none absolute left-1/2 z-20 w-[min(92%,28rem)] -translate-x-1/2 px-2 text-center font-mono text-[10px] leading-tight tracking-wide text-watch uppercase",
+            feedHidden ? "bottom-10" : "bottom-1",
+          )}
+        >
+          <div>{hoverCrime.a}</div>
+          {hoverCrime.b ? <div>{hoverCrime.b}</div> : null}
         </div>
       ) : null}
       {tip && !picked && !pickedCam && !pickedSor ? (
@@ -1446,7 +1652,7 @@ export function TnMap({
       {picked ? (
         <div
           data-map-card
-          className="absolute bottom-2 left-14 z-20 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+          className="absolute bottom-2 left-12 z-20 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
         >
           <div className="flex items-start gap-2">
             <div className="min-w-0 flex-1">
@@ -1529,7 +1735,7 @@ export function TnMap({
           data-map-card
           className={
             selected
-              ? "pointer-events-auto absolute bottom-2 left-14 z-30 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+              ? "pointer-events-auto absolute bottom-2 left-12 z-30 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
               : "pointer-events-auto absolute top-2 left-2 z-30 w-[min(22rem,calc(100%-1rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
           }
           onPointerDown={(e) => e.stopPropagation()}
@@ -1575,7 +1781,7 @@ export function TnMap({
           data-map-card
           className={
             selected
-              ? "pointer-events-auto absolute bottom-2 left-14 z-30 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+              ? "pointer-events-auto absolute bottom-2 left-12 z-30 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
               : "pointer-events-auto absolute top-2 left-2 z-30 w-[min(22rem,calc(100%-1rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
           }
           onPointerDown={(e) => e.stopPropagation()}
