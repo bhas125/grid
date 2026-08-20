@@ -1,33 +1,29 @@
 import { cn } from "@/lib/utils";
 import type { LayerId, Layers } from "@/data/types";
 
-const ITEMS: { id: LayerId; label: string; countyOnly?: boolean }[] = [
+const ITEMS: { id: LayerId; label: string }[] = [
   { id: "interstates", label: "Roads" },
   { id: "weather", label: "Weather" },
   { id: "sites", label: "Data Cent." },
   { id: "flock", label: "Flock" },
   { id: "cameras", label: "Traffic Cam" },
-  { id: "p24", label: "’24", countyOnly: true },
-  { id: "p26", label: "’26", countyOnly: true },
 ];
 
 export function LayerToggles({
   layers,
   onToggle,
-  zoomed,
 }: {
   layers: Layers;
   onToggle: (id: LayerId) => void;
-  zoomed: boolean;
+  zoomed?: boolean;
 }) {
   return (
-    <div className="pointer-events-auto">
-      <div className="mb-0.5 font-mono text-[10px] tracking-widest text-muted uppercase">
+    <div className="pointer-events-auto flex min-w-0 items-center gap-2">
+      <div className="hidden shrink-0 font-mono text-[10px] tracking-widest text-muted uppercase sm:block">
         Toggle
       </div>
-      <div className="flex flex-wrap gap-1">
+      <div className="flex min-w-0 flex-1 items-center justify-between gap-1 overflow-x-auto">
         {ITEMS.map((item) => {
-          if (item.countyOnly && !zoomed) return null;
           const on = layers[item.id];
           return (
             <button
@@ -36,7 +32,7 @@ export function LayerToggles({
               onClick={() => onToggle(item.id)}
               aria-pressed={on}
               className={cn(
-                "h-6 min-w-0 border px-1.5 font-mono text-[10px] tracking-widest uppercase",
+                "h-7 min-w-0 shrink-0 border px-1.5 font-mono text-[10px] tracking-widest whitespace-nowrap uppercase sm:px-2",
                 on
                   ? "border-grid bg-grid/15 text-grid"
                   : "border-line bg-surface/90 text-faint hover:border-muted hover:text-muted",

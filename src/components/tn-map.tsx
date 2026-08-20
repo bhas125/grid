@@ -19,6 +19,8 @@ import type {
   Race,
   Road,
   Site,
+  SorPerson,
+  SorPoint,
   TrafficCam,
 } from "@/data/types";
 import { prefetchNews } from "@/lib/news-cache";
@@ -33,10 +35,16 @@ import {
   featureBounds,
   lonLatIn,
   makeProject,
+  makeUnproject,
   pathFromGeom,
   pathFromPts,
+  shortPinLabel,
+  viewAround,
   type BBox,
+  type MapPin,
+  type ViewBox,
 } from "@/lib/geo";
+import { tilesForView } from "@/lib/map-tiles";
 import { cn } from "@/lib/utils";
 
 const COUNTIES = countiesJson as County[];
@@ -44,20 +52,27 @@ const ROADS = roadsJson as Road[];
 const SITES = sitesJson as Site[];
 const BY_FIPS = new Map(COUNTIES.map((c) => [c.fips, c]));
 
+const overlayMem: {
+  alpr: AlprPoint[] | null;
+  cams: TrafficCam[] | null;
+  sor: SorPoint[] | null;
+} = { alpr: null, cams: null, sor: null };
+
 const TIP_W = 224;
 const TIP_GAP = 28;
 const ZOOM_IN = 1 / 1.55;
 const ZOOM_OUT = 1.55;
-const MAX_ZOOM = 10;
+const MAX_ZOOM = 40;
 const CRIME_CAP = 720;
 const ALPR_CAP = 420;
 const CAM_CAP = 560;
+const SOR_CAP = 900;
 
-type ViewBox = { x: number; y: number; w: number; h: number };
 type XY = { x: number; y: number };
 type CrimePt = CrimeIncident & XY;
 type AlprPt = AlprPoint & XY;
 type CamPt = TrafficCam & XY;
+type SorPt = SorPoint & XY;
 type Hit = {
   title: string;
   lines: string[];
@@ -66,6 +81,7 @@ type Hit = {
   r: number;
   crime?: CrimeIncident;
   cam?: TrafficCam;
+  sor?: SorPoint;
 };
 
 type Tip = {
@@ -90,9 +106,12 @@ function tipStyle(t: Tip) {
   };
 }
 
-function fillColor(pop: number, selected: boolean, dim: boolean, alert: boolean) {
+function fillColor(pop: number, selected: boolean, dim: boolean, alert: boolean, street: boolean) {
   if (dim) return "#03050c";
   const w = popWeight(pop);
+  if (street && selected) {
+    return "transparent";
+  }
   if (alert) {
     return `color-mix(in oklab, var(--color-watch) ${Math.round((0.28 + w * 0.25) * 100)}%, #020308)`;
   }
@@ -147,6 +166,19 @@ function crimeZip(c: CrimeIncident) {
 function personLine(p: CrimePerson) {
   const age = p.age != null ? `, ${p.age}` : "";
   return `${p.name}${age}`;
+}
+
+function sorTip(k: SorPoint["k"]) {
+  if (k === "V") return "Violent";
+  if (k === "C") return "Against children";
+  return "Sexual offender";
+}
+
+function nearPin(lat: number, lon: number, pin: MapPin | null, deg = 0.08) {
+  if (!pin) return true;
+  const dlat = lat - pin.lat;
+  const dlon = lon - pin.lon;
+  return dlat * dlat + dlon * dlon <= deg * deg;
 }
 
 function crimeTipLines(c: CrimeIncident) {
@@ -248,6 +280,11 @@ export function TnMap({
   showCrime,
   crimeLayers,
   onToggleCrime,
+  showSor,
+  pin,
+  onClearPin,
+  focusTick,
+  focusCrimeId,
 }: {
   geo: GeoFeature[] | null;
   selected: County | null;
@@ -260,6 +297,11 @@ export function TnMap({
   showCrime: boolean;
   crimeLayers: CrimeLayers;
   onToggleCrime: (kind: CrimeKind) => void;
+  showSor: boolean;
+  pin: MapPin | null;
+  onClearPin?: () => void;
+  focusTick: number;
+  focusCrimeId: string | null;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -272,6 +314,8 @@ export function TnMap({
     names: CrimeNames | null | undefined;
   } | null>(null);
   const [pickedCam, setPickedCam] = useState<TrafficCam | null>(null);
+  const [pickedSor, setPickedSor] = useState<{ point: SorPoint; person: SorPerson | null | undefined } | null>(null);
+  const [sor, setSor] = useState<SorPoint[]>([]);
   const skipSelect = useRef(false);
   const pan = useRef<{ x: number; y: number; vx: number; vy: number; moved: boolean } | null>(null);
   const [alpr, setAlpr] = useState<AlprPoint[]>([]);
@@ -287,36 +331,76 @@ export function TnMap({
   const commitTimer = useRef<number | null>(null);
   const hits = useRef<Hit[]>([]);
   const busy = useRef(false);
+  const pinEl = useRef<HTMLDivElement>(null);
+  const pinRef = useRef(pin);
+  pinRef.current = pin;
+  const tileHost = useRef<HTMLDivElement>(null);
+  const tileImgs = useRef(new Map<string, HTMLImageElement>());
+  const [streets, setStreets] = useState(false);
 
   const project = useMemo(() => (geo ? makeProject(geo, MAP_W, MAP_H) : null), [geo]);
+  const unproject = useMemo(() => (geo ? makeUnproject(geo, MAP_W, MAP_H) : null), [geo]);
+  const projectRef = useRef(project);
+  projectRef.current = project;
+  const unprojectRef = useRef(unproject);
+  unprojectRef.current = unproject;
 
   useEffect(() => {
-    if (!layers.flock || alpr.length) return;
+    if (!layers.flock) return;
+    if (overlayMem.alpr) {
+      setAlpr(overlayMem.alpr);
+      return;
+    }
     let live = true;
     fetch("/alpr-tn.json")
       .then((r) => r.json())
       .then((d: AlprPoint[]) => {
-        if (live) setAlpr(d);
+        overlayMem.alpr = Array.isArray(d) ? d : [];
+        if (live) setAlpr(overlayMem.alpr);
       })
       .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [layers.flock, alpr.length]);
+  }, [layers.flock]);
 
   useEffect(() => {
-    if (!layers.cameras || cams.length) return;
+    if (!layers.cameras) return;
+    if (overlayMem.cams) {
+      setCams(overlayMem.cams);
+      return;
+    }
     let live = true;
     fetch("/tdot-cameras.json")
       .then((r) => r.json())
       .then((d: TrafficCam[]) => {
-        if (live) setCams(Array.isArray(d) ? d : []);
+        overlayMem.cams = Array.isArray(d) ? d : [];
+        if (live) setCams(overlayMem.cams);
       })
       .catch(() => undefined);
     return () => {
       live = false;
     };
-  }, [layers.cameras, cams.length]);
+  }, [layers.cameras]);
+
+  useEffect(() => {
+    if (!showSor) return;
+    if (overlayMem.sor) {
+      setSor(overlayMem.sor);
+      return;
+    }
+    let live = true;
+    fetch("/sor-tn.json")
+      .then((r) => r.json())
+      .then((d: SorPoint[]) => {
+        overlayMem.sor = Array.isArray(d) ? d : [];
+        if (live) setSor(overlayMem.sor);
+      })
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+  }, [showSor]);
 
   useEffect(() => {
     if (!selected || !layers.p24) {
@@ -376,12 +460,13 @@ export function TnMap({
       const k = kindOf(c.type);
       return k ? crimeLayers[k] : false;
     });
-    if (!selected && crimeLayers.sht) rows = thinShootings(rows);
+    if (pin) rows = rows.filter((c) => nearPin(c.lat, c.lon, pin));
+    if (!selected && !pin && crimeLayers.sht) rows = thinShootings(rows);
     return rows.map((c) => {
       const p = project(c.lon, c.lat);
       return { ...c, x: p.x, y: p.y };
     });
-  }, [project, crime, selected, showCrime, crimeLayers]);
+  }, [project, crime, selected, showCrime, crimeLayers, pin]);
   const crimePtsRef = useRef(crimePts);
   crimePtsRef.current = crimePts;
 
@@ -402,6 +487,8 @@ export function TnMap({
     }));
   }, [project, selected]);
 
+  const sitePtsRef = useRef(sitePts);
+  sitePtsRef.current = sitePts;
   const alprPts = useMemo(() => {
     if (!project || !layers.flock || !alpr.length) return [] as AlprPt[];
     let pts = alpr;
@@ -429,20 +516,99 @@ export function TnMap({
   }, [project, cams, selected, paths, layers.cameras]);
   const camPtsRef = useRef(camPts);
   camPtsRef.current = camPts;
+
+  const sorPts = useMemo(() => {
+    if (!project || !showSor || !sor.length) return [] as SorPt[];
+    let pts = selected ? sor.filter((p) => p.co === selected.name) : sor;
+    if (pin) pts = pts.filter((p) => nearPin(p.lat, p.lon, pin));
+    if (!selected && !pin) pts = pts.filter((_, i) => i % 4 === 0);
+    return pts.map((p) => ({ ...p, ...project(p.lon, p.lat) }));
+  }, [project, sor, selected, showSor, pin]);
+  const sorPtsRef = useRef(sorPts);
+  sorPtsRef.current = sorPts;
   const crimeKindRef = useRef(crimeLayers);
   crimeKindRef.current = crimeLayers;
   const showCrimeRef = useRef(showCrime);
   showCrimeRef.current = showCrime;
+  const showSorRef = useRef(showSor);
+  showSorRef.current = showSor;
   const flockRef = useRef(layers.flock);
   flockRef.current = layers.flock;
   const camsOnRef = useRef(layers.cameras);
   camsOnRef.current = layers.cameras;
+  const sitesOnRef = useRef(layers.sites);
+  sitesOnRef.current = layers.sites;
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
+
+  function paintTiles(next: ViewBox) {
+    const host = tileHost.current;
+    const proj = projectRef.current;
+    const unproj = unprojectRef.current;
+    if (!host || !proj || !unproj) return;
+    const size = sizeRef.current;
+    const { s, ox, oy } = viewScale(size, next);
+    const tiles = tilesForView(next, proj, unproj, size, ox, oy, s);
+    const on = tiles.length > 0;
+    host.style.display = on ? "block" : "none";
+    setStreets((prev) => (prev === on ? prev : on));
+    if (!on) {
+      for (const img of tileImgs.current.values()) img.remove();
+      tileImgs.current.clear();
+      return;
+    }
+    const keep = new Set<string>();
+    for (const t of tiles) {
+      keep.add(t.key);
+      let img = tileImgs.current.get(t.key);
+      if (!img) {
+        img = new Image();
+        img.alt = "";
+        img.decoding = "async";
+        img.src = t.url;
+        img.className = "pointer-events-none absolute top-0 left-0 max-w-none";
+        img.style.filter = "brightness(1.55) contrast(1.22) saturate(0.95)";
+        host.appendChild(img);
+        tileImgs.current.set(t.key, img);
+      }
+      img.style.width = `${Math.max(1, t.w)}px`;
+      img.style.height = `${Math.max(1, t.h)}px`;
+      img.style.transform = `translate(${t.x}px, ${t.y}px)`;
+    }
+    for (const [key, img] of tileImgs.current) {
+      if (keep.has(key)) continue;
+      img.remove();
+      tileImgs.current.delete(key);
+    }
+  }
+
+  function placePin(next: ViewBox) {
+    const el = pinEl.current;
+    const mark = pinRef.current;
+    const proj = projectRef.current;
+    if (!el) return;
+    if (!mark || !proj) {
+      el.style.display = "none";
+      return;
+    }
+    const p = proj(mark.lon, mark.lat);
+    const size = sizeRef.current;
+    const { s, ox, oy } = viewScale(size, next);
+    const x = (p.x - next.x) * s + ox;
+    const y = (p.y - next.y) * s + oy;
+    if (x < -40 || y < -40 || x > size.w + 40 || y > size.h + 40) {
+      el.style.display = "none";
+      return;
+    }
+    el.style.display = "block";
+    el.style.transform = `translate(${x}px, ${y}px) translate(-5px, -50%)`;
+  }
 
   function paintView(next: ViewBox, commit = false) {
     viewRef.current = next;
     svgRef.current?.setAttribute("viewBox", `${next.x} ${next.y} ${next.w} ${next.h}`);
+    placePin(next);
+    paintTiles(next);
     if (drawRaf.current) cancelAnimationFrame(drawRaf.current);
     drawRaf.current = requestAnimationFrame(drawDots);
     if (commit) setView(next);
@@ -463,8 +629,8 @@ export function TnMap({
     hits.current = [];
     if (!canvas) return;
     let ctx = ctxRef.current;
-    if (!ctx) {
-      ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+    if (!ctx || ctx.canvas !== canvas) {
+      ctx = canvas.getContext("2d", { alpha: true });
       ctxRef.current = ctx;
     }
     if (!ctx) return;
@@ -482,10 +648,21 @@ export function TnMap({
     const crimeOn = showCrimeRef.current;
     const flockOn = flockRef.current;
     const camsOn = camsOnRef.current;
+    const sitesOn = sitesOnRef.current;
     const pts = crimePtsRef.current;
     const cameras = alprPtsRef.current;
     const tdots = camPtsRef.current;
-    if ((!crimeOn || !pts.length) && (!flockOn || !cameras.length) && (!camsOn || !tdots.length)) return;
+    const sors = sorPtsRef.current;
+    const sites = sitePtsRef.current;
+    const sorOn = showSorRef.current;
+    if (
+      (!crimeOn || !pts.length) &&
+      (!flockOn || !cameras.length) &&
+      (!camsOn || !tdots.length) &&
+      (!sorOn || !sors.length) &&
+      (!sitesOn || !sites.length)
+    )
+      return;
     const cur = viewRef.current;
     const { s, ox, oy } = viewScale(size, cur);
     const zoomedNow = !!selectedRef.current;
@@ -504,7 +681,7 @@ export function TnMap({
     };
 
     if (flockOn && cameras.length) {
-      const r = zoomedNow ? 2.4 : 2;
+      const r = zoomedNow ? 2.8 : 2.5;
       ctx.fillStyle = "#ffb347";
       ctx.globalAlpha = 0.85;
       ctx.beginPath();
@@ -559,6 +736,34 @@ export function TnMap({
       ctx.fill();
       ctx.globalAlpha = 0.95;
       ctx.stroke();
+    }
+
+    if (sorOn && sors.length) {
+      ctx.fillStyle = "#8ec8e0";
+      ctx.globalAlpha = 0.82;
+      ctx.beginPath();
+      let n = 0;
+      for (const p of sors) {
+        const sx = (p.x - cur.x) * s + ox;
+        const sy = (p.y - cur.y) * s + oy;
+        if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+        if (!stamp(sx, sy, zoomedNow && p.k === "V")) continue;
+        const r = p.k === "V" ? (zoomedNow ? 4.4 : 3.2) : zoomedNow ? 3.4 : 2.5;
+        ctx.moveTo(sx + r, sy);
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        if (record) {
+          hits.current.push({
+            title: sorTip(p.k),
+            lines: ["TBI registry", p.co ? `${p.co} County` : "Tennessee"],
+            x: sx,
+            y: sy,
+            r: r + 6,
+            sor: p,
+          });
+        }
+        if (++n >= SOR_CAP) break;
+      }
+      ctx.fill();
     }
 
     if (crimeOn && pts.length) {
@@ -617,6 +822,42 @@ export function TnMap({
         ctx.stroke();
       }
     }
+
+    if (sitesOn && sites.length) {
+      ctx.shadowColor = "rgba(255, 77, 77, 0.7)";
+      ctx.shadowBlur = zoomedNow ? 10 : 8;
+      ctx.fillStyle = "#ff4d4d";
+      ctx.strokeStyle = "#ffd6d6";
+      ctx.lineWidth = 1.15;
+      ctx.globalAlpha = 1;
+      const r = zoomedNow ? 6.5 : 5.5;
+      for (const p of sites) {
+        const sx = (p.x - cur.x) * s + ox;
+        const sy = (p.y - cur.y) * s + oy;
+        if (sx < -pad || sy < -pad || sx > w + pad || sy > h + pad) continue;
+        stamp(sx, sy, true);
+        ctx.save();
+        ctx.translate(sx, sy);
+        ctx.rotate(Math.PI / 4);
+        ctx.beginPath();
+        ctx.rect(-r, -r, r * 2, r * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.stroke();
+        ctx.restore();
+        if (record) {
+          hits.current.push({
+            title: p.name,
+            lines: [`${p.kind} data center`, `${p.county} County`, `${p.lat.toFixed(2)}N ${Math.abs(p.lon).toFixed(2)}W`],
+            x: sx,
+            y: sy,
+            r: r + 8,
+          });
+        }
+      }
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
+    }
     ctx.globalAlpha = 1;
   }
 
@@ -625,12 +866,30 @@ export function TnMap({
   }, [showCrime, selected]);
 
   useEffect(() => {
+    if (!focusCrimeId) return;
+    const c = crime.find((x) => x.id === focusCrimeId);
+    if (!c) return;
+    const cached = readCrimeNames(c.id);
+    setPicked({ crime: c, names: cached });
+    if (cached !== undefined) return;
+    void fetchCrimeNames(c).then((names) => {
+      setPicked((cur) => (cur?.crime.id === c.id ? { crime: c, names } : cur));
+    });
+    // crime list is live; pin zoom is driven by focusTick
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusCrimeId, focusTick]);
+
+  useEffect(() => {
     if (!layers.cameras) setPickedCam(null);
   }, [layers.cameras]);
 
   useEffect(() => {
+    if (!showSor) setPickedSor(null);
+  }, [showSor]);
+
+  useEffect(() => {
     drawDots();
-  }, [crimePts, alprPts, camPts, showCrime, selected, layers.flock, layers.cameras, crimeLayers]);
+  }, [crimePts, alprPts, camPts, sorPts, sitePts, showCrime, showSor, selected, layers.flock, layers.cameras, layers.sites, crimeLayers]);
 
   useEffect(() => {
     const el = root.current;
@@ -638,6 +897,7 @@ export function TnMap({
     const apply = () => {
       const box = el.getBoundingClientRect();
       sizeRef.current = { w: Math.max(1, Math.round(box.width)), h: Math.max(1, Math.round(box.height)) };
+      placePin(viewRef.current);
       drawDots();
     };
     apply();
@@ -674,15 +934,22 @@ export function TnMap({
     if (!selected) {
       fitRef.current = FULL_VIEW;
       animateTo(FULL_VIEW);
+      placePin(FULL_VIEW);
       return;
     }
     const feat = geo.find((f) => f.properties.fips === selected.fips);
     if (!feat) return;
     const fit = countyFit(feat, project);
     fitRef.current = fit;
-    animateTo(fit);
+    const mark = pin;
+    if (mark) {
+      const target = clampView(viewAround(mark.lon, mark.lat, project), fit);
+      animateTo(target);
+    } else {
+      animateTo(fit);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected, project, geo]);
+  }, [selected, pin, project, geo, focusTick]);
 
   function applyView(next: ViewBox, animate = true) {
     const clamped = selected ? clampView(next, fitRef.current) : next;
@@ -763,19 +1030,40 @@ export function TnMap({
     const my = clientY - box.top;
     let best: { h: Hit; d: number } | null = null;
     for (const h of hits.current) {
-      if (!h.crime && !h.cam) continue;
+      if (!h.crime && !h.cam && !h.sor) continue;
       const d = (h.x - mx) ** 2 + (h.y - my) ** 2;
       if (d <= h.r * h.r && (!best || d < best.d)) best = { h, d };
     }
     if (best?.h.cam) {
       setTip(null);
       setPicked(null);
+      setPickedSor(null);
       setPickedCam(best.h.cam);
       skipSelect.current = true;
       return;
     }
+    if (best?.h.sor) {
+      const point = best.h.sor;
+      setTip(null);
+      setPicked(null);
+      setPickedCam(null);
+      setPickedSor({ point, person: undefined });
+      skipSelect.current = true;
+      void fetch(`/api/sor?id=${encodeURIComponent(point.id)}`)
+        .then((r) => r.json())
+        .then((d: { offenders?: SorPerson[] }) => {
+          setPickedSor((cur) =>
+            cur?.point.id === point.id ? { point, person: d.offenders?.[0] ?? null } : cur,
+          );
+        })
+        .catch(() => {
+          setPickedSor((cur) => (cur?.point.id === point.id ? { point, person: null } : cur));
+        });
+      return;
+    }
     if (!best) {
       setPickedCam(null);
+      setPickedSor(null);
       if (!selected) return;
       setPicked(null);
       return;
@@ -784,6 +1072,7 @@ export function TnMap({
     if (!c) return;
     setTip(null);
     setPickedCam(null);
+    setPickedSor(null);
     const cached = readCrimeNames(c.id);
     setPicked({ crime: c, names: cached });
     if (cached !== undefined) return;
@@ -838,7 +1127,7 @@ export function TnMap({
         pan.current = null;
         setBusy(false);
         paintView(viewRef.current, true);
-        if (!start?.moved && (showCrime || camsOnRef.current)) pickDotAt(e.clientX, e.clientY);
+        if (!start?.moved && (showCrime || showSorRef.current || camsOnRef.current)) pickDotAt(e.clientX, e.clientY);
       }}
       onPointerCancel={() => {
         pan.current = null;
@@ -869,10 +1158,11 @@ export function TnMap({
         <div className="absolute inset-0 animate-pulse bg-elevated/40" />
       ) : (
         <>
+          <div ref={tileHost} className="pointer-events-none absolute inset-0 z-0 overflow-hidden" />
           <svg
             ref={svgRef}
             viewBox={`${viewRef.current.x} ${viewRef.current.y} ${viewRef.current.w} ${viewRef.current.h}`}
-            className={cn("absolute inset-0 h-full w-full", selected ? "cursor-grab" : undefined)}
+            className={cn("absolute inset-0 z-[1] h-full w-full", selected ? "cursor-grab" : undefined)}
             role="img"
             aria-label="Tennessee grid map"
             preserveAspectRatio="xMidYMid meet"
@@ -911,10 +1201,10 @@ export function TnMap({
                   key={p.fips}
                   d={p.d}
                   data-name={county?.name}
-                  fill={fillColor(county?.pop ?? 8000, isSel, dim, wx)}
+                  fill={fillColor(county?.pop ?? 8000, isSel, dim, wx, streets && isSel)}
                   stroke={isSel ? "var(--color-fg)" : dim ? "transparent" : "var(--color-grid)"}
-                  strokeWidth={isSel ? (zoomed ? 0.85 : 1.35) : zoomed ? 0 : 0.55}
-                  filter={isSel ? "url(#line-glow-hot)" : undefined}
+                  strokeWidth={isSel ? (streets ? 0.08 : zoomed ? 0.85 : 1.35) : zoomed ? 0 : 0.55}
+                  filter={isSel && !streets ? "url(#line-glow-hot)" : undefined}
                   className={dim ? "pointer-events-none" : zoomed ? undefined : "cursor-pointer"}
                   pointerEvents={dim ? "none" : "auto"}
                   onMouseEnter={(e) => {
@@ -997,8 +1287,9 @@ export function TnMap({
               : null}
             {layers.interstates
               ? visibleRoads
-                  .filter((r) => r.kind === "interstate")
+                  .filter((r) => r.kind === "interstate" || (zoomed && r.kind === "arterial"))
                   .map((r) => {
+                    const arterial = r.kind === "arterial";
                     return (
                       <g key={r.id}>
                         <path
@@ -1008,63 +1299,78 @@ export function TnMap({
                           strokeWidth={zoomed ? 1.6 : 3}
                           className="cursor-pointer"
                           onMouseEnter={(e) =>
-                            showTip(e, r.id, ["Interstate", "Corridor trace — not live traffic"])
+                            showTip(e, r.id, [arterial ? "Arterial" : "Interstate", "Corridor trace — not live traffic"])
                           }
                           onMouseMove={(e) =>
-                            showTip(e, r.id, ["Interstate", "Corridor trace — not live traffic"])
+                            showTip(e, r.id, [arterial ? "Arterial" : "Interstate", "Corridor trace — not live traffic"])
                           }
                           onMouseLeave={() => setTip(null)}
                         />
                         <path
                           d={pathFromPts(r.pts, project)}
                           fill="none"
-                          stroke="var(--color-flow)"
-                          strokeWidth={zoomed ? 0.28 : 0.38}
-                          className="traffic-flow"
-                          opacity={0.85}
+                          stroke={arterial ? "var(--color-steel)" : "var(--color-flow)"}
+                          strokeWidth={zoomed ? (arterial ? 0.16 : 0.28) : 0.38}
+                          className={arterial ? "road-flow" : "traffic-flow"}
+                          opacity={arterial ? 0.55 : 0.85}
                           pointerEvents="none"
                         />
                       </g>
                     );
                   })
               : null}
-            {layers.sites
-              ? sitePts.map((s) => (
-                  <g
-                    key={s.name}
-                    className="cursor-pointer"
-                    onMouseEnter={(e) =>
-                      showTip(e, s.name, [
-                        `${s.kind} data center`,
-                        `${s.county} County`,
-                        `${s.lat.toFixed(2)}N ${Math.abs(s.lon).toFixed(2)}W`,
-                      ])
-                    }
-                    onMouseMove={(e) =>
-                      showTip(e, s.name, [
-                        `${s.kind} data center`,
-                        `${s.county} County`,
-                        `${s.lat.toFixed(2)}N ${Math.abs(s.lon).toFixed(2)}W`,
-                      ])
-                    }
-                    onMouseLeave={() => setTip(null)}
-                  >
-                    <rect
-                      x={s.x - (zoomed ? 0.7 : 2.2)}
-                      y={s.y - (zoomed ? 0.7 : 2.2)}
-                      width={zoomed ? 1.4 : 4.4}
-                      height={zoomed ? 1.4 : 4.4}
-                      fill="var(--color-hot)"
-                      filter="url(#line-glow-hot)"
-                    />
-                  </g>
-                ))
-              : null}
           </svg>
           {layers.weather && project ? (
             <WxSky project={project} viewRef={viewRef} sizeRef={sizeRef} />
           ) : null}
-          <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden />
+          <canvas
+            ref={canvasRef}
+            data-overlay="dots"
+            data-pts={`${crimePts.length},${alprPts.length},${camPts.length},${sorPts.length},${sitePts.length}`}
+            className="pointer-events-none absolute inset-0 z-[3] h-full w-full bg-transparent"
+            aria-hidden
+          />
+          <div
+            ref={pinEl}
+            className="absolute top-0 left-0 z-20"
+            style={{ display: "none", willChange: "transform", pointerEvents: "none" }}
+          >
+            {pin ? (
+              <div className="flex items-center gap-1">
+                <div className="size-2.5 shrink-0 rotate-45 border border-grid bg-grid" />
+                <div className="pointer-events-auto flex items-center border border-grid bg-elevated/95 shadow-glow">
+                  <span className="px-1.5 py-0.5 font-mono text-[10px] tracking-wide whitespace-nowrap text-grid">
+                    {shortPinLabel(pin.label)}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Clear address pin"
+                    className="grid size-8 place-items-center border-l border-grid text-faint hover:text-fg"
+                    onPointerDown={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                    }}
+                    onPointerUp={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      onClearPin?.();
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClearPin?.();
+                    }}
+                  >
+                    <X className="size-3" />
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </div>
+          {streets ? (
+            <div className="pointer-events-none absolute right-2 bottom-2 z-10 font-mono text-[9px] tracking-widest text-faint/80 uppercase">
+              OSM · CARTO
+            </div>
+          ) : null}
         </>
       )}
       {zoomed ? (
@@ -1101,6 +1407,7 @@ export function TnMap({
             [
               { id: "hom" as const, label: "Homicide", swatch: "bg-hot" },
               { id: "sht" as const, label: "Shooting", swatch: "bg-watch" },
+              { id: "reg" as const, label: "Registry", swatch: "bg-steel" },
             ] as const
           ).map((item, i) => {
             const on = crimeLayers[item.id];
@@ -1123,7 +1430,7 @@ export function TnMap({
           })}
         </div>
       ) : null}
-      {tip && !picked && !pickedCam ? (
+      {tip && !picked && !pickedCam && !pickedSor ? (
         <div
           className="pointer-events-none absolute z-10 w-56 border border-line bg-elevated/95 px-3 py-2 shadow-glow"
           style={tipStyle(tip)}
@@ -1261,6 +1568,56 @@ export function TnMap({
           >
             Watch live
           </button>
+        </div>
+      ) : null}
+      {pickedSor ? (
+        <div
+          data-map-card
+          className={
+            selected
+              ? "pointer-events-auto absolute bottom-2 left-14 z-30 w-[min(22rem,calc(100%-4.5rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+              : "pointer-events-auto absolute top-2 left-2 z-30 w-[min(22rem,calc(100%-1rem))] border border-line bg-elevated/95 px-3 py-2.5 shadow-glow"
+          }
+          onPointerDown={(e) => e.stopPropagation()}
+          onPointerUp={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <div className="font-mono text-[10px] tracking-widest text-steel uppercase">
+                {pickedSor.person?.klass ?? sorTip(pickedSor.point.k)}
+              </div>
+              <div className="mt-0.5 text-sm font-medium leading-snug">
+                {pickedSor.person === undefined
+                  ? "Looking up"
+                  : pickedSor.person?.name ?? "Name not in this extract"}
+              </div>
+              <div className="mt-0.5 font-mono text-[10px] tracking-widest text-faint uppercase">
+                {pickedSor.person
+                  ? [pickedSor.person.address, pickedSor.person.city, pickedSor.person.zip].filter(Boolean).join(" · ")
+                  : `${pickedSor.point.co} County`}
+              </div>
+            </div>
+            <button
+              type="button"
+              aria-label="Close"
+              onClick={() => setPickedSor(null)}
+              className="grid size-8 shrink-0 place-items-center text-faint hover:text-fg"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+          {pickedSor.person?.offense ? (
+            <p className="mt-2 border-t border-line pt-2 text-sm leading-snug text-muted">{pickedSor.person.offense}</p>
+          ) : null}
+          <a
+            href="https://sor.tbi.tn.gov/search"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-block font-mono text-[10px] tracking-widest text-grid uppercase hover:underline"
+          >
+            TBI registry
+          </a>
         </div>
       ) : null}
     </div>

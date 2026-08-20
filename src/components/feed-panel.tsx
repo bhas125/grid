@@ -1,17 +1,30 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown, ChevronUp, Radio } from "lucide-react";
-import { countyIntel, sitProfile, sitShape } from "@/data/intel";
+import { countyIntel } from "@/data/intel";
 import officialsJson from "@/data/officials.json";
-import type { Alert, County, CrimeIncident, CrimeKind, CrimeLayers, NewsItem, Precinct, Race, TabId } from "@/data/types";
+import type {
+  Alert,
+  County,
+  CrimeIncident,
+  CrimeKind,
+  CrimeLayers,
+  ElectYear,
+  NewsItem,
+  Precinct,
+  Race,
+  SorPerson,
+  TabId,
+} from "@/data/types";
 import { cn, fmtAge, fmtMargin, fmtNum, fmtPct } from "@/lib/utils";
 import { newsCacheAge, newsCacheKey, fetchNews, readNewsCache } from "@/lib/news-cache";
+import { AboutPanel } from "./about-panel";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "news", label: "News" },
-  { id: "sit", label: "Sit" },
-  { id: "vote", label: "Vote" },
+  { id: "sit", label: "About" },
   { id: "gov", label: "Gov" },
   { id: "crime", label: "Crime" },
+  { id: "vote", label: "Elections" },
 ];
 
 const OFFICIALS = officialsJson as Record<string, { office: string; name: string }[]>;
@@ -196,10 +209,12 @@ function CrimeFeed({
   county,
   incidents,
   crimeLayers,
+  onPickCrime,
 }: {
   county: County | null;
   incidents: CrimeIncident[];
   crimeLayers: CrimeLayers;
+  onPickCrime?: (c: CrimeIncident) => void;
 }) {
   const [shown, setShown] = useState(PAGE);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -251,11 +266,22 @@ function CrimeFeed({
   const visible = list.slice(0, shown);
 
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto">
+    <div>
       <div className="flex flex-wrap gap-2 px-4 pb-2">
         <Stat k="2026" v={`${fmtNum(stats.n)} pts`} />
         <Stat k="Hom" v={fmtNum(stats.hom)} />
         <Stat k="Sht" v={fmtNum(stats.sht)} />
+        {intel?.scanner ? (
+          <a
+            href={intel.scanner.href}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-7 items-center gap-1.5 border border-line px-2 font-mono text-xs tracking-wide text-grid uppercase"
+          >
+            <Radio className="size-3" />
+            Scanner
+          </a>
+        ) : null}
       </div>
       <p className="px-4 pb-2 font-mono text-xs leading-relaxed tracking-wide text-muted">
         {county
@@ -269,19 +295,25 @@ function CrimeFeed({
       ) : null}
       <ul>
         {visible.map((it) => (
-          <li key={it.id} className="border-t border-line px-4 py-2.5">
-            <div className="flex items-center gap-2 font-mono text-xs tracking-wide uppercase">
-              <span className={isHomicide(it.type) ? "text-hot" : "text-watch"}>{it.type}</span>
-              <span className="ml-auto text-faint">{fmtCrimeDate(it.date)}</span>
-            </div>
-            <div className="mt-0.5 text-sm leading-snug">{it.address}</div>
-            <div className="mt-0.5 font-mono text-xs tracking-wide text-faint uppercase">
-              {it.city}
-              {it.county ? ` · ${it.county}` : ""}
-              {it.zip ? ` · ${it.zip}` : ""}
-              {" · "}
-              {SOURCE_LABEL[it.source] ?? it.source}
-            </div>
+          <li key={it.id} className="border-t border-line">
+            <button
+              type="button"
+              onClick={() => onPickCrime?.(it)}
+              className="w-full px-4 py-2.5 text-left hover:bg-grid/10"
+            >
+              <div className="flex items-center gap-2 font-mono text-xs tracking-wide uppercase">
+                <span className={isHomicide(it.type) ? "text-hot" : "text-watch"}>{it.type}</span>
+                <span className="ml-auto text-faint">{fmtCrimeDate(it.date)}</span>
+              </div>
+              <div className="mt-0.5 text-sm leading-snug">{it.address}</div>
+              <div className="mt-0.5 font-mono text-xs tracking-wide text-faint uppercase">
+                {it.city}
+                {it.county ? ` · ${it.county}` : ""}
+                {it.zip ? ` · ${it.zip}` : ""}
+                {" · "}
+                {SOURCE_LABEL[it.source] ?? it.source}
+              </div>
+            </button>
           </li>
         ))}
       </ul>
@@ -291,6 +323,112 @@ function CrimeFeed({
           Memphis, Nashville, and Chattanooga; statewide GVA coverage runs through June 30.
         </p>
       ) : null}
+      <div ref={sentinel} className="h-4" />
+    </div>
+  );
+}
+
+const KLASS_TONE: Record<string, string> = {
+  Violent: "text-hot",
+  "Against children": "text-watch",
+  "Sexual offender": "text-steel",
+};
+
+function SorFeed({ county, active }: { county: County | null; active: boolean }) {
+  const [rows, setRows] = useState<SorPerson[]>([]);
+  const [status, setStatus] = useState<"idle" | "load" | "ok">("idle");
+  const [shown, setShown] = useState(PAGE);
+  const sentinel = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    if (!county) {
+      setRows([]);
+      setStatus("ok");
+      return;
+    }
+    let live = true;
+    setStatus("load");
+    setShown(PAGE);
+    fetch(`/api/sor?county=${encodeURIComponent(county.name)}`, { signal: AbortSignal.timeout(15000) })
+      .then((r) => r.json())
+      .then((d: { offenders?: SorPerson[] }) => {
+        if (!live) return;
+        setRows(d.offenders ?? []);
+        setStatus("ok");
+      })
+      .catch(() => {
+        if (live) {
+          setRows([]);
+          setStatus("ok");
+        }
+      });
+    return () => {
+      live = false;
+    };
+  }, [county?.name, active]);
+
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0]?.isIntersecting) setShown((n) => Math.min(rows.length, n + PAGE));
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [rows.length]);
+
+  const counts = useMemo(() => {
+    let v = 0;
+    let c = 0;
+    let s = 0;
+    for (const r of rows) {
+      if (r.klass === "Violent") v += 1;
+      else if (r.klass === "Against children") c += 1;
+      else s += 1;
+    }
+    return { v, c, s, n: rows.length };
+  }, [rows]);
+
+  const visible = rows.slice(0, shown);
+
+  return (
+    <div>
+      <div className="flex flex-wrap gap-2 px-4 pb-2">
+        <Stat k="TBI" v={`${fmtNum(counts.n)}`} />
+        {counts.v ? <Stat k="Violent" v={fmtNum(counts.v)} /> : null}
+        {counts.c ? <Stat k="Child" v={fmtNum(counts.c)} /> : null}
+      </div>
+      <p className="px-4 pb-2 font-mono text-xs leading-relaxed tracking-wide text-muted">
+        {county
+          ? `${county.name} · public TBI sex offender registry. Address as reported.`
+          : "Public TBI registry. Search an address or click a county to list people in that area."}
+      </p>
+      {status === "load" ? (
+        <p className="px-4 py-3 font-mono text-xs tracking-widest text-faint uppercase">Loading registry</p>
+      ) : null}
+      {!county && status === "ok" ? (
+        <p className="px-4 py-3 text-sm text-muted">Pick a county or search an address to list registrants.</p>
+      ) : null}
+      {county && status === "ok" && !rows.length ? (
+        <p className="px-4 py-3 text-sm text-muted">No mapped registry points in this county.</p>
+      ) : null}
+      <ul>
+        {visible.map((it) => (
+          <li key={it.id} className="border-t border-line px-4 py-2.5">
+            <div className="flex items-center gap-2 font-mono text-xs tracking-wide uppercase">
+              <span className={KLASS_TONE[it.klass] ?? "text-steel"}>{it.klass}</span>
+            </div>
+            <div className="mt-0.5 text-sm leading-snug">{it.name}</div>
+            <div className="mt-0.5 font-mono text-xs tracking-wide text-faint uppercase">
+              {it.address || "Address unlisted"}
+              {it.city ? ` · ${it.city}` : ""}
+              {it.zip ? ` · ${it.zip}` : ""}
+            </div>
+            {it.offense ? <div className="mt-0.5 text-sm leading-snug text-muted">{it.offense}</div> : null}
+          </li>
+        ))}
+      </ul>
       <div ref={sentinel} className="h-4" />
     </div>
   );
@@ -434,6 +572,9 @@ export function FeedPanel({
   crime,
   crimeLayers,
   onToggleCrime,
+  onPickCrime,
+  electYear,
+  onElectYear,
 }: {
   county: County | null;
   tab: TabId;
@@ -447,8 +588,10 @@ export function FeedPanel({
   crime: CrimeIncident[];
   crimeLayers: CrimeLayers;
   onToggleCrime: (kind: CrimeKind) => void;
+  onPickCrime?: (c: CrimeIncident) => void;
+  electYear: ElectYear;
+  onElectYear: (y: ElectYear) => void;
 }) {
-  const intel = county ? countyIntel(county.name) : null;
   const extra: NewsItem[] = (county ? alerts.filter((a) => a.counties.includes(county.name)) : alerts).map(
     (a) => ({
       id: a.id,
@@ -494,7 +637,10 @@ export function FeedPanel({
           aria-expanded={expanded}
           aria-label={expanded ? "Minimize news" : "Enlarge news"}
           title={expanded ? "Minimize" : "Enlarge"}
-          className="ml-auto grid size-9 place-items-center border border-line bg-elevated text-grid hover:border-grid"
+          className={cn(
+            "ml-auto grid size-9 place-items-center border border-line bg-elevated text-grid hover:border-grid",
+            expanded ? "invisible pointer-events-none" : undefined,
+          )}
         >
           {expanded ? <ChevronDown className="size-3.5" /> : <ChevronUp className="size-3.5" />}
         </button>
@@ -505,6 +651,7 @@ export function FeedPanel({
             [
               { id: "hom" as const, label: "Hom" },
               { id: "sht" as const, label: "Sht" },
+              { id: "reg" as const, label: "Registry" },
             ] as const
           ).map((item) => {
             const on = crimeLayers[item.id];
@@ -525,6 +672,27 @@ export function FeedPanel({
           })}
         </div>
       ) : null}
+      {tab === "vote" ? (
+        <div className="flex items-center gap-1 px-3 pb-1">
+          {(["2024", "2026"] as const).map((y) => {
+            const on = electYear === y;
+            return (
+              <button
+                key={y}
+                type="button"
+                onClick={() => onElectYear(y)}
+                aria-pressed={on}
+                className={cn(
+                  "h-6 border px-2 font-mono text-[10px] tracking-widest uppercase",
+                  on ? "border-grid bg-grid/15 text-grid" : "border-line text-faint hover:text-muted",
+                )}
+              >
+                {y}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
       <div className={tab === "news" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
         <NewsFeed
           county={county?.name ?? null}
@@ -534,36 +702,36 @@ export function FeedPanel({
           active={tab === "news"}
         />
       </div>
-      <div className={tab === "crime" ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
-        <CrimeFeed county={county} incidents={crime} crimeLayers={crimeLayers} />
+      <div className={tab === "crime" ? "flex min-h-0 flex-1 flex-col overflow-y-auto" : "hidden"}>
+        {crimeLayers.hom || crimeLayers.sht ? (
+          <CrimeFeed county={county} incidents={crime} crimeLayers={crimeLayers} onPickCrime={onPickCrime} />
+        ) : null}
+        {crimeLayers.reg ? <SorFeed county={county} active={tab === "crime" && crimeLayers.reg} /> : null}
+        {!crimeLayers.hom && !crimeLayers.sht && !crimeLayers.reg ? (
+          <p className="px-4 py-3 font-mono text-xs tracking-widest text-faint uppercase">
+            Turn on Hom, Sht, or Registry
+          </p>
+        ) : null}
       </div>
-      {tab === "sit" && county && intel ? (
-        <div className="space-y-2 overflow-y-auto px-4 pb-3">
-          <div className="flex flex-wrap gap-2">
-            <Stat k="People" v={fmtNum(county.pop)} />
-            <Stat k="Since 2020" v={`${county.growth > 0 ? "+" : ""}${county.growth}%`} />
-            {intel.dcOperating + intel.dcProposed ? (
-              <Stat k="Data centers" v={`${intel.dcOperating} / ${intel.dcProposed}`} />
-            ) : null}
-            {intel.scanner ? (
-              <a
-                href={intel.scanner.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex h-7 items-center gap-1.5 border border-line px-2 font-mono text-xs tracking-wide text-grid uppercase"
-              >
-                <Radio className="size-3" />
-                Scanner
-              </a>
+      <div className={tab === "sit" && county ? "flex min-h-0 flex-1 flex-col" : "hidden"}>
+        {county ? <AboutPanel county={county} brief={brief} active={tab === "sit"} /> : null}
+      </div>
+      {tab === "vote" && county ? (
+        electYear === "2026" ? (
+          <div className="space-y-2 overflow-y-auto px-4 pb-3">
+            <p className="font-mono text-xs tracking-widest text-grid uppercase">August 6 2026 · county</p>
+            <p className="text-sm text-fg/90">
+              {county.aug6
+                ? county.aug6.note
+                : "County general / state primary. No precinct GIS published for this cycle — 2026 precinct maps are not out yet."}
+            </p>
+            {county.aug6?.offices?.length ? (
+              <p className="font-mono text-xs text-muted">
+                Offices in play: {county.aug6.offices.join(" · ")}
+              </p>
             ) : null}
           </div>
-          <p className="text-sm leading-snug text-fg/90">
-            {brief ?? `${sitShape(county)} ${sitProfile(county)}`}
-          </p>
-        </div>
-      ) : null}
-      {tab === "vote" && county ? (
-        precinct ? (
+        ) : precinct ? (
           <VotePrecinct name={precinct.name} races={races} fallback={precinct} />
         ) : (
           <div className="space-y-2 overflow-y-auto px-4 pb-3">
@@ -576,16 +744,8 @@ export function FeedPanel({
               {fmtMargin(county.margin)}
             </p>
             <p className="text-sm text-fg/90">
-              <span className="font-mono text-xs text-hot uppercase">Aug 6 2026 · </span>
-              {county.aug6
-                ? county.aug6.note
-                : "County general / state primary. No precinct GIS published for this cycle — turn on ’24 and click a precinct for 2024 race tallies through State House."}
+              Click a precinct on the map for 2024 race tallies through State House.
             </p>
-            {county.aug6?.offices?.length ? (
-              <p className="font-mono text-xs text-muted">
-                Offices in play: {county.aug6.offices.join(" · ")}
-              </p>
-            ) : null}
           </div>
         )
       ) : null}

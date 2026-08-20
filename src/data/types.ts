@@ -97,6 +97,13 @@ export type MarketQuote = {
   change: number;
 };
 
+export type FinanceHeadline = {
+  id: string;
+  source: string;
+  headline: string;
+  href: string;
+};
+
 export type WxNow = {
   temp: number;
   code: number;
@@ -123,10 +130,27 @@ export type LayerId =
 
 export type Layers = Record<LayerId, boolean>;
 
-export type CrimeKind = "hom" | "sht";
+export type CrimeKind = "hom" | "sht" | "reg";
 export type CrimeLayers = Record<CrimeKind, boolean>;
 
 export type TabId = "news" | "sit" | "vote" | "gov" | "crime";
+
+export type ElectYear = "2024" | "2026";
+
+export type AboutSection = {
+  id: string;
+  title: string;
+  body?: string;
+  items?: string[];
+};
+
+export type CountyAbout = {
+  county: string;
+  href: string;
+  lede: string;
+  sections: AboutSection[];
+};
+
 
 export type Official = { office: string; name: string };
 
@@ -193,4 +217,25 @@ export type CrimeIncident = {
   source: string;
   killed: number;
   injured: number;
+};
+
+export type SorPoint = {
+  id: string;
+  lat: number;
+  lon: number;
+  co: string;
+  k: "V" | "S" | "C";
+};
+
+export type SorPerson = {
+  id: string;
+  name: string;
+  lat: number;
+  lon: number;
+  county: string;
+  city: string;
+  address: string;
+  zip: string;
+  klass: string;
+  offense: string;
 };

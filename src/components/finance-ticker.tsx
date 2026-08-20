@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { cn, fmtChange, fmtQuote } from "@/lib/utils";
-import type { MarketQuote } from "@/data/types";
+import type { FinanceHeadline } from "@/data/types";
 
-const ROW = 18;
-const VISIBLE = 2;
+const ROW = 42;
+const VISIBLE = 1;
+const SPEED = 0.0048;
 
-export function MarketTicker({ active = true }: { active?: boolean }) {
-  const [quotes, setQuotes] = useState<MarketQuote[]>([]);
+export function FinanceTicker({ active = true }: { active?: boolean }) {
+  const [items, setItems] = useState<FinanceHeadline[]>([]);
   const paused = useRef(false);
   const drag = useRef<{ y: number; off: number } | null>(null);
   const offRef = useRef(0);
@@ -27,21 +27,22 @@ export function MarketTicker({ active = true }: { active?: boolean }) {
     if (resume.current) window.clearTimeout(resume.current);
     resume.current = window.setTimeout(() => {
       if (!drag.current) paused.current = false;
-    }, 700);
+    }, 900);
   }
 
   useEffect(() => {
     let live = true;
     const load = () => {
-      fetch("/api/markets")
+      if (document.visibilityState === "hidden") return;
+      fetch("/api/finance-news")
         .then((r) => r.json())
-        .then((d: { quotes?: MarketQuote[] }) => {
-          if (live) setQuotes(d.quotes ?? []);
+        .then((d: { items?: FinanceHeadline[] }) => {
+          if (live) setItems(d.items ?? []);
         })
         .catch(() => undefined);
     };
     load();
-    const id = window.setInterval(load, 60_000);
+    const id = window.setInterval(load, 180_000);
     return () => {
       live = false;
       window.clearInterval(id);
@@ -49,37 +50,41 @@ export function MarketTicker({ active = true }: { active?: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (!active || quotes.length < 2) return;
+    if (!active || items.length < 2) return;
     let raf = 0;
     let last = performance.now();
     const tick = (now: number) => {
-      const dt = now - last;
+      raf = requestAnimationFrame(tick);
+      if (document.visibilityState === "hidden") {
+        last = now;
+        return;
+      }
+      const dt = Math.min(48, now - last);
       last = now;
       if (!paused.current) {
-        const loop = quotes.length * ROW;
-        let n = offRef.current + dt * 0.016;
+        const loop = items.length * ROW;
+        let n = offRef.current + dt * SPEED;
         if (n >= loop) n -= loop;
         applyOff(n);
       }
-      raf = requestAnimationFrame(tick);
     };
     applyOff(offRef.current);
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [quotes.length, active]);
+  }, [items.length, active]);
 
-  if (!quotes.length) {
-    return <div className="mt-2 h-9 w-full animate-pulse bg-elevated/80" />;
+  if (!items.length) {
+    return <div className="mt-1.5 h-10 w-full animate-pulse bg-elevated/80" />;
   }
 
-  const loop = quotes.length * ROW;
-  const tape = [...quotes, ...quotes, ...quotes];
+  const loop = items.length * ROW;
+  const tape = [...items, ...items, ...items];
 
   return (
     <div
-      className="mt-2 w-full cursor-grab touch-none select-none overflow-hidden active:cursor-grabbing"
+      className="mt-1.5 w-full cursor-grab touch-none select-none overflow-hidden text-right active:cursor-grabbing"
       style={{ height: ROW * VISIBLE }}
-      title="Drag or scroll to pause"
+      title="Financial headlines — drag or scroll to pause"
       onPointerDown={(e) => {
         hold();
         drag.current = { y: e.clientY, off: offRef.current };
@@ -111,23 +116,22 @@ export function MarketTicker({ active = true }: { active?: boolean }) {
       }}
     >
       <ul ref={tapeRef} style={{ transform: `translateY(-${offRef.current}px)` }}>
-        {tape.map((q, i) => {
-          const up = q.change >= 0;
-          return (
-            <li
-              key={`${q.id}-${i}`}
-              className={cn(
-                "flex items-center justify-end gap-1.5 font-mono text-xs tabular tracking-wide",
-                up ? "text-flow" : "text-hot",
-              )}
-              style={{ height: ROW }}
+        {tape.map((it, i) => (
+          <li key={`${it.id}-${i}`} className="box-border" style={{ height: ROW }}>
+            <a
+              href={it.href}
+              target="_blank"
+              rel="noreferrer"
+              className="block h-full overflow-hidden pt-0.5 font-mono text-[10px] leading-[1.3] text-muted hover:text-fg"
+              onClick={(e) => e.stopPropagation()}
             >
-              <span className="text-faint">{q.label}</span>
-              <span>{fmtQuote(q.value, q.digits, q.suffix)}</span>
-              <span>{fmtChange(q.change, q.digits, q.suffix)}</span>
-            </li>
-          );
-        })}
+              <span className="line-clamp-3 text-right">
+                <span className="text-faint uppercase">{it.source} </span>
+                {it.headline}
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
   );

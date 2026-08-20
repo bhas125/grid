@@ -48,7 +48,7 @@ export function DebtClock() {
   }, []);
 
   return (
-    <div className="mt-1.5 w-44 text-right" title="U.S. Treasury debt to the penny">
+    <div className="mt-1.5 w-full text-right" title="U.S. Treasury debt to the penny">
       <div className="font-mono text-[10px] tracking-widest text-faint uppercase">US Debt</div>
       <div className="mt-0.5 font-mono text-[10px] leading-none tabular tracking-wide text-muted">
         <span ref={ref}>—</span>

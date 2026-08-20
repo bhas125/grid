@@ -1,7 +1,7 @@
 import type { CrimeIncident } from "@/data/types";
 import { getSql } from "@/lib/db";
 
-const STALE_MS = 20 * 60 * 60_000;
+const STALE_MS = 24 * 60 * 60_000;
 const MEM_MS = 12 * 60_000;
 let mem: { at: number; incidents: CrimeIncident[] } | null = null;
 let inflight: Promise<CrimeIncident[]> | null = null;

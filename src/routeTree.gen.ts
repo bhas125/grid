@@ -12,12 +12,18 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ApiAlertsRouteImport } from './routes/api/alerts'
+import { Route as ApiCountyAboutRouteImport } from './routes/api/county-about'
 import { Route as ApiCrimeLiveRouteImport } from './routes/api/crime-live'
 import { Route as ApiCrimeNamesRouteImport } from './routes/api/crime-names'
 import { Route as ApiCrimeRefreshRouteImport } from './routes/api/crime-refresh'
+import { Route as ApiDebtRouteImport } from './routes/api/debt'
+import { Route as ApiFinanceNewsRouteImport } from './routes/api/finance-news'
+import { Route as ApiGeocodeRouteImport } from './routes/api/geocode'
 import { Route as ApiMarketsRouteImport } from './routes/api/markets'
 import { Route as ApiNewsRouteImport } from './routes/api/news'
+import { Route as ApiSorRouteImport } from './routes/api/sor'
 import { Route as ApiWxRouteImport } from './routes/api/wx'
+import { Route as ApiWxMapRouteImport } from './routes/api/wx-map'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +41,11 @@ const ApiAlertsRoute = ApiAlertsRouteImport.update({
   path: '/api/alerts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCountyAboutRoute = ApiCountyAboutRouteImport.update({
+  id: '/api/county-about',
+  path: '/api/county-about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCrimeLiveRoute = ApiCrimeLiveRouteImport.update({
   id: '/api/crime-live',
   path: '/api/crime-live',
@@ -50,6 +61,21 @@ const ApiCrimeRefreshRoute = ApiCrimeRefreshRouteImport.update({
   path: '/api/crime-refresh',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiDebtRoute = ApiDebtRouteImport.update({
+  id: '/api/debt',
+  path: '/api/debt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiFinanceNewsRoute = ApiFinanceNewsRouteImport.update({
+  id: '/api/finance-news',
+  path: '/api/finance-news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGeocodeRoute = ApiGeocodeRouteImport.update({
+  id: '/api/geocode',
+  path: '/api/geocode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiMarketsRoute = ApiMarketsRouteImport.update({
   id: '/api/markets',
   path: '/api/markets',
@@ -60,9 +86,19 @@ const ApiNewsRoute = ApiNewsRouteImport.update({
   path: '/api/news',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSorRoute = ApiSorRouteImport.update({
+  id: '/api/sor',
+  path: '/api/sor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiWxRoute = ApiWxRouteImport.update({
   id: '/api/wx',
   path: '/api/wx',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiWxMapRoute = ApiWxMapRouteImport.update({
+  id: '/api/wx-map',
+  path: '/api/wx-map',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -75,24 +111,36 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/api/alerts': typeof ApiAlertsRoute
+  '/api/county-about': typeof ApiCountyAboutRoute
   '/api/crime-live': typeof ApiCrimeLiveRoute
   '/api/crime-names': typeof ApiCrimeNamesRoute
   '/api/crime-refresh': typeof ApiCrimeRefreshRoute
+  '/api/debt': typeof ApiDebtRoute
+  '/api/finance-news': typeof ApiFinanceNewsRoute
+  '/api/geocode': typeof ApiGeocodeRoute
   '/api/markets': typeof ApiMarketsRoute
   '/api/news': typeof ApiNewsRoute
+  '/api/sor': typeof ApiSorRoute
   '/api/wx': typeof ApiWxRoute
+  '/api/wx-map': typeof ApiWxMapRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/api/alerts': typeof ApiAlertsRoute
+  '/api/county-about': typeof ApiCountyAboutRoute
   '/api/crime-live': typeof ApiCrimeLiveRoute
   '/api/crime-names': typeof ApiCrimeNamesRoute
   '/api/crime-refresh': typeof ApiCrimeRefreshRoute
+  '/api/debt': typeof ApiDebtRoute
+  '/api/finance-news': typeof ApiFinanceNewsRoute
+  '/api/geocode': typeof ApiGeocodeRoute
   '/api/markets': typeof ApiMarketsRoute
   '/api/news': typeof ApiNewsRoute
+  '/api/sor': typeof ApiSorRoute
   '/api/wx': typeof ApiWxRoute
+  '/api/wx-map': typeof ApiWxMapRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -100,12 +148,18 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/api/alerts': typeof ApiAlertsRoute
+  '/api/county-about': typeof ApiCountyAboutRoute
   '/api/crime-live': typeof ApiCrimeLiveRoute
   '/api/crime-names': typeof ApiCrimeNamesRoute
   '/api/crime-refresh': typeof ApiCrimeRefreshRoute
+  '/api/debt': typeof ApiDebtRoute
+  '/api/finance-news': typeof ApiFinanceNewsRoute
+  '/api/geocode': typeof ApiGeocodeRoute
   '/api/markets': typeof ApiMarketsRoute
   '/api/news': typeof ApiNewsRoute
+  '/api/sor': typeof ApiSorRoute
   '/api/wx': typeof ApiWxRoute
+  '/api/wx-map': typeof ApiWxMapRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
@@ -114,36 +168,54 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/api/alerts'
+    | '/api/county-about'
     | '/api/crime-live'
     | '/api/crime-names'
     | '/api/crime-refresh'
+    | '/api/debt'
+    | '/api/finance-news'
+    | '/api/geocode'
     | '/api/markets'
     | '/api/news'
+    | '/api/sor'
     | '/api/wx'
+    | '/api/wx-map'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/api/alerts'
+    | '/api/county-about'
     | '/api/crime-live'
     | '/api/crime-names'
     | '/api/crime-refresh'
+    | '/api/debt'
+    | '/api/finance-news'
+    | '/api/geocode'
     | '/api/markets'
     | '/api/news'
+    | '/api/sor'
     | '/api/wx'
+    | '/api/wx-map'
     | '/api/auth/$'
   id:
     | '__root__'
     | '/'
     | '/login'
     | '/api/alerts'
+    | '/api/county-about'
     | '/api/crime-live'
     | '/api/crime-names'
     | '/api/crime-refresh'
+    | '/api/debt'
+    | '/api/finance-news'
+    | '/api/geocode'
     | '/api/markets'
     | '/api/news'
+    | '/api/sor'
     | '/api/wx'
+    | '/api/wx-map'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
@@ -151,12 +223,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   ApiAlertsRoute: typeof ApiAlertsRoute
+  ApiCountyAboutRoute: typeof ApiCountyAboutRoute
   ApiCrimeLiveRoute: typeof ApiCrimeLiveRoute
   ApiCrimeNamesRoute: typeof ApiCrimeNamesRoute
   ApiCrimeRefreshRoute: typeof ApiCrimeRefreshRoute
+  ApiDebtRoute: typeof ApiDebtRoute
+  ApiFinanceNewsRoute: typeof ApiFinanceNewsRoute
+  ApiGeocodeRoute: typeof ApiGeocodeRoute
   ApiMarketsRoute: typeof ApiMarketsRoute
   ApiNewsRoute: typeof ApiNewsRoute
+  ApiSorRoute: typeof ApiSorRoute
   ApiWxRoute: typeof ApiWxRoute
+  ApiWxMapRoute: typeof ApiWxMapRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -183,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAlertsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/county-about': {
+      id: '/api/county-about'
+      path: '/api/county-about'
+      fullPath: '/api/county-about'
+      preLoaderRoute: typeof ApiCountyAboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/crime-live': {
       id: '/api/crime-live'
       path: '/api/crime-live'
@@ -204,6 +289,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiCrimeRefreshRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/debt': {
+      id: '/api/debt'
+      path: '/api/debt'
+      fullPath: '/api/debt'
+      preLoaderRoute: typeof ApiDebtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/finance-news': {
+      id: '/api/finance-news'
+      path: '/api/finance-news'
+      fullPath: '/api/finance-news'
+      preLoaderRoute: typeof ApiFinanceNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/geocode': {
+      id: '/api/geocode'
+      path: '/api/geocode'
+      fullPath: '/api/geocode'
+      preLoaderRoute: typeof ApiGeocodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/markets': {
       id: '/api/markets'
       path: '/api/markets'
@@ -218,11 +324,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiNewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sor': {
+      id: '/api/sor'
+      path: '/api/sor'
+      fullPath: '/api/sor'
+      preLoaderRoute: typeof ApiSorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/wx': {
       id: '/api/wx'
       path: '/api/wx'
       fullPath: '/api/wx'
       preLoaderRoute: typeof ApiWxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/wx-map': {
+      id: '/api/wx-map'
+      path: '/api/wx-map'
+      fullPath: '/api/wx-map'
+      preLoaderRoute: typeof ApiWxMapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -239,12 +359,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   ApiAlertsRoute: ApiAlertsRoute,
+  ApiCountyAboutRoute: ApiCountyAboutRoute,
   ApiCrimeLiveRoute: ApiCrimeLiveRoute,
   ApiCrimeNamesRoute: ApiCrimeNamesRoute,
   ApiCrimeRefreshRoute: ApiCrimeRefreshRoute,
+  ApiDebtRoute: ApiDebtRoute,
+  ApiFinanceNewsRoute: ApiFinanceNewsRoute,
+  ApiGeocodeRoute: ApiGeocodeRoute,
   ApiMarketsRoute: ApiMarketsRoute,
   ApiNewsRoute: ApiNewsRoute,
+  ApiSorRoute: ApiSorRoute,
   ApiWxRoute: ApiWxRoute,
+  ApiWxMapRoute: ApiWxMapRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

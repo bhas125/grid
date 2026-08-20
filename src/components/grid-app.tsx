@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
+import countiesJson from "@/data/counties.json";
 import type {
   Alert,
   County,
   CrimeIncident,
   CrimeKind,
   CrimeLayers,
+  ElectYear,
   GeoFeature,
   LayerId,
   Layers,
@@ -14,13 +16,19 @@ import type {
   TabId,
   WxNow,
 } from "@/data/types";
-import { centroid } from "@/lib/geo";
+import { COUNTY_XY } from "@/lib/county-xy";
+import { centroid, countyFipsAt, geomLonLatBBox, nearestCountyName, type MapPin } from "@/lib/geo";
 import { prefetchNews } from "@/lib/news-cache";
+import { AddressSearch } from "./address-search";
 import { CrimeShare, FeedPanel } from "./feed-panel";
 import { LayerToggles } from "./layer-toggles";
 import { MarketTicker } from "./market-ticker";
 import { DebtClock } from "./debt-clock";
+import { FinanceTicker } from "./finance-ticker";
 import { TnMap } from "./tn-map";
+
+const COUNTIES = countiesJson as County[];
+const BY_FIPS = new Map(COUNTIES.map((c) => [c.fips, c]));
 
 const DEFAULT_LAYERS: Layers = {
   interstates: true,
@@ -32,7 +40,7 @@ const DEFAULT_LAYERS: Layers = {
   p26: false,
 };
 
-const DEFAULT_CRIME: CrimeLayers = { hom: true, sht: true };
+const DEFAULT_CRIME: CrimeLayers = { hom: true, sht: true, reg: false };
 
 const FALLBACK_WX: WxNow = { temp: 87, code: 2, label: "MEM · BNA · TYS", live: false };
 
@@ -60,6 +68,11 @@ export function GridApp() {
   const [crime, setCrime] = useState<CrimeIncident[]>([]);
   const [crimeLayers, setCrimeLayers] = useState<CrimeLayers>(DEFAULT_CRIME);
   const [expanded, setExpanded] = useState(false);
+  const [pin, setPin] = useState<MapPin | null>(null);
+  const [focusTick, setFocusTick] = useState(0);
+  const [focusCrimeId, setFocusCrimeId] = useState<string | null>(null);
+  const [electYear, setElectYear] = useState<ElectYear>("2024");
+  const crimeLoaded = useRef(false);
 
   useEffect(() => {
     fetch("/tn-counties.geojson")
@@ -81,15 +94,12 @@ export function GridApp() {
     }
     const idle = window.setTimeout(() => {
       prefetchNews(null);
-      prefetchNews("Shelby", "Memphis", "Memphis");
-      prefetchNews("Davidson", "Nashville", "Nashville");
-      prefetchNews("Knox", "Knoxville", "Knoxville");
-      prefetchNews("Hamilton", "Chattanooga", "Chattanooga");
-    }, 700);
+    }, 2200);
     return () => window.clearTimeout(idle);
   }, []);
 
   useEffect(() => {
+    if (tab !== "crime") return;
     let live = true;
     const merge = (next: CrimeIncident[]) => {
       if (!live || !next.length) return;
@@ -100,30 +110,15 @@ export function GridApp() {
         return extra.length ? prev.concat(extra) : prev;
       });
     };
-    const wait = window.setTimeout(() => {
+    const loadSnap = () => {
       fetch("/crime-tn.json")
         .then((r) => r.json())
         .then((d: CrimeIncident[]) => {
-          if (live) merge(Array.isArray(d) ? d : []);
+          if (!live) return;
+          crimeLoaded.current = true;
+          merge(Array.isArray(d) ? d : []);
         })
         .catch(() => undefined);
-    }, 350);
-    return () => {
-      live = false;
-      window.clearTimeout(wait);
-    };
-  }, []);
-
-  useEffect(() => {
-    let live = true;
-    const merge = (next: CrimeIncident[]) => {
-      if (!live || !next.length) return;
-      setCrime((prev) => {
-        if (!prev.length) return next;
-        const have = new Set(prev.map((r) => r.id));
-        const extra = next.filter((r) => !have.has(r.id));
-        return extra.length ? prev.concat(extra) : prev;
-      });
     };
     const loadLive = () => {
       if (document.visibilityState === "hidden") return;
@@ -134,8 +129,33 @@ export function GridApp() {
         })
         .catch(() => undefined);
     };
-    const wait = window.setTimeout(loadLive, 1800);
+    if (!crimeLoaded.current) {
+      crimeLoaded.current = true;
+      loadSnap();
+    }
+    const wait = window.setTimeout(loadLive, 900);
     const poll = window.setInterval(loadLive, 60 * 60_000);
+    let waitR = 0;
+    try {
+      const last = Number(sessionStorage.getItem("grid-crime-refresh") || 0);
+      if (Date.now() - last > 24 * 60 * 60_000) {
+        waitR = window.setTimeout(() => {
+          fetch("/api/crime-refresh", { signal: AbortSignal.timeout(8000) })
+            .then((r) => r.json())
+            .then(() => {
+              try {
+                sessionStorage.setItem("grid-crime-refresh", String(Date.now()));
+              } catch {
+                /* ignore */
+              }
+              if (live) loadLive();
+            })
+            .catch(() => undefined);
+        }, 8000);
+      }
+    } catch {
+      /* ignore */
+    }
     const onVis = () => {
       if (document.visibilityState === "visible") loadLive();
     };
@@ -143,10 +163,11 @@ export function GridApp() {
     return () => {
       live = false;
       window.clearTimeout(wait);
+      if (waitR) window.clearTimeout(waitR);
       window.clearInterval(poll);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, []);
+  }, [tab]);
 
   useEffect(() => {
     let live = true;
@@ -159,39 +180,130 @@ export function GridApp() {
       };
     }
     const feat = geo?.find((f) => f.properties.fips === selected.fips);
-    const pt = feat ? centroid(feat) : { lat: 36.16, lon: -86.78 };
+    const pt = pin ?? (feat ? centroid(feat) : { lat: 36.16, lon: -86.78 });
     void loadWx(pt.lat, pt.lon).then((w) => {
       if (live) setWx(w);
     });
     return () => {
       live = false;
     };
-  }, [selected, geo]);
+  }, [selected, geo, pin]);
+
+  function countyAt(lon: number, lat: number): County | null {
+    if (geo) {
+      const fips = countyFipsAt(lon, lat, geo);
+      if (fips) return BY_FIPS.get(fips) ?? null;
+      const hits: County[] = [];
+      for (const f of geo) {
+        const b = geomLonLatBBox(f.geometry);
+        if (!b || lon < b.minX || lon > b.maxX || lat < b.minY || lat > b.maxY) continue;
+        const c = BY_FIPS.get(f.properties.fips);
+        if (c) hits.push(c);
+      }
+      if (hits.length === 1) return hits[0];
+      if (hits.length > 1) {
+        let best = hits[0];
+        let bd = Infinity;
+        for (const c of hits) {
+          const xy = COUNTY_XY[c.name];
+          if (!xy) continue;
+          const d = (xy[0] - lat) ** 2 + (xy[1] - lon) ** 2;
+          if (d < bd) {
+            bd = d;
+            best = c;
+          }
+        }
+        return best;
+      }
+    }
+    const name = nearestCountyName(lat, lon, COUNTY_XY);
+    return COUNTIES.find((c) => c.name === name) ?? null;
+  }
 
   function pickCounty(c: County) {
+    if (pin) {
+      const at = countyAt(pin.lon, pin.lat);
+      if (at?.fips === c.fips) {
+        setSelected(c);
+        setPrecinct(null);
+        setRaces(undefined);
+        setFocusTick((n) => n + 1);
+        prefetchNews(c.name, c.seat, c.market);
+        return;
+      }
+    }
+    setPin(null);
     setSelected(c);
-    setTab((t) => (t === "crime" ? "crime" : "news"));
+    setTab((t) => (t === "crime" || t === "sit" || t === "vote" || t === "gov" ? t : "news"));
     setPrecinct(null);
     setRaces(undefined);
     prefetchNews(c.name, c.seat, c.market);
   }
 
+  function goToPlace(hit: MapPin & { county?: string }) {
+    const county = hit.county ? (COUNTIES.find((c) => c.name === hit.county) ?? null) : countyAt(hit.lon, hit.lat);
+    setPin({ lat: hit.lat, lon: hit.lon, label: hit.label });
+    setFocusTick((n) => n + 1);
+    if (county) {
+      setSelected(county);
+      setPrecinct(null);
+      setRaces(undefined);
+      prefetchNews(county.name, county.seat, county.market);
+    }
+  }
+
+  function goToIncident(c: CrimeIncident) {
+    goToPlace({
+      lat: c.lat,
+      lon: c.lon,
+      label: c.address || c.type,
+      county: c.county,
+    });
+    setTab("crime");
+    setFocusCrimeId(c.id);
+  }
+
   function backToState() {
     setSelected(null);
+    setPin(null);
     setPrecinct(null);
     setRaces(undefined);
     setTab((t) => (t === "crime" ? "crime" : "news"));
   }
 
+  function clearPin() {
+    setPin(null);
+    setFocusCrimeId(null);
+    setFocusTick((n) => n + 1);
+  }
+
   function pickPrecinct(p: Precinct, next?: Race[]) {
     setPrecinct(p);
     setRaces(next);
+    setElectYear("2024");
     setTab("vote");
+    setLayers((prev) => ({ ...prev, p24: true, p26: false }));
   }
 
   function handleTab(t: TabId) {
     if (t === "crime") setCrimeLayers(DEFAULT_CRIME);
+    setLayers((prev) => {
+      if (t === "vote") {
+        return { ...prev, p24: electYear === "2024", p26: electYear === "2026" };
+      }
+      if (prev.p24 || prev.p26) return { ...prev, p24: false, p26: false };
+      return prev;
+    });
     setTab(t);
+  }
+
+  function handleElectYear(y: ElectYear) {
+    setElectYear(y);
+    setLayers((prev) => ({ ...prev, p24: y === "2024", p26: y === "2026" }));
+    if (y === "2026") {
+      setPrecinct(null);
+      setRaces(undefined);
+    }
   }
 
   function toggleCrime(kind: CrimeKind) {
@@ -216,7 +328,8 @@ export function GridApp() {
 
   return (
     <div className="flex h-dvh min-h-0 flex-col overflow-hidden bg-bg text-fg">
-      <header className="flex shrink-0 items-start justify-between px-4 py-3 sm:px-6">
+      <header className="shrink-0 py-3 pr-2 pl-4 sm:pr-3 sm:pl-6">
+        <div className="flex items-start justify-between gap-3">
         <div>
           {selected ? (
             <button
@@ -247,7 +360,7 @@ export function GridApp() {
             {selected ? `${selected.seat} · ${selected.division}` : "Tennessee"}
           </p>
         </div>
-        <div className="flex flex-col items-end text-right">
+        <div className="ml-auto flex shrink-0 flex-col items-end text-right">
           {wx ? (
             <>
               <div className="font-display text-4xl leading-none tabular">{wx.temp}°</div>
@@ -258,10 +371,34 @@ export function GridApp() {
           ) : (
             <div className="h-10 w-16 animate-pulse bg-elevated/80" />
           )}
-          <MarketTicker />
-          {!selected ? <DebtClock /> : null}
+          <div className={selected ? "hidden w-[15.5rem]" : "w-[15.5rem]"}>
+            <MarketTicker active={!selected} />
+            <DebtClock />
+            <FinanceTicker active={!selected} />
+          </div>
+        </div>
+        </div>
+        <div className="mt-2">
+          <AddressSearch pin={pin} onGo={goToPlace} onClear={clearPin} />
         </div>
       </header>
+      <div className="shrink-0 px-2 pb-1 sm:px-3">
+        {expanded ? (
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={toggleFeed}
+              aria-expanded="true"
+              aria-label="Minimize panel"
+              title="Minimize"
+              className="grid size-11 place-items-center border border-line bg-elevated text-grid hover:border-grid"
+            >
+              <ChevronDown className="size-4" />
+            </button>
+          </div>
+        ) : null}
+        <LayerToggles layers={layers} onToggle={toggle} />
+      </div>
       <div className="relative min-h-0 flex-1">
         <TnMap
           geo={geo}
@@ -275,16 +412,12 @@ export function GridApp() {
           showCrime={tab === "crime"}
           crimeLayers={crimeLayers}
           onToggleCrime={toggleCrime}
+          showSor={tab === "crime" && crimeLayers.reg}
+          pin={pin}
+          onClearPin={clearPin}
+          focusTick={focusTick}
+          focusCrimeId={focusCrimeId}
         />
-        <div
-          className={
-            selected
-              ? "absolute top-2 right-2 z-10 max-w-[12.5rem]"
-              : "absolute right-2 bottom-2 left-2 z-10 sm:right-3 sm:left-auto"
-          }
-        >
-          <LayerToggles layers={layers} onToggle={toggle} zoomed={!!selected} />
-        </div>
       </div>
       {selected && tab === "crime" ? (
         <CrimeShare county={selected} incidents={crime} layers={crimeLayers} />
@@ -302,6 +435,9 @@ export function GridApp() {
         crime={crime}
         crimeLayers={crimeLayers}
         onToggleCrime={toggleCrime}
+        onPickCrime={goToIncident}
+        electYear={electYear}
+        onElectYear={handleElectYear}
       />
     </div>
   );

@@ -26,12 +26,12 @@ const DENSITY: Record<Exclude<WxKind, "clear">, { step: number; cap: number; r: 
 };
 
 const FILL: Record<Exclude<WxKind, "clear">, string> = {
-  few: "rgba(214,232,246,0.16)",
-  partly: "rgba(210,228,244,0.20)",
-  cloudy: "rgba(196,216,234,0.28)",
-  fog: "rgba(188,206,220,0.20)",
-  rain: "rgba(168,190,212,0.30)",
-  storm: "rgba(118,136,158,0.38)",
+  few: "rgba(214,232,246,0.045)",
+  partly: "rgba(210,228,244,0.06)",
+  cloudy: "rgba(196,216,234,0.085)",
+  fog: "rgba(188,206,220,0.065)",
+  rain: "rgba(168,190,212,0.10)",
+  storm: "rgba(118,136,158,0.13)",
 };
 
 let cellsMem: WxCell[] | null = null;
@@ -131,7 +131,7 @@ export function WxSky({
     if (!canvas) return;
     const reduced =
       typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+    let ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     const tick = (now: number) => {
@@ -164,7 +164,7 @@ export function WxSky({
         ctx.fillStyle = FILL[p.kind as Exclude<WxKind, "clear">];
         cloud(ctx, sx, sy, r, p.stretch, p.kind === "few" || p.kind === "partly");
         if (p.kind === "rain" || p.kind === "storm") {
-          ctx.strokeStyle = p.kind === "storm" ? "rgba(170,190,210,0.22)" : "rgba(180,200,220,0.16)";
+          ctx.strokeStyle = p.kind === "storm" ? "rgba(170,190,210,0.08)" : "rgba(180,200,220,0.055)";
           ctx.lineWidth = 1;
           ctx.beginPath();
           const n = p.kind === "storm" ? 7 : 4;
@@ -178,7 +178,7 @@ export function WxSky({
           ctx.stroke();
         }
         if (p.kind === "storm" && !reduced && Math.sin(t * 1.8 + p.phase) > 0.94) {
-          ctx.fillStyle = "rgba(230,240,255,0.07)";
+          ctx.fillStyle = "rgba(230,240,255,0.025)";
           ctx.fillRect(sx - r * 1.4, sy - r, r * 2.8, r * 2);
         }
       }
@@ -200,5 +200,5 @@ export function WxSky({
     };
   }, [sizeRef, viewRef]);
 
-  return <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden />;
+  return <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-[2] h-full w-full bg-transparent" aria-hidden />;
 }
