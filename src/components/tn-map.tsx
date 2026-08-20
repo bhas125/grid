@@ -1350,21 +1350,16 @@ export function TnMap({
                   const dim = Boolean(pickedZip && !picked);
                   const layersOn = raceLayers ?? { w: false, b: false, h: false, a: false, o: false };
                   const tone = zipTone(z, layersOn);
-                  const fill =
-                    tone.tone === "white"
-                      ? "var(--color-race-white)"
-                      : tone.tone === "brown"
-                        ? "var(--color-race-brown)"
-                        : "transparent";
+                  const fill = tone.fill;
                   const hud = zipHud(z, layersOn);
                   const stroke =
                     picked
                       ? "var(--color-fg)"
                       : tone.tone === "white"
                         ? "var(--color-race-white)"
-                        : tone.tone === "brown"
-                          ? "var(--color-race-brown)"
-                          : "var(--color-line)";
+                        : tone.tone === "black"
+                          ? "#4a4c50"
+                          : "var(--color-race-gray)";
                   return (
                     <path
                       key={z.z}
@@ -1372,11 +1367,11 @@ export function TnMap({
                       data-zip={z.z}
                       data-tone={tone.tone}
                       fill={fill}
-                      fillOpacity={dim ? tone.opacity * 0.4 : picked ? Math.min(0.92, tone.opacity + 0.08) : tone.opacity}
+                      fillOpacity={dim ? 0.28 : picked ? 0.9 : tone.opacity}
                       fillRule="evenodd"
                       stroke={stroke}
                       strokeWidth={picked ? 0.45 : 0.22}
-                      strokeOpacity={tone.tone === "none" ? 0.45 : 0.7}
+                      strokeOpacity={tone.tone === "none" ? 0.35 : 0.75}
                       className="cursor-pointer"
                       onMouseEnter={() => setHoverZip(hud)}
                       onMouseMove={() => setHoverZip(hud)}
@@ -1613,12 +1608,12 @@ export function TnMap({
               className="h-1 w-full"
               style={{
                 background:
-                  "linear-gradient(to right, var(--color-race-white), transparent 50%, var(--color-race-brown))",
+                  "linear-gradient(to right, var(--color-race-white), var(--color-race-gray) 50%, var(--color-race-black))",
               }}
             />
             <div className="mt-0.5 flex justify-between font-mono text-[9px] tracking-widest text-faint uppercase">
               <span>White</span>
-              <span>Parity</span>
+              <span>Even</span>
               <span>B/H</span>
             </div>
           </div>

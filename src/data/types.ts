@@ -150,8 +150,8 @@ export type RaceLayers = Record<RaceSlice, boolean>;
 
 export const RACE_META: { id: RaceSlice; label: string; css: string; chip: string }[] = [
   { id: "w", label: "White", css: "var(--color-race-white)", chip: "border-fg/50 bg-fg/10 text-fg" },
-  { id: "b", label: "Black", css: "var(--color-race-brown)", chip: "border-earth bg-earth/20 text-earth" },
-  { id: "h", label: "Hispanic", css: "var(--color-race-brown)", chip: "border-earth bg-earth/20 text-earth" },
+  { id: "b", label: "Black", css: "var(--color-race-black)", chip: "border-muted bg-fg/5 text-muted" },
+  { id: "h", label: "Hispanic", css: "var(--color-race-black)", chip: "border-muted bg-fg/5 text-muted" },
   { id: "a", label: "Asian", css: "var(--color-grid)", chip: "border-grid bg-grid/15 text-grid" },
   { id: "o", label: "Other", css: "var(--color-muted)", chip: "border-muted bg-muted/15 text-muted" },
 ];

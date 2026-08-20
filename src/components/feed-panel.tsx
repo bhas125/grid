@@ -599,10 +599,10 @@ function RaceFeed({
     <div>
       <p className="px-4 pb-2 font-mono text-xs leading-relaxed tracking-wide text-muted">
         {slices.some((s) => s.id === "w") && slices.some((s) => s.id === "b" || s.id === "h")
-          ? "White frost vs brown. Deeper = bigger majority. Near clear = parity. ACS 2024 5-year."
+          ? "White → gray → black. White majority, even mix, then Black/Hisp majority. ACS 2024 5-year."
           : one
-            ? `ZIP share ${one.label}. Deeper = denser. ACS 2024 5-year.`
-            : "County ZIP outlines. White vs Black/Hisp majority. ACS 2024 5-year."}
+            ? `ZIP share ${one.label}. ${one.id === "w" ? "Lighter = more White." : one.id === "b" || one.id === "h" ? "Darker = denser." : "Share of ZIP."} ACS 2024 5-year.`
+            : "County ZIP outlines. White–gray–black majority scale. ACS 2024 5-year."}
       </p>
       {zips === null ? (
         <p className="px-4 py-3 font-mono text-xs tracking-widest text-faint uppercase">Loading ZIP race</p>
@@ -633,28 +633,18 @@ function RaceFeed({
                   </div>
                 ) : (
                   <>
-                    <div className="mt-1 flex h-1.5 overflow-hidden bg-bg">
-                      <div
-                        className="h-full"
-                        style={{
-                          width: `${tone.whitePct * 100}%`,
-                          background: "var(--color-race-white)",
-                          opacity: 0.35 + tone.whitePct * 0.65,
-                        }}
-                      />
-                      <div className="h-full flex-1" />
-                      <div
-                        className="h-full"
-                        style={{
-                          width: `${tone.brownPct * 100}%`,
-                          background: "var(--color-race-brown)",
-                          opacity: 0.35 + tone.brownPct * 0.65,
-                        }}
-                      />
+                    <div className="mt-1 h-1.5 overflow-hidden bg-bg">
+                      <div className="h-full w-full" style={{ background: tone.fill }} />
                     </div>
                     <div className="mt-0.5 font-mono text-[10px] tracking-wide text-faint uppercase">
                       W {fmtPct(tone.whitePct * 100)} · B/H {fmtPct(tone.brownPct * 100)}
-                      {tone.tone === "none" ? " · parity" : tone.tone === "white" ? " · white maj." : " · B/H maj."}
+                      {tone.tone === "mix"
+                        ? " · even"
+                        : tone.tone === "white"
+                          ? " · white maj."
+                          : tone.tone === "black"
+                            ? " · B/H maj."
+                            : ""}
                     </div>
                   </>
                 )}

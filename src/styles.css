@@ -22,8 +22,9 @@
   --color-dem: #5a7eab;
   --color-flow: #5cffc0;
   --color-earth: #c4894a;
-  --color-race-white: #efe8d8;
-  --color-race-brown: #7a431c;
+  --color-race-white: #f4f4f2;
+  --color-race-gray: #84888e;
+  --color-race-black: #0a0b0d;
 }
 
 @layer base {
