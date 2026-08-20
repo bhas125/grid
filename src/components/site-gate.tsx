@@ -4,45 +4,26 @@ const STORAGE = "grid-gate";
 
 export function SiteGate({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const [ready, setReady] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    let live = true;
-    const cached = (() => {
-      try {
-        return localStorage.getItem(STORAGE) === "1";
-      } catch {
-        return false;
-      }
-    })();
-    if (cached) {
-      setOpen(true);
-      setChecking(false);
-      return;
+    try {
+      localStorage.removeItem(STORAGE);
+    } catch {
+      /* ignore */
     }
-    fetch("/api/gate")
-      .then((r) => r.json())
-      .then((d: { ok?: boolean }) => {
-        if (!live) return;
-        if (d.ok) {
-          try {
-            localStorage.setItem(STORAGE, "1");
-          } catch {
-            /* ignore */
-          }
-          setOpen(true);
-        }
-      })
-      .catch(() => undefined)
-      .finally(() => {
-        if (live) setChecking(false);
-      });
-    return () => {
-      live = false;
-    };
+    let cached = false;
+    try {
+      cached = sessionStorage.getItem(STORAGE) === "1";
+    } catch {
+      cached = false;
+    }
+    if (cached) setOpen(true);
+    setReady(true);
+    void fetch("/api/gate").catch(() => undefined);
   }, []);
 
   async function submit(e: React.FormEvent) {
@@ -62,7 +43,7 @@ export function SiteGate({ children }: { children: React.ReactNode }) {
         return;
       }
       try {
-        localStorage.setItem(STORAGE, "1");
+        sessionStorage.setItem(STORAGE, "1");
       } catch {
         /* ignore */
       }
@@ -74,6 +55,9 @@ export function SiteGate({ children }: { children: React.ReactNode }) {
   }
 
   if (open) return <>{children}</>;
+  if (!ready) {
+    return <main className="min-h-dvh bg-bg" />;
+  }
 
   return (
     <main className="grid min-h-dvh place-items-center bg-bg px-6 text-fg">
@@ -90,37 +74,31 @@ export function SiteGate({ children }: { children: React.ReactNode }) {
           </div>
           <p className="mt-2 font-mono text-xs tracking-widest text-faint uppercase">Tennessee · Restricted</p>
         </div>
-        {checking ? (
-          <div className="h-10 w-full animate-pulse bg-elevated/80" />
-        ) : (
-          <>
-            <label className="block">
-              <span className="font-mono text-[10px] tracking-widest text-faint uppercase">Password</span>
-              <input
-                type="password"
-                name="password"
-                autoComplete="current-password"
-                autoFocus
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  if (error) setError(false);
-                }}
-                className="mt-1 h-10 w-full border border-line bg-surface px-3 font-mono text-sm text-fg outline-none focus:border-grid"
-              />
-            </label>
-            {error ? (
-              <p className="font-mono text-[10px] tracking-widest text-hot uppercase">Wrong password</p>
-            ) : null}
-            <button
-              type="submit"
-              disabled={busy || !password}
-              className="h-10 w-full border border-grid bg-grid/15 font-mono text-xs tracking-widest text-grid uppercase hover:bg-grid/25 disabled:opacity-40"
-            >
-              {busy ? "Checking" : "Enter"}
-            </button>
-          </>
-        )}
+        <label className="block">
+          <span className="font-mono text-[10px] tracking-widest text-faint uppercase">Password</span>
+          <input
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            autoFocus
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (error) setError(false);
+            }}
+            className="mt-1 h-10 w-full border border-line bg-surface px-3 font-mono text-sm text-fg outline-none focus:border-grid"
+          />
+        </label>
+        {error ? (
+          <p className="font-mono text-[10px] tracking-widest text-hot uppercase">Wrong password</p>
+        ) : null}
+        <button
+          type="submit"
+          disabled={busy || !password}
+          className="h-10 w-full border border-grid bg-grid/15 font-mono text-xs tracking-widest text-grid uppercase hover:bg-grid/25 disabled:opacity-40"
+        >
+          {busy ? "Checking" : "Enter"}
+        </button>
       </form>
     </main>
   );

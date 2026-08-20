@@ -2,22 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 
 const PASS = "blake123";
 const COOKIE = "grid_gate";
-const MAX_AGE = 60 * 60 * 24 * 30;
 
-function hasGate(request: Request) {
-  const cookie = request.headers.get("cookie") ?? "";
-  return new RegExp(`(?:^|;\\s*)${COOKIE}=1(?:;|$)`).test(cookie);
-}
-
-function cookieHeader(request: Request) {
+function expireCookie(request: Request) {
   const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
-  return `${COOKIE}=1; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${secure}`;
+  return `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
 }
 
 export const Route = createFileRoute("/api/gate")({
   server: {
     handlers: {
-      GET: ({ request }) => Response.json({ ok: hasGate(request) }),
+      GET: ({ request }) =>
+        Response.json({ ok: false }, { headers: { "Set-Cookie": expireCookie(request) } }),
       POST: async ({ request }) => {
         let password = "";
         try {
@@ -29,10 +24,7 @@ export const Route = createFileRoute("/api/gate")({
         if (password !== PASS) {
           return Response.json({ ok: false }, { status: 401 });
         }
-        return Response.json(
-          { ok: true },
-          { headers: { "Set-Cookie": cookieHeader(request) } },
-        );
+        return Response.json({ ok: true }, { headers: { "Set-Cookie": expireCookie(request) } });
       },
     },
   },
